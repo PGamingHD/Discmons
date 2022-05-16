@@ -11,9 +11,7 @@ const {
 const {
     readdirSync
 } = require("fs");
-//const mysql = require('mysql2');
 const config = require("./botconfig/config.json");
-const mysql = require('mysql2');
 
 //           --------------------<CONSTRUCTORS>--------------------
 
@@ -65,28 +63,6 @@ require("./handler/anticrash")(client)
 require("./handler")(client);
 //require("./database/db")
 //           --------------------<REQUIRES>--------------------
-
-
-//           --------------------<ESTABLISHING MYSQL CONNECTION>--------------------
-
-const con = mysql.createConnection({
-    host: config.Database.DB_HOST,
-    user: config.Database.DB_USER,
-    password: config.Database.DB_PASS,
-    database: config.Database.DB_DATABASE,
-    multipleStatements: true,
-    supportBigNumbers: true,
-});
-
-con.connect(err => {
-    if (err) throw err;
-    console.log("[DATABASE] - Successfully connected to the MySQL Database!")
-    //con.query("SHOW TABLES", console.log)
-});
-
-client.connection = con;
-
-//           --------------------<MYSQL CONNECTION ESTABLISHED>--------------------
 
 
 //           --------------------<STARTER>--------------------

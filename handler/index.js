@@ -7,7 +7,10 @@ const {
 const {
     Client
 } = require("discord.js");
-//const mongoose = require("mongoose");
+
+//DATABASE
+const mongoose = require("mongoose");
+require('dotenv').config();
 
 const globPromise = promisify(glob);
 
@@ -51,7 +54,14 @@ module.exports = async (client) => {
     });
     client.on("ready", async () => {
         await client.application.commands.set(arrayOfSlashCommands).then(console.log("[Slash Commands] Successfully loaded all slash commands globally!"))
-        //return console.log("[Slash Commands] Successfully loaded all slash commands globally!")
+        try{
+            await mongoose.connect(process.env.MONGODB_CONNECT || '', {
+                keepAlive: true,
+                dbName: 'Discmons',
+            }).then(() => console.log("[DATABASE] <==> || Successfully connected to the MongoDB database! || <==> [DATABASE]"));
+        } catch(dberror) {
+            console.log(`[DATABASE] <==> || Database seems to have ran into an error and could not connect! || <==> [DATABASE]\n\n${dberror}`);
+        }
     });
 };
 

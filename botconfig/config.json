@@ -1,21 +1,22 @@
 {
-    "adminID": ["1", "2"],
-    "ownerID": "266726434855321600",
-    "token": "OTY4OTAwNTUzMTY4MDE1MzYx.Ymlk9Q.YJ0n0QPvJjvpCjz3FTmrLcPGsDg",
-    "prefix": "/",
-    "botID": "968900553168015361",
-    "botVersion": "v1.0.0",
-    "logChannel": "967820201364172830",
-    "webhookLogs": "https://discord.com/api/webhooks/969288581883514940/m0ROBUVy9EzAxHzP2iCs7xS4f0hBx2OEDCtc35Ha61WUSNw0XBHzyOoFjOzuCnRky5Mj",
-    "status": {
-        "text": "over The Time",
-        "COMMENT:": "TYPES ARE: PLAYING, STREAMING, WATCHING, LISTENING",
-        "url": "https://twitch.tv/PGamingJR"
-     },
-     "Database": {
-        "DB_USER": "automator-bot",
-        "DB_PASS": "Yourmomgay123@",
-        "DB_HOST": "127.0.0.1",
-        "DB_DATABASE": "automator"
-     }
+   "modID": [],
+   "adminID": [],
+   "developerID": ["266726434855321600"],
+   "token": "OTY4OTAwNTUzMTY4MDE1MzYx.Ymlk9Q.YJ0n0QPvJjvpCjz3FTmrLcPGsDg",
+   "prefix": "/",
+   "botID": "968900553168015361",
+   "botVersion": "v1.0.0",
+   "logChannel": "967820201364172830",
+   "webhookLogs": "https://discord.com/api/webhooks/969288581883514940/m0ROBUVy9EzAxHzP2iCs7xS4f0hBx2OEDCtc35Ha61WUSNw0XBHzyOoFjOzuCnRky5Mj",
+   "status": {
+      "text": "over The Time",
+      "COMMENT:": "TYPES ARE: PLAYING, STREAMING, WATCHING, LISTENING",
+      "url": "https://twitch.tv/PGamingJR"
+   },
+   "Database": {
+      "DB_USER": "automator-bot",
+      "DB_PASS": "Yourmomgay123@",
+      "DB_HOST": "127.0.0.1",
+      "DB_DATABASE": "automator"
+   }
 }

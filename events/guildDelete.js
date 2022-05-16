@@ -13,22 +13,7 @@ const webhook = new WebhookClient({
 });
 
 client.on("guildDelete", async (guild, client) => {
-    try {
 
-        const footerOptions = {
-            text: '© discord.gg/botdeveloper | Developed by PGamingHD#0666'
-        }
-
-        webhook.send({
-            embeds: [
-                new EmbedBuilder()
-                .setColor(ee.color)
-                .setTitle(`:x: Kicked from Server :x:`)
-                .setDescription(`***Guild Name:***\n${guild.name}\n\n***Guild Size:***\n${guild.memberCount}\n\n***Guild ID:***\n${guild.id}\n\n***Guild Owner:*** <@!${guild.ownerId}>`)
-                .setFooter(footerOptions)
-            ]
-        });
-    } catch {}
 });
 
 /*
