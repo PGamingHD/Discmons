@@ -28,16 +28,16 @@ const client = new Client({
         parse: ["users"], // "everyone", "roles", "users"
         repliedUser: false,
     },
-
+    waitGuildTimeout: 10000,
     intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildBans,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.DirectMessages,
-        IntentsBitField.Flags.GuildPresences,
-        IntentsBitField.Flags.MessageContent,
-        IntentsBitField.Flags.GuildMessageReactions,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessageReactions,
     ],
 
     partials: [

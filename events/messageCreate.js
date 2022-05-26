@@ -80,7 +80,7 @@ client.on("messageCreate", async (message) => {
                     },
                 })
 
-                if (message.channel.permissionsFor(message.guild.me).has(PermissionFlagsBits.SendMessages) && message.channel.permissionsFor(message.guild.me).has(PermissionFlagsBits.ViewChannel)) {
+                if (message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.SendMessages) && message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
                     message.channel.send(`${message.author} Congratulations, your ${findselected.Inventory[0].PokemonName} has just leveled up to level \`[${findselected.Inventory[0].PokemonData.PokemonLevel + 1}]\`!`)
                 } else {
                     return;
@@ -181,7 +181,7 @@ client.on("messageCreate", async (message) => {
                 //spawnedrarity = 'Shiny';
             }
 
-            if (message.channel.permissionsFor(message.guild.me).has(PermissionFlagsBits.SendMessages) && message.channel.permissionsFor(message.guild.me).has(PermissionFlagsBits.EmbedLinks) && message.channel.permissionsFor(message.guild.me).has(PermissionFlagsBits.ViewChannel)) {
+            if (message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.SendMessages) && message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.EmbedLinks) && message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
                 encounterspawn(message, spawnedrarity)
             } else {
                 return;

@@ -52,7 +52,7 @@
                     })
                 }
 
-                if (!ch.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.SendMessages) || !ch.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.ViewChannel) || !ch.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.EmbedLinks)) {
+                if (!ch.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages) || !ch.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel) || !ch.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.EmbedLinks)) {
                     return interaction.reply({
                         content: ':x: I do not have proper access to manage that channel and therefore that channel may not be redirected to unless proper access is given. I require the permissions \`Send Messages\`, \`View Channel\` & \`Embed Links\` in order to properly redirect to that channel!',
                         ephemeral: true

@@ -1,7 +1,7 @@
 const client = require("../index");
 const config = require("../botconfig/config.json");
 const emoji = require("../botconfig/emojis.json");
-const schedule = require("node-schedule");
+const { Cron } = require("croner");
 const {
     ActivityType,
     Interaction
@@ -16,6 +16,13 @@ client.on("ready", async (client) => {
     try {
         try {
             const stringlength = 69;
+            console.log(`
+██████  ███████  █████  ██████  ██    ██ 
+██   ██ ██      ██   ██ ██   ██  ██  ██  
+██████  █████   ███████ ██   ██   ████   
+██   ██ ██      ██   ██ ██   ██    ██    
+██   ██ ███████ ██   ██ ██████     ██                      
+            `)
             console.log(chalk.green(`[LOGIN] <==> || I successfully logged into ${client.user.tag} and started ALL services || <==> [LOGIN]`));
             console.log(chalk.red(`[COOLDOWN] <==> || Entering bot cooldown for 60 seconds while the Database connects correctly! || <==> [COOLDOWN]`));
         } catch {}
@@ -43,15 +50,13 @@ client.on("ready", async (client) => {
             act4
         ]
 
-        const job = schedule.scheduleJob('* */15 * * * *', function() {
+        const job = Cron('00 */15 * * * *', () => {
             const random = Math.floor(Math.random() * activities.length);
 
             client.user.setActivity(activities[random].text, {
                 type: activities[random].type,
                 url: config.status.url
             })
-            console.log("CHANGED STATUS!")
-            return;
         });
 
         startupCooldown.set("startupcooldown", true);

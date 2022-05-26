@@ -58,7 +58,7 @@ client.on("interactionCreate", async (interaction) => {
 
     if (!findserver) {
         await server.create({
-            ServerID: parseInt(message.guild.id),
+            ServerID: parseInt(interaction.guild.id),
             Blacklisted: false,
             SpawningTime: 0,
             RedirectChannel: 0
@@ -89,7 +89,7 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand()) {
 
         try {
-            if (!interaction.channel.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.SendMessages) || !interaction.channel.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.EmbedLinks) || !interaction.channel.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.UseExternalEmojis) || !interaction.channel.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.ReadMessageHistory)) {
+            if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.EmbedLinks) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.UseExternalEmojis) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ReadMessageHistory)) {
                 await interaction.user.send({
                     embeds: [
                         new EmbedBuilder()
@@ -101,7 +101,7 @@ client.on("interactionCreate", async (interaction) => {
                 })
             }
         } catch (error) {
-            if(!interaction.channel.permissionsFor(interaction.guild.me).has(PermissionFlagsBits.SendMessages)){
+            if(!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages)){
                 return;
             } else {
                 if (error.rawError.message === "Cannot send messages to this user") {
