@@ -1,19 +1,29 @@
 const mongoose = require('mongoose');
 
 const SpawnedSchema = new mongoose.Schema({
+    SpawnedServerID: {
+        type: String,
+        required: true
+    },
+    SpawnedChannelID: {
+        type: String,
+        required: true
+    },
+    SpawnedMessageID: {
+        type: String,
+        required: true
+    },
     PokemonID: {
-        type: Number,
+        type: String,
         unique: true,
         required: true
     },
     PokemonName: {
         type: String,
-        unique: true,
         required: true
     },
     PokemonPicture: {
         type: String,
-        unique: true,
         required: true
     },
     PokemonLevel: {

@@ -15,6 +15,10 @@ const PokemonSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
+    },
+    PokemonRarity: {
+        type: String,
+        required: true
     }
 });
 

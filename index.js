@@ -12,11 +12,17 @@ const {
     readdirSync
 } = require("fs");
 const config = require("./botconfig/config.json");
+const chalk = require("chalk");
+const {
+    Webhook
+} = require("@top-gg/sdk");
+const express = require('express');
 
 //           --------------------<CONSTRUCTORS>--------------------
 
 
-//           --------------------<CONSTRUCTING CLIENT>--------------------
+//           --------------------<CONSTRUCTING CLIENTS>--------------------
+
 const client = new Client({
     allowedMentions: {
         parse: ["users"], // "everyone", "roles", "users"
@@ -31,6 +37,7 @@ const client = new Client({
         IntentsBitField.Flags.DirectMessages,
         IntentsBitField.Flags.GuildPresences,
         IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessageReactions,
     ],
 
     partials: [
@@ -38,7 +45,8 @@ const client = new Client({
     ],
 
 });
-//           --------------------<CONSTRUCTING CLIENT>--------------------
+
+//           --------------------<CONSTRUCTING CLIENTS>--------------------
 
 
 //           --------------------<MODULE EXPORTS>--------------------
@@ -49,20 +57,34 @@ module.exports = client;
 
 
 //           --------------------<GLOBAL VARIABLES CONSTRUCTION>--------------------
+
 client.commands = new Collection();
 client.slashCommands = new Collection();
-client.cooldowns = new Collection();
+client.awardCooldowns = new Collection();
+client.xpCooldowns = new Collection();
+client.startupCooldown = new Collection();
 client.categories = readdirSync("./commands/");
 client.config = require("./botconfig/config.json");
+
 //           --------------------<GLOBAL VARIABLES CONSTRUCTION>--------------------
 
 
 //           --------------------<REQUIRES>--------------------
+
 require("./handler/anticrash")(client)
 // Initializing the project
 require("./handler")(client);
 //require("./database/db")
+
 //           --------------------<REQUIRES>--------------------
+
+
+//           --------------------<STATS POSTER>--------------------
+
+//HERE
+
+//           --------------------<STATS POSTER>--------------------
+
 
 
 //           --------------------<STARTER>--------------------

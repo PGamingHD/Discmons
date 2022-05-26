@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/PGamingHD/Discmons#readme",
   "dependencies": {
-    "nodemon": "^2.0.16"
+    "@top-gg/sdk": "^3.1.3",
+    "axios": "^0.27.2",
+    "mongoose": "^6.3.3",
+    "mongoose-long": "^0.5.1",
+    "nodemon": "^2.0.16",
+    "paypal-rest-sdk": "^1.8.1",
+    "uuid": "^8.3.2"
   }
 }

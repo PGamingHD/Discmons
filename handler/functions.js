@@ -1,79 +1,266 @@
 const {
     MessageEmbed,
-    Collection
+    Collection,
+    EmbedBuilder,
+    WebhookClient
 } = require("discord.js");
 const Discord = require("discord.js")
 const config = require("../botconfig/config.json");
 const ee = require("../botconfig/embed.json");
+const {
+    v4: uuidv4
+} = require("uuid");
+const adminLogs = new WebhookClient({
+    url: config.adminLogs
+});
 
-module.exports.onCoolDown = onCoolDown;
-module.exports.replacemsg = replacedefaultmessages;
-module.exports.change_status = change_status;
+//DATABASE SCHEMAS
+const spawned = require("../schemas/Spawned");
+const pokemon = require("../schemas/Pokemons");
+const server = require("../schemas/Servers");
+const developer = require('../schemas/developerMaintenance');
+
+//MODULE EXPORTS
+module.exports.encounterspawn = encounterspawn;
 module.exports.escapeRegex = escapeRegex;
+module.exports.forcespawn = forcespawn;
+module.exports.maintenancemode = maintenancemode;
+module.exports.calculatePercentage = calculatePercentage;
+module.exports.hintgame = hintgame;
 
-function onCoolDown(message, command) {
-    if (!message || !message.client) throw "No Message with a valid DiscordClient granted as First Parameter";
-    if (!command || !command.name) throw "No Command with a valid Name granted as Second Parameter";
-    const client = message.client;
-    if (!client.cooldowns.has(command.name)) { //if its not in the cooldown, set it too there
-        client.cooldowns.set(command.name, new Collection());
-    }
-    const now = Date.now(); //get the current time
-    const timestamps = client.cooldowns.get(command.name); //get the timestamp of the last used commands
-    const cooldownAmount = (command.cooldown || 1.5) * 1000; //get the cooldownamount of the command, if there is no cooldown there will be automatically 1 sec cooldown, so you cannot spam it^^
-    if (timestamps.has(message.member.id)) { //if the user is on cooldown
-        const expirationTime = timestamps.get(message.member.id) + cooldownAmount; //get the amount of time he needs to wait until he can run the cmd again
-        if (now < expirationTime) { //if he is still on cooldonw
-            const timeLeft = (expirationTime - now) / 1000; //get the lefttime
-            //return true
-            return timeLeft
-        } else {
-            //if he is not on cooldown, set it to the cooldown
-            timestamps.set(message.member.id, now);
-            //set a timeout function with the cooldown, so it gets deleted later on again
-            setTimeout(() => timestamps.delete(message.member.id), cooldownAmount);
-            //return false aka not on cooldown
-            return false;
-        }
+//FUNCTIONS
+
+async function encounterspawn(message, rarity) {
+
+    const countedPokemon = await pokemon.findOne({
+        PokemonRarity: rarity
+    }).count();
+
+    const pokemonAmount = Math.floor(Math.random() * countedPokemon);
+
+    const pokemontospawn = await pokemon.findOne({
+        PokemonRarity: rarity
+    }).skip(pokemonAmount)
+
+    const findserver = await server.findOne({
+        ServerID: parseInt(message.guild.id)
+    });
+
+    let channelToSend;
+
+    if(parseInt(findserver.RedirectChannel) !== 0){
+        const redirectChannel = await message.guild.channels.fetch(`${findserver.RedirectChannel}`)
+
+        channelToSend = redirectChannel;
     } else {
-        //if he is not on cooldown, set it to the cooldown
-        timestamps.set(message.member.id, now);
-        //set a timeout function with the cooldown, so it gets deleted later on again
-        setTimeout(() => timestamps.delete(message.member.id), cooldownAmount);
-        //return false aka not on cooldown
-        return false;
+        channelToSend = message.channel;
     }
+
+    const levelGeneration = Math.floor(Math.random() * (20 - 1) + 1);
+
+    const generatedUUID = uuidv4();
+
+    const msg = await channelToSend.send({
+        embeds: [
+            new EmbedBuilder()
+            .setColor(ee.color)
+            .setDescription(`A wild pokémon has spawned, catch the spawned\n pokémon with \`/catch (name)\` before it flees!`)
+            .setImage(pokemontospawn.PokemonPicture)
+            .setFooter({
+                text: generatedUUID
+            })
+        ]
+    })
+
+    const guildId = message.guild.id;
+    const channelId = channelToSend.id;
+    const messageId = msg.id;
+
+    await spawned.create({
+        SpawnedServerID: parseInt(guildId),
+        SpawnedChannelID: channelId,
+        SpawnedMessageID: messageId,
+        PokemonID: generatedUUID,
+        PokemonName: pokemontospawn.PokemonName,
+        PokemonPicture: pokemontospawn.PokemonPicture,
+        PokemonLevel: levelGeneration
+    })
+
+    await server.findOneAndUpdate({
+        ServerID: parseInt(message.guild.id),
+    }, {
+        SpawningTime: 0
+    })
+
+    setTimeout(async () => {
+        const timetodel = await spawned.findOne({
+            PokemonID: generatedUUID,
+        })
+
+        if (timetodel) {
+            await spawned.deleteOne({
+                PokemonID: generatedUUID
+            })
+            msg.delete();
+            message.channel.send({
+                content: `:x: The \`${pokemontospawn.PokemonName}\` wasn't caught in time and therefore fled, better luck next time!`
+            });
+        } else {
+            return;
+        }
+    }, 1000 * 120);
 }
 
-function replacedefaultmessages(text, o = {}) {
-    if (!text || text == undefined || text == null) throw "No Text for the replacedefault message added as First Parameter";
-    const options = Object(o)
-    if (!options || options == undefined || options == null) return String(text)
-    return String(text)
-        .replace(/%{timeleft}%/gi, options && options.timeLeft ? options.timeLeft.toFixed(1) : "%{timeleft}%")
-        .replace(/%{commandname}%/gi, options && options.command && options.command.name ? options.command.name : "%{commandname}%")
-        .replace(/%{commandaliases}%/gi, options && options.command && options.command.aliases ? options.command.aliases.map(v => `\`${v}\``).join(",") : "%{commandaliases}%")
-        .replace(/%{prefix}%/gi, options && options.prefix ? options.prefix : "%{prefix}%")
-        .replace(/%{commandmemberpermissions}%/gi, options && options.command && options.command.memberpermissions ? options.command.memberpermissions.map(v => `\`${v}\``).join(",") : "%{commandmemberpermissions}%")
-        .replace(/%{commandalloweduserids}%/gi, options && options.command && options.command.alloweduserids ? options.command.alloweduserids.map(v => `<@${v}>`).join(",") : "%{commandalloweduserids}%")
-        .replace(/%{commandrequiredroles}%/gi, options && options.command && options.command.requiredroles ? options.command.requiredroles.map(v => `<@&${v}>`).join(",") : "%{commandrequiredroles}%")
-        .replace(/%{errormessage}%/gi, options && options.error && options.error.message ? options.error.message : options && options.error ? options.error : "%{errormessage}%")
-        .replace(/%{errorstack}%/gi, options && options.error && options.error.stack ? options.error.stack : options && options.error && options.error.message ? options.error.message : options && options.error ? options.error : "%{errorstack}%")
-        .replace(/%{error}%/gi, options && options.error ? options.error : "%{error}%")
+async function forcespawn(interaction, pokemonname, pokemonlevel) {
+
+    const forcedpokemon = await pokemon.findOne({
+        PokemonName: pokemonname
+    })
+
+    if (!forcedpokemon) {
+        interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                .setColor(ee.wrongcolor)
+                .setDescription(`:x: The specific pokemon could not be found, please specific a valid pokemon to spawn!`)
+            ],
+            ephemeral: true
+        })
+    }
+
+    const generatedUUID = uuidv4();
+
+    const msg = await interaction.channel.send({
+        embeds: [
+            new EmbedBuilder()
+            .setColor(ee.color)
+            .setDescription(`A wild pokémon has spawned, catch the spawned\n pokémon with \`/catch (name)\` before it flees!`)
+            .setImage(forcedpokemon.PokemonPicture)
+            .setFooter({
+                text: generatedUUID
+            })
+        ]
+    })
+
+    const guildId = interaction.guild.id;
+    const channelId = interaction.channel.id;
+    const messageId = msg.id;
+
+    await spawned.create({
+        SpawnedServerID: parseInt(guildId),
+        SpawnedChannelID: channelId,
+        SpawnedMessageID: messageId,
+        PokemonID: generatedUUID,
+        PokemonName: forcedpokemon.PokemonName,
+        PokemonPicture: forcedpokemon.PokemonPicture,
+        PokemonLevel: pokemonlevel
+    })
+
+    setTimeout(async () => {
+        const timetodel = await spawned.findOne({
+            PokemonID: generatedUUID,
+        })
+
+        if (timetodel) {
+            await spawned.deleteOne({
+                PokemonID: generatedUUID
+            })
+            msg.delete();
+            interaction.channel.send({
+                content: `:x: The \`${forcedpokemon.PokemonName}\` wasn't caught in time and therefore fled, better luck next time!`
+            });
+        } else {
+            return;
+        }
+    }, 1000 * 120);
 }
 
-function change_status(client) {
-    try {
-        client.user.setActivity(config.status.text, {
-            type: config.status.type,
-            url: config.status.url
-        }); //status
-    } catch (e) {
-        console.log(String(e.stack));
-        client.user.setActivity(client.user.username, {
-            type: "PLAYING",
-            name: 'Venom RP'
-        });
+async function maintenancemode(client, interaction, cooldown, length) {
+    const devmode = await developer.findOne({
+        developerAccess: 'accessStringforDeveloperOnly'
+    });
+
+    const mainChannel = client.channels.cache.get(config.maintenanceChannel);
+
+
+    if (devmode.globalMaintenance) {
+
+        mainChannel.send({
+            embeds: [
+                new EmbedBuilder()
+                .setColor(ee.maintenancecolor)
+                .setTitle(`:yellow_circle: **Maintenance Warning** :yellow_circle:`)
+                .setDescription(`**The maintenance mode will be turned off in approximately \`[${cooldown}]\` Second(s) again, prepare yourselves!**`)
+                .setFooter({
+                    text: `Maintenance issued by: ${interaction.user.tag}`,
+                    iconURL: interaction.user.displayAvatarURL()
+                })
+            ]
+        })
+        interaction.followUp({
+            content: `:arrows_clockwise: Maintenance Mode will be turned off in \`[${cooldown}]\` Second(s)!`,
+            ephemeral: true
+        })
+
+        setTimeout(async () => {
+
+            mainChannel.send({
+                embeds: [
+                    new EmbedBuilder()
+                    .setColor(ee.color)
+                    .setTitle(`:green_circle: **Maintenance Warning** :green_circle:`)
+                    .setDescription(`**The maintenance mode have now ended, and all services should be back up running!**`)
+                    .setFooter({
+                        text: `Maintenance issued by: ${interaction.user.tag}`,
+                        iconURL: interaction.user.displayAvatarURL()
+                    })
+                ]
+            })
+
+            await devmode.updateOne({
+                globalMaintenance: false
+            })
+        }, 1000 * cooldown);
+
+    } else {
+
+        mainChannel.send({
+            embeds: [
+                new EmbedBuilder()
+                .setColor(ee.maintenancecolor)
+                .setTitle(`:yellow_circle: **Maintenance Warning** :yellow_circle:`)
+                .setDescription(`**The maintenance mode will be turned on in approximately \`[${cooldown}]\` Second(s) to do some maintenance work on the Bot, please finish everything asap!**`)
+                .setFooter({
+                    text: `Maintenance issued by: ${interaction.user.tag}`,
+                    iconURL: interaction.user.displayAvatarURL()
+                })
+            ]
+        })
+        interaction.followUp({
+            content: `:arrows_clockwise: Maintenance Mode will be turned on in \`${cooldown}\` Second(s)!`,
+            ephemeral: true
+        })
+
+        setTimeout(async () => {
+
+            mainChannel.send({
+                embeds: [
+                    new EmbedBuilder()
+                    .setColor(ee.wrongcolor)
+                    .setTitle(`:red_circle: **Maintenance Warning** :red_circle:`)
+                    .setDescription(`**The maintenance mode have now begun and will continue for the next \`[${length}]\` Minute(s)!**`)
+                    .setFooter({
+                        text: `Maintenance issued by: ${interaction.user.tag}`,
+                        iconURL: interaction.user.displayAvatarURL()
+                    })
+                ]
+            })
+            await devmode.updateOne({
+                globalMaintenance: true
+            })
+
+        }, 1000 * cooldown);
+
     }
 }
 
@@ -85,11 +272,22 @@ function escapeRegex(str) {
     }
 }
 
-/*
+function calculatePercentage(smallNumber, bigNumber) {
+    return (smallNumber / bigNumber) * 100;
+}
 
-Code used in this script has been written by original PizzaParadise developer - PGamingHD#0666
-Require assistance with scripts? Join the discord and get help right away! - https://discord.gg/pxySje4GPC
-Other than that, please do note that it is required if you are using this to mention the original developer
-Original Developer - PGamingHD#0666
+function hintgame(word) {
+    var a = word;
+    var splitted = a.split('');
+    var count = 0; // variable where i keep trace of how many _ i have inserted
 
-*/
+    while (count < a.length / 2) {
+        var index = Math.floor(Math.random() * a.length); //generate new index
+        if (splitted[index] !== '_' && splitted[index] !== ' ') {
+            splitted[index] = '_';
+            count++;
+        }
+    }
+
+    return splitted.join("");
+}
