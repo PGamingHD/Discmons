@@ -42,8 +42,10 @@
                             name: 'Voting Timer',
                             value: `Your vote seems to be ready, vote and get your rewards now!`
                         }])
-                    ],
-                    ephemeral: true
+                        .setFooter({
+                            text: 'Voting rewards will be automatically added to you after a vote has been successfully sent.'
+                        })
+                    ]
                 })
             } else {
                 let cooldown = 43201000;
@@ -61,8 +63,10 @@
                             name: 'Voting Timer',
                             value: `You can vote again in **${prettyMilliseconds(timeleft, {verbose: true})}**!`
                         }])
-                    ],
-                    ephemeral: true
+                        .setFooter({
+                            text: 'Voting rewards will be automatically added to you after a vote has been successfully sent.'
+                        })
+                    ]
                 })
             }
         }

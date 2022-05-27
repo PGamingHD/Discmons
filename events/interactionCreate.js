@@ -25,7 +25,7 @@ const {
 //SCHEMA DATA
 const userData = require("../schemas/userData");
 const pokemon = require("../schemas/Pokemons");
-const developer = require("../schemas/developerMaintenance");
+const developer = require("../schemas/developerData");
 const server = require("../schemas/Servers");
 const {
     maintenancemode,
@@ -77,11 +77,95 @@ client.on("interactionCreate", async (interaction) => {
     })
 
     if (finduser) {
+        
         if (finduser.Blacklisted) {
             return interaction.reply({
                 content: ':x: You have been blacklisted from the usage of this bots functions, please open a ticket on the Support Server to get this fixed.',
                 ephemeral: true
             })
+        }
+
+        if (dev.LastTOSUpdate > finduser.LatestAgreed) {
+
+            try {
+                const agreementRow = new ActionRowBuilder()
+                agreementRow.addComponents([
+                    new ButtonBuilder()
+                    .setEmoji('✅')
+                    .setCustomId('agree')
+                    .setStyle(ButtonStyle.Primary)
+                ])
+                agreementRow.addComponents([
+                    new ButtonBuilder()
+                    .setEmoji('❎')
+                    .setCustomId('disagree')
+                    .setStyle(ButtonStyle.Primary)
+                ])
+    
+                await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                        .setColor(ee.color)
+                        .setTitle(`Updated Terms of Service agreement!`)
+                        .setDescription(`**Whoops, wait one second there ${interaction.user}!**\n\nLooks like you have yet to read our new upgraded [Terms of Service](https://discord.gg/discmon) and agree to it.\nPlease read through our new ToS then agree with the buttons below, or decline.\n\n> We update our ToS agreements regulary, which is why you are seeing this again.`)
+                    ],
+                    components: [agreementRow]
+                })
+    
+                const newInteraction = await interaction.fetchReply();
+    
+                const filter = m => m.user.id === interaction.user.id;
+                const collector = newInteraction.createMessageComponentCollector({
+                    filter,
+                    idle: 1000 * 60,
+                    time: 1000 * 120,
+                    max: 1,
+                });
+    
+                collector.on('collect', async (interactionCollector) => {
+                    if (interactionCollector.customId === "agree") {
+                        await interactionCollector.deferUpdate();
+    
+                        await interactionCollector.editReply({
+                            embeds: [
+                                new EmbedBuilder()
+                                .setColor(851712)
+                                .setTitle(`Successfully agreed to ToS`)
+                                .setDescription(`Thank you for agreeing to our newly update Terms of Service, you may now continue using the bot features.`)
+                            ]
+                        })
+    
+                        await finduser.updateOne({
+                            LatestAgreed: Date.now()
+                        });
+                    }
+    
+                    if (interactionCollector.customId === "disagree") {
+                        await interactionCollector.deferUpdate();
+    
+                        await interactionCollector.editReply({
+                            embeds: [
+                                new EmbedBuilder()
+                                .setColor(ee.wrongcolor)
+                                .setTitle(`Successfully disagreed to our ToS`)
+                                .setDescription(`You have now declined agreement to our ToS, please note that no further bot access can be given unless you agree to the new Terms of Service.`)
+                            ]
+                        })
+                    }
+                });
+    
+                collector.on('end', async (collected) => {
+                    for (let i = 0; i < agreementRow.components.length; i++) {
+                        agreementRow.components[i].setDisabled(true);
+                    }
+    
+                    await interaction.editReply({
+                        components: [agreementRow]
+                    });
+                });
+            } catch (error) {}
+            
+            return;
         }
     }
 
@@ -101,7 +185,7 @@ client.on("interactionCreate", async (interaction) => {
                 })
             }
         } catch (error) {
-            if(!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages)){
+            if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages)) {
                 return;
             } else {
                 if (error.rawError.message === "Cannot send messages to this user") {
@@ -156,7 +240,7 @@ client.on("interactionCreate", async (interaction) => {
             })
         }
 
-        if(cmd.serverAdmin && !interaction.member.permissions.has(PermissionFlagsBits.Administrator)){
+        if (cmd.serverAdmin && !interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return interaction.reply({
                 content: ':x: Looks like you do not have permissions to execute this command.',
                 ephemeral: true
@@ -309,6 +393,15 @@ client.on("interactionCreate", async (interaction) => {
                 })
                 .setLabel('Maintenance Mode')
                 .setCustomId('maintenance')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            adminRow.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "📝"
+                })
+                .setLabel('ToS Update')
+                .setCustomId('tosupdate')
                 .setStyle(ButtonStyle.Primary)
             ])
 
@@ -653,6 +746,19 @@ client.on("interactionCreate", async (interaction) => {
                         ephemeral: true
                     })
                 })
+            })
+        }
+
+        if(interaction?.customId === "tosupdate") {
+            await developer.findOneAndUpdate({
+                developerAccess: "accessStringforDeveloperOnly"
+            }, {
+                LastTOSUpdate: Date.now()
+            })
+
+            return interaction.reply({
+                content: `:white_check_mark: Successfully set new ToS agreement date to \`${Date.now()}\`, everyone will have to reagree to use features!`,
+                ephemeral: true
             })
         }
     }

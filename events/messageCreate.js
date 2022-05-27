@@ -12,7 +12,7 @@ const config = require("../botconfig/config.json");
 const server = require("../schemas/Servers");
 const spawned = require("../schemas/Spawned");
 const pokemon = require("../schemas/Pokemons");
-const developer = require("../schemas/developerMaintenance");
+const developer = require("../schemas/developerData");
 const userdata = require("../schemas/userData");
 const {
     awardCooldowns,

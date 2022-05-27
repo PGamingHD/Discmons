@@ -52,6 +52,10 @@ const userDataSchema = new mongoose.Schema({
         type: Long,
         required: true
     },
+    LatestAgreed: {
+        type: Long,
+        required: true
+    },
     Items: [{
         ItemName: {
             type: String,

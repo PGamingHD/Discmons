@@ -18,7 +18,7 @@ const adminLogs = new WebhookClient({
 const spawned = require("../schemas/Spawned");
 const pokemon = require("../schemas/Pokemons");
 const server = require("../schemas/Servers");
-const developer = require('../schemas/developerMaintenance');
+const developer = require('../schemas/developerData');
 
 //MODULE EXPORTS
 module.exports.encounterspawn = encounterspawn;
@@ -27,6 +27,7 @@ module.exports.forcespawn = forcespawn;
 module.exports.maintenancemode = maintenancemode;
 module.exports.calculatePercentage = calculatePercentage;
 module.exports.hintgame = hintgame;
+module.exports.redeemSpawn = redeemSpawn;
 
 //FUNCTIONS
 
@@ -154,6 +155,72 @@ async function forcespawn(interaction, pokemonname, pokemonlevel) {
         PokemonName: forcedpokemon.PokemonName,
         PokemonPicture: forcedpokemon.PokemonPicture,
         PokemonLevel: pokemonlevel
+    })
+
+    setTimeout(async () => {
+        const timetodel = await spawned.findOne({
+            PokemonID: generatedUUID,
+        })
+
+        if (timetodel) {
+            await spawned.deleteOne({
+                PokemonID: generatedUUID
+            })
+            msg.delete();
+            interaction.channel.send({
+                content: `:x: The \`${forcedpokemon.PokemonName}\` wasn't caught in time and therefore fled, better luck next time!`
+            });
+        } else {
+            return;
+        }
+    }, 1000 * 120);
+}
+
+async function redeemSpawn(interaction, pokemonname) {
+
+    const forcedpokemon = await pokemon.findOne({
+        PokemonName: pokemonname
+    })
+
+    if (!forcedpokemon) {
+        interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                .setColor(ee.wrongcolor)
+                .setDescription(`:x: The specific pokemon could not be found, please specific a valid pokemon to spawn!`)
+            ],
+            ephemeral: true
+        })
+    }
+
+    const levelGeneration = Math.floor(Math.random() * (50 - 15) + 15);
+
+    const generatedUUID = uuidv4();
+
+    const msg = await interaction.channel.send({
+        embeds: [
+            new EmbedBuilder()
+            .setColor(ee.color)
+            .setDescription(`A wild pokémon has spawned, catch the spawned\n pokémon with \`/catch (name)\` before it flees!`)
+            .setImage(forcedpokemon.PokemonPicture)
+            .setFooter({
+                text: generatedUUID
+            })
+        ]
+    })
+
+    const guildId = interaction.guild.id;
+    const channelId = interaction.channel.id;
+    const messageId = msg.id;
+
+    await spawned.create({
+        SpawnedServerID: parseInt(guildId),
+        SpawnedChannelID: channelId,
+        SpawnedMessageID: messageId,
+        PokemonID: generatedUUID,
+        PokemonName: forcedpokemon.PokemonName,
+        PokemonPicture: forcedpokemon.PokemonPicture,
+        PokemonLevel: levelGeneration
     })
 
     setTimeout(async () => {

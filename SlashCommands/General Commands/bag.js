@@ -4,32 +4,26 @@
         MessageEmbed,
         MessageActionRow,
         MessageButton,
-        ButtonBuilder,
         ActionRowBuilder,
-        ButtonStyle
+        ButtonStyle,
+        ButtonBuilder,
+        EmbedBuilder
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
     const emoji = require('../../botconfig/embed.json')
     const prettyMilliseconds = require('pretty-ms');
-    const config = require('../../botconfig/config.json');
-    const {
-        EmbedBuilder
-    } = require('@discordjs/builders');
-    const {
-        calculatePercentage
-    } = require('../../handler/functions');
-    const userdata = require("../../schemas/userData");
+    const config = require('../../botconfig/config.json')
+    const userData = require('../../schemas/userData');
 
     module.exports = {
-        name: 'pokemons',
-        description: 'View all your Pokémons in one list!',
+        name: 'bag',
+        description: 'View your purchased items from your bag.',
         /** 
          * @param {Client} client 
          * @param {Message} message 
          * @param {String[]} args 
          */
         run: async (client, interaction, args) => {
-
 
             const mainRow = new ActionRowBuilder()
             mainRow.addComponents([
@@ -63,16 +57,35 @@
                 .setStyle(ButtonStyle.Primary)
             ])
 
-            const ownedpokemons = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
+            const bagitems = await userData.findOne({
+                OwnerID: parseInt(interaction.user.id)
             })
 
-            const pokemons = ownedpokemons.Inventory;
+            const user = bagitems;
+            const ownedbagitems = bagitems.Items;
+
+            if(ownedbagitems.length === 0) {
+                return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                        .setDescription(`***You do not have any owned items in your bag at the moment.***`)
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.displayAvatarURL()
+                        })
+                        .setTitle(`Your Item Bag`)
+                        .setColor(ee.color)
+                        .setFooter({
+                            text: 'Page 1 of 1'
+                        })
+                    ]
+                })
+            }
 
             let currentPage = 0;
-            const embeds = generatePokemonEmbed(pokemons, currentPage)
+            const embeds = generateShopEmbed(ownedbagitems, currentPage, user)
 
-            if (pokemons.length > 20) {
+            if (ownedbagitems.length > 6) {
                 await interaction.reply({
                     embeds: [embeds[currentPage].setFooter({
                         text: `Page ${currentPage+1} of ${embeds.length}`
@@ -167,32 +180,45 @@
             })
 
             collector.on('end', async (collected) => {
-                for (let i = 0; i < mainRow.components.length; i++) {
-                    mainRow.components[i].setDisabled(true);
+                if(ownedbagitems.length > 6){
+                    for (let i = 0; i < mainRow.components.length; i++) {
+                        mainRow.components[i].setDisabled(true);
+                    }
+    
+                    await interaction.editReply({
+                        components: [mainRow]
+                    });
                 }
-
-                await interaction.editReply({
-                    components: [mainRow]
-                });
             })
 
-            function generatePokemonEmbed(ownedpokes, currentPage) {
+            function generateShopEmbed(ownedpokes, currentPage, user) {
                 const embeds = []
-                let k = 20;
-                for (let i = 0; i < ownedpokes.length; i += 20) {
+                let k = 6;
+                for (let i = 0; i < ownedpokes.length; i += 6) {
                     const current = ownedpokes.slice(i, k);
                     let j = i;
-                    k += 20;
-                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` **${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}`).join('\n');
+                    k += 6;
+
                     const embed = new EmbedBuilder()
-                        .setDescription(`${info}`)
-                        .setTitle(`Your Pokémons`)
-                        .setColor(ee.color)
+
+                    current.map(item => {
+                        embed.addFields([{
+                            name: `**${item.ItemName}**`,
+                            value: `**Owned:** x${item.ItemAmount.toLocaleString('en-US')}`,
+                            inline: true
+                        }])
+                    })
+
+                    embed.setDescription(`**Pokécoins**: ${parseInt(user.Pokecoins).toLocaleString('en-US')}\n**Pokétokens**: ${parseInt(user.Poketokens).toLocaleString('en-US')}\n\nUse your buttons to flip pages and display more items!`)
+                    embed.setAuthor({
+                        name: interaction.user.username,
+                        iconURL: interaction.user.displayAvatarURL()
+                    })
+                    embed.setTitle(`Your Item Bag`)
+                    embed.setColor(ee.color)
                     embeds.push(embed)
                 }
                 return embeds;
             }
         }
     }
-
-

@@ -5,13 +5,7 @@
    "prefix": "/",
    "botVersion": "v1.0.0",
    "adminLogs": "https://discord.com/api/webhooks/969288581883514940/m0ROBUVy9EzAxHzP2iCs7xS4f0hBx2OEDCtc35Ha61WUSNw0XBHzyOoFjOzuCnRky5Mj",
-   "logChannel": "967820201364172830",
-   "maintenanceChannel": "968543677393813508",
-   "status": {
-      "text": "over The Time",
-      "COMMENT:": "TYPES ARE: PLAYING, STREAMING, WATCHING, LISTENING",
-      "url": "https://twitch.tv/PGamingJR"
-   },
+   "maintenanceChannel": "979802202111627306",
    "Database": {
       "DB_USER": "automator-bot",
       "DB_PASS": "Yourmomgay123@",

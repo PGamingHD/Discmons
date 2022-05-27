@@ -119,6 +119,7 @@
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
                         VotedCooldown: 0,
+                        LatestAgreed: Date.now(),
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
@@ -182,6 +183,7 @@
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
                         VotedCooldown: 0,
+                        LatestAgreed: Date.now(),
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
@@ -245,6 +247,7 @@
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
                         VotedCooldown: 0,
+                        LatestAgreed: Date.now(),
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
