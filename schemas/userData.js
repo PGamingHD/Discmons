@@ -49,7 +49,7 @@ const userDataSchema = new mongoose.Schema({
         required: true
     },
     VotedCooldown: {
-        type: Number,
+        type: Long,
         required: true
     },
     Items: [{
