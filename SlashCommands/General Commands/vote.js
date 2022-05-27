@@ -46,7 +46,7 @@
             } else {
                 let cooldown = 43201000;
                 const timetobe = user.VotedCooldown + cooldown;
-                const timenow = Date.now();
+                const timenow = Math.floor(Date.now() / 1000);
                 const timeleft = timetobe - timenow
 
                 return interaction.reply({
@@ -57,7 +57,7 @@
                         .setDescription(`Vote for us on [top.gg](https://top.gg/bot/904757023797813339/vote) to recieve tokens that can then be spent in the Shop. You can vote once per 12 hours!`)
                         .addFields([{
                             name: 'Voting Timer',
-                            value: `You can vote again in ${prettyMilliseconds(timeleft, {verbose: true})}`
+                            value: `You can vote again in **${prettyMilliseconds(timeleft, {verbose: true})}**!`
                         }])
                     ],
                     ephemeral: true
