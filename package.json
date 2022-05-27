@@ -22,6 +22,7 @@
     "axios": "^0.27.2",
     "croner": "^4.3.11",
     "discord.js": "^14.0.0-dev.1653480262-68d5169",
+    "glob": "^7.1.1",
     "mongoose": "^6.3.3",
     "mongoose-long": "^0.5.1",
     "nodemon": "^2.0.16",

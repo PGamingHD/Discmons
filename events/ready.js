@@ -16,13 +16,6 @@ client.on("ready", async (client) => {
     try {
         try {
             const stringlength = 69;
-            console.log(`
-██████  ███████  █████  ██████  ██    ██ 
-██   ██ ██      ██   ██ ██   ██  ██  ██  
-██████  █████   ███████ ██   ██   ████   
-██   ██ ██      ██   ██ ██   ██    ██    
-██   ██ ███████ ██   ██ ██████     ██                      
-            `)
             console.log(chalk.green(`[LOGIN] <==> || I successfully logged into ${client.user.tag} and started ALL services || <==> [LOGIN]`));
             console.log(chalk.red(`[COOLDOWN] <==> || Entering bot cooldown for 60 seconds while the Database connects correctly! || <==> [COOLDOWN]`));
         } catch {}

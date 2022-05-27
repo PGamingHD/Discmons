@@ -14,10 +14,6 @@ module.exports = async (client) => {
         console.log(chalk.red(' [ANTICRASH] <==>  || Uncaught Exception/Catch (MONITOR) || <==> [ANTICRASH]'));
         console.log(err, origin);
     });
-    process.on('multipleResolves', (type, promise, reason) => {
-        console.log(chalk.red(' [ANTICRASH] <==> || Multiple Resolves || <==> [ANTICRASH]'));
-        console.log(type, promise, reason);
-    });
 }
 
 /*
