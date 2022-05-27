@@ -118,6 +118,7 @@
                         ShinyCaught: 0,
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
+                        VotedCooldown: 0,
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
@@ -131,9 +132,6 @@
                                 PokemonOrder: 1,
                             },
                         }],
-                        VotedData: {
-                            VotedCooldown: 0
-                        }
                     })
 
                     await globaldata.findOneAndUpdate({
@@ -183,6 +181,7 @@
                         ShinyCaught: 0,
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
+                        VotedCooldown: 0,
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
@@ -195,9 +194,6 @@
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
                             },
-                            VotedData: {
-                                VotedCooldown: 0
-                            }
                         }]
                     })
 
@@ -248,6 +244,7 @@
                         ShinyCaught: 0,
                         TrainerNumber: nextTrainerNumber,
                         TrainerRank: 0,
+                        VotedCooldown: 0,
                         Inventory: [{
                             PokemonID: generatedUUID,
                             PokemonName: pokename,
@@ -260,9 +257,6 @@
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
                             },
-                            VotedData: {
-                                VotedCooldown: 0
-                            }
                         }]
                     })
 

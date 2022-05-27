@@ -48,6 +48,10 @@ const userDataSchema = new mongoose.Schema({
         type: Number, // 0 NORMAL, 1 BRONZE, 2 SILVER, 3 GOLD, 4 PLATINUM, 5 MOD, 6 ADMIN, 7 DEVELOPER
         required: true
     },
+    VotedCooldown: {
+        type: Number,
+        required: true
+    },
     Items: [{
         ItemName: {
             type: String,
@@ -99,12 +103,6 @@ const userDataSchema = new mongoose.Schema({
             },
         }
     }],
-    VotedData: {
-        VotedCooldown: {
-            type: Number,
-            required: true
-        }
-    }
 });
 
 module.exports = mongoose.model("userData", userDataSchema)

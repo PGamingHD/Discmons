@@ -29,7 +29,7 @@
             })
 
             let cooldown = 43201000;
-            if (Date.now() >= user.VotedData.VotedCooldown + cooldown || user.VotedData.VotedCooldown === 0) {
+            if (Math.floor(Date.now() / 1000) >= user.VotedCooldown + cooldown || user.VotedCooldown === 0) {
                 return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
@@ -45,7 +45,7 @@
                 })
             } else {
                 let cooldown = 43201000;
-                const timetobe = user.VotedData.VotedCooldown + cooldown;
+                const timetobe = user.VotedCooldown + cooldown;
                 const timenow = Date.now();
                 const timeleft = timetobe - timenow
 
