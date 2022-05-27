@@ -132,7 +132,6 @@
                             },
                         }],
                         VotedData: {
-                            Voted: false,
                             VotedCooldown: 0
                         }
                     })
@@ -197,7 +196,6 @@
                                 PokemonOrder: 1,
                             },
                             VotedData: {
-                                Voted: false,
                                 VotedCooldown: 0
                             }
                         }]
@@ -263,7 +261,6 @@
                                 PokemonOrder: 1,
                             },
                             VotedData: {
-                                Voted: false,
                                 VotedCooldown: 0
                             }
                         }]

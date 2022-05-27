@@ -100,10 +100,6 @@ const userDataSchema = new mongoose.Schema({
         }
     }],
     VotedData: {
-        Voted: {
-            type: Boolean,
-            required: true
-        },
         VotedCooldown: {
             type: Number,
             required: true
