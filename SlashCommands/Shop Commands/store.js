@@ -28,9 +28,9 @@
         run: async (client, interaction, args) => {
 
             paypal.configure({
-                'mode': 'sandbox', //sandbox or live
-                'client_id': 'ARpPxx2G6K_vpO7Pju2RjgJrPh2t5iwCI6sfHX3LiAK7qOv_TQ4QAR6Yb8T6eBctmdgshRhLa6udqoOu',
-                'client_secret': 'EOSJg-PMtceyZ1vdKA3OUFgmSPOWJWMJ2XUQ-WyVVDhflZs2saTOJ6TdR3Jz-yPCtdCdOcI_-69K72x9'
+                'mode': 'live', //sandbox or live
+                'client_id': 'AZedZ1Ra-A6dP0ASGyU87zL09rrQH6ygxwwQ7jff_PLFd06a6xAJEYWdZXtxIDLoiVcizt9u5IRa3LO_',
+                'client_secret': 'EEtflHqSqgENvZZSBmB3kg3GoxjomY575mLpEW3tlnV7mEi2eboe-ZYGe3cCbSU7f5HAKvV0BebYiv4v'
             });
 
             //BUTTON CONSTRUCTORS
@@ -290,8 +290,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/bronze",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/roles/bronze",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -369,8 +369,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/silver",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/roles/silver",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -448,8 +448,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/gold",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/roles/gold",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -527,8 +527,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/platinum",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/roles/platinum",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -608,8 +608,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t1",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t1",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -687,8 +687,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t2",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t2",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -766,8 +766,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t3",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t3",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -845,8 +845,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t4",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t4",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -924,8 +924,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t5",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t5",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -1003,8 +1003,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t6",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/tokens/t6",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -1084,8 +1084,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c1",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/coins/c1",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -1163,8 +1163,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c2",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/coins/c2",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -1242,8 +1242,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c3",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/coins/c3",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
@@ -1321,8 +1321,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c4",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": "http://glizzyrp.com:3500/success/coins/c4",
+                            "cancel_url": "http://glizzyrp.com:3500/cancel"
                         },
                         "transactions": [{
                             "item_list": {
