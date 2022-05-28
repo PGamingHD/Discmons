@@ -130,6 +130,16 @@
                 OwnerID: parseInt(interaction.user.id),
             });
 
+            const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
+            const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+            const DEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+            const SPECATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+            const SPECDEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+            const SPEEDiv = Math.floor(Math.random() * (31 - 1) + 1);
+
+            const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
+            const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+
             await user.findOneAndUpdate({
                 OwnerID: parseInt(interaction.user.id),
             }, {
@@ -145,6 +155,15 @@
                             PokemonLevel: findpoke.PokemonLevel,
                             PokemonXP: 0,
                             PokemonOrder: incrementID,
+                            PokemonIVs: {
+                                HP: HPiv,
+                                Attack: ATKiv,
+                                Defense: DEFiv,
+                                SpecialAtk: SPECATKiv,
+                                SpecialDef: SPECDEFiv,
+                                Speed: SPEEDiv,
+                                TotalIV: IVtotal,
+                            }
                         }
                     }
                 }

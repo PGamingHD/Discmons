@@ -340,21 +340,12 @@
                     })
                 }
 
-                let addzero;
-                if (pokeinfo.MarketID < 10) {
-                    addzero = "00";
-                } else if (pokeinfo.MarketID < 100) {
-                    addzero = "0";
-                } else {
-                    addzero = "";
-                }
-
                 return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
                         .setColor(ee.color)
                         .setImage(pokeinfo.PokemonPicture)
-                        .setTitle(`#${addzero}${pokeinfo.MarketID} | Level. ${pokeinfo.PokemonLevel} ${pokeinfo.PokemonName}`)
+                        .setTitle(`${pokeinfo.MarketID} | Level. ${pokeinfo.PokemonLevel} ${pokeinfo.PokemonName}`)
                     ]
                 })
             }

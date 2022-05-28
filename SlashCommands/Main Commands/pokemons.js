@@ -162,18 +162,19 @@
                 if (interactionCollector.customId === "exit") {
                     await interactionCollector.deferUpdate();
                     collector.stop();
-                    interaction.deleteReply();
                 }
             })
 
             collector.on('end', async (collected) => {
-                for (let i = 0; i < mainRow.components.length; i++) {
-                    mainRow.components[i].setDisabled(true);
-                }
+                if (collected.size > 0) {
+                    for (let i = 0; i < mainRow.components.length; i++) {
+                        mainRow.components[i].setDisabled(true);
+                    }
 
-                await interaction.editReply({
-                    components: [mainRow]
-                });
+                    await interaction.editReply({
+                        components: [mainRow]
+                    });
+                }
             })
 
             function generatePokemonEmbed(ownedpokes, currentPage) {
@@ -183,7 +184,7 @@
                     const current = ownedpokes.slice(i, k);
                     let j = i;
                     k += 20;
-                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` **${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}`).join('\n');
+                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` **${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}　•　IV ${currentpokemon.PokemonData.PokemonIVs.TotalIV}%`).join('\n');
                     const embed = new EmbedBuilder()
                         .setDescription(`${info}`)
                         .setTitle(`Your Pokémons`)
@@ -194,5 +195,3 @@
             }
         }
     }
-
-

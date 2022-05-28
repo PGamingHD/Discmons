@@ -106,6 +106,16 @@
                         nextTrainerNumber = highestTrainer.length + 1;
                     }
 
+                    const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const DEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECDEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPEEDiv = Math.floor(Math.random() * (31 - 1) + 1);
+
+                    const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
+                    const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+
                     await userData.create({
                         OwnerID: parseInt(interaction.user.id),
                         Poketokens: 0,
@@ -131,6 +141,15 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                PokemonIVs: {
+                                    HP: HPiv,
+                                    Attack: ATKiv,
+                                    Defense: DEFiv,
+                                    SpecialAtk: SPECATKiv,
+                                    SpecialDef: SPECDEFiv,
+                                    Speed: SPEEDiv,
+                                    TotalIV: IVtotal,
+                                }
                             },
                         }],
                     })
@@ -170,6 +189,16 @@
                         nextTrainerNumber = highestTrainer.length + 1;
                     }
 
+                    const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const DEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECDEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPEEDiv = Math.floor(Math.random() * (31 - 1) + 1);
+
+                    const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
+                    const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+
                     await userData.create({
                         OwnerID: parseInt(interaction.user.id),
                         Poketokens: 0,
@@ -195,6 +224,15 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                PokemonIVs: {
+                                    HP: HPiv,
+                                    Attack: ATKiv,
+                                    Defense: DEFiv,
+                                    SpecialAtk: SPECATKiv,
+                                    SpecialDef: SPECDEFiv,
+                                    Speed: SPEEDiv,
+                                    TotalIV: IVtotal,
+                                }
                             },
                         }]
                     })
@@ -234,6 +272,16 @@
                         nextTrainerNumber = highestTrainer.length + 1;
                     }
 
+                    const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const DEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECATKiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPECDEFiv = Math.floor(Math.random() * (31 - 1) + 1);
+                    const SPEEDiv = Math.floor(Math.random() * (31 - 1) + 1);
+
+                    const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
+                    const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+
                     await userData.create({
                         OwnerID: parseInt(interaction.user.id),
                         Poketokens: 0,
@@ -259,6 +307,15 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                PokemonIVs: {
+                                    HP: HPiv,
+                                    Attack: ATKiv,
+                                    Defense: DEFiv,
+                                    SpecialAtk: SPECATKiv,
+                                    SpecialDef: SPECDEFiv,
+                                    Speed: SPEEDiv,
+                                    TotalIV: IVtotal,
+                                }
                             },
                         }]
                     })
@@ -282,6 +339,16 @@
 
                     await interaction.deleteReply();
                 };
+            });
+
+            collector.on('end', async (collected) => {
+                for (let i = 0; i < pokeRow.components.length; i++) {
+                    pokeRow.components[i].setDisabled(true);
+                }
+
+                await interaction.editReply({
+                    components: [pokeRow]
+                });
             });
         }
     }

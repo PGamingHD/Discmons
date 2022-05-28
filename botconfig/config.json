@@ -1,15 +1,9 @@
 {
    "developerID": ["266726434855321600"],
-   "token": "OTY4OTAwNTUzMTY4MDE1MzYx.G7kW8O.nDpE27_4Y_aom4NQTdg9wEUkieKMTCFZ-O9P-k",
+   "token": "OTY4NTQzNzU4NjUwMDgxNDIx.YmgYqg.-iaGV6sfGYaV6jYUMxiSBCD3iWw",
    "botID": "968900553168015361",
    "prefix": "/",
    "botVersion": "v1.0.0",
-   "adminLogs": "https://discord.com/api/webhooks/969288581883514940/m0ROBUVy9EzAxHzP2iCs7xS4f0hBx2OEDCtc35Ha61WUSNw0XBHzyOoFjOzuCnRky5Mj",
-   "maintenanceChannel": "979802202111627306",
-   "Database": {
-      "DB_USER": "automator-bot",
-      "DB_PASS": "Yourmomgay123@",
-      "DB_HOST": "127.0.0.1",
-      "DB_DATABASE": "automator"
-   }
+   "adminLogs": "https://discord.com/api/webhooks/980167326898982973/7wIFw0ugZgaaJzDZ4zTlS0AAKkfzFlcCDqmaJ6BB2qkvCX3mBhHE2scnTREoYRdHzOSH",
+   "maintenanceChannel": "968543677393813508"
 }

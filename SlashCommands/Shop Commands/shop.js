@@ -181,10 +181,14 @@ module.exports = {
             })
 
             collector.on('end', async (collected) => {
-                if (collected.size >= 1) {
-                    return;
-                } else {
-                    interaction.deleteReply();
+                if (collected.size > 0) {
+                    for (let i = 0; i < mainRow.components.length; i++) {
+                        mainRow.components[i].setDisabled(true);
+                    }
+
+                    await interaction.editReply({
+                        components: [mainRow]
+                    });
                 }
             });
         }

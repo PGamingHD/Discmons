@@ -105,6 +105,36 @@ const userDataSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             },
+            PokemonIVs: {
+                HP: {
+                    type: Number,
+                    required: true
+                },
+                Attack: {
+                    type: Number,
+                    required: true
+                },
+                Defense: {
+                    type: Number,
+                    required: true
+                },
+                SpecialAtk: {
+                    type: Number,
+                    required: true
+                },
+                SpecialDef: {
+                    type: Number,
+                    required: true,
+                },
+                Speed: {
+                    type: Number,
+                    required: true
+                },
+                TotalIV: {
+                    type: Number,
+                    required: true
+                }
+            },
         }
     }],
 });

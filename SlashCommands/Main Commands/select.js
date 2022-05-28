@@ -66,6 +66,6 @@
             return interaction.reply({
                 content: `:white_check_mark: Successfully changed your selected Pokémon to **Lvl. ${findnewselect.Inventory[0].PokemonData.PokemonLevel} ${findnewselect.Inventory[0].PokemonName}**!`,
                 ephemeral: true
-            })
+            });
         }
     }

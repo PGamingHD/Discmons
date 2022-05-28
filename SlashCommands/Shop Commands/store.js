@@ -226,7 +226,7 @@
                 fetchReply: true
             })
 
-            const newInteraction = await interaction.fetchReply()
+            const newInteraction = await interaction.fetchReply();
 
             let filter = m => m.user.id === interaction.user.id;
 
@@ -1389,9 +1389,6 @@
 
                 if (interactionCollector.customId === "exit") {
                     await interactionCollector.deferUpdate();
-
-                    await interactionCollector.deleteReply();
-
                     await collector.stop();
                 }
             });
@@ -1453,8 +1450,34 @@
                         });
                     }
 
+                    if (lastregistered.customId === 'Mainpage') {
+                        for (let i = 0; i < storeRow.components.length; i++) {
+                            storeRow.components[i].setDisabled(true);
+                        }
+
+                        await interaction.editReply({
+                            components: [storeRow]
+                        });
+                    }
+
                     if (lastregistered.customId === 'exit') {
-                        return;
+                        for (let i = 0; i < storeRow.components.length; i++) {
+                            storeRow.components[i].setDisabled(true);
+                        }
+
+                        await interaction.editReply({
+                            components: [storeRow]
+                        });
+                    }
+
+                    if (interactionCollected.size === 0) {
+                        for (let i = 0; i < storeRow.components.length; i++) {
+                            storeRow.components[i].setDisabled(true);
+                        }
+
+                        await interaction.editReply({
+                            components: [storeRow]
+                        });
                     }
                 }
             })

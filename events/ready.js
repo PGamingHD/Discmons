@@ -47,8 +47,7 @@ client.on("ready", async (client) => {
             const random = Math.floor(Math.random() * activities.length);
 
             client.user.setActivity(activities[random].text, {
-                type: activities[random].type,
-                url: config.status.url
+                type: activities[random].type
             })
         });
 
