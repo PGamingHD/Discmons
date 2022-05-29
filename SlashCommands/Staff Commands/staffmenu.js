@@ -38,6 +38,66 @@
          */
         run: async (client, interaction, args) => {
 
+            const modButtons = new ActionRowBuilder()
+            modButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "❌"
+                })
+                .setLabel('Blacklist User')
+                .setCustomId('blacklist')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            modButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "❌"
+                })
+                .setLabel('Blacklist Server')
+                .setCustomId('blacklists')
+                .setStyle(ButtonStyle.Primary)
+            ])
+
+            const adminButtons = new ActionRowBuilder()
+            adminButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "🏢"
+                })
+                .setLabel('Spawn Pokemon')
+                .setCustomId('spawnpokemon')
+                .setStyle(ButtonStyle.Primary)
+            ])
+
+            const devButtons = new ActionRowBuilder()
+            devButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "✅"
+                })
+                .setLabel('Insert Pokemon')
+                .setCustomId('insertpokemon')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "⚙️"
+                })
+                .setLabel('Maintenance Mode')
+                .setCustomId('maintenance')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "📝"
+                })
+                .setLabel('ToS Update')
+                .setCustomId('tosupdate')
+                .setStyle(ButtonStyle.Primary)
+            ])
+
             const findrank = await userData.findOne({
                 OwnerID: parseInt(interaction.user.id),
             })
@@ -130,7 +190,7 @@
                     .setTitle(`**Staff Menu - Welcome back ${interaction.user.username}!**`)
                     .setDescription(`*Welcome back Staff Member, this is the Staff Menu for Discmon! Please make sure to follow the following rules when using Staff Permissions!*\n\n> **[1]. Never abuse your permissions!**\n> **[2]. Do not use commands in public channels!**\n> **[3]. Everything is logged, you won't get away with anything!**\n> **[4]. Be active, inactivity will get you demoted!**\n> **[5]. Never use commands to benefit yourself!**\n\n*Following the rules above will not get you punished, not following them might get you punished.*\n\n*Now, pick a menu below and click on it to open the specific menu!*`)
                     .setTimestamp()
-                    .setThumbnail(`https://cdn.discordapp.com/attachments/968543677393813508/976442215448576060/support.png`)
+                    .setThumbnail(`https://cdn.discordapp.com/attachments/968543677393813508/976442215448576060/support.devButtonspng`)
                     .setFooter({
                         text: `Logged in with ${permissionname} permissions!`
                     })
@@ -160,26 +220,6 @@
                         ]
                     })
 
-                    const adminRow = new ActionRowBuilder()
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "❌"
-                        })
-                        .setLabel('Blacklist User')
-                        .setCustomId('blacklist')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "❌"
-                        })
-                        .setLabel('Blacklist Server')
-                        .setCustomId('blacklists')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-
                     return interactionCollector.editReply({
                         embeds: [
                             new EmbedBuilder()
@@ -187,7 +227,7 @@
                             .setTitle(`**Moderator Menu - Welcome back ${interaction.user.username}!**`)
                         ],
                         ephemeral: true,
-                        components: [adminRow]
+                        components: [modButtons]
                     })
                 }
 
@@ -203,17 +243,6 @@
                         ]
                     })
 
-                    const adminRow = new ActionRowBuilder()
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "🏢"
-                        })
-                        .setLabel('Spawn Pokemon')
-                        .setCustomId('spawnpokemon')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-
                     return interactionCollector.editReply({
                         embeds: [
                             new EmbedBuilder()
@@ -221,7 +250,7 @@
                             .setTitle(`**Admin Menu - Welcome back ${interaction.user.username}!**`)
                         ],
                         ephemeral: true,
-                        components: [adminRow]
+                        components: [adminButtons]
                     })
                 }
 
@@ -237,35 +266,6 @@
                         ]
                     })
 
-                    const adminRow = new ActionRowBuilder()
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "✅"
-                        })
-                        .setLabel('Insert Pokemon')
-                        .setCustomId('insertpokemon')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "⚙️"
-                        })
-                        .setLabel('Maintenance Mode')
-                        .setCustomId('maintenance')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-                    adminRow.addComponents([
-                        new ButtonBuilder()
-                        .setEmoji({
-                            name: "📝"
-                        })
-                        .setLabel('ToS Update')
-                        .setCustomId('tosupdate')
-                        .setStyle(ButtonStyle.Primary)
-                    ])
-
                     return interactionCollector.editReply({
                         embeds: [
                             new EmbedBuilder()
@@ -273,7 +273,7 @@
                             .setTitle(`**Developer Menu - Welcome back ${interaction.user.username}!**`)
                         ],
                         ephemeral: true,
-                        components: [adminRow]
+                        components: [devButtons]
                     })
                 }
 
@@ -583,6 +583,50 @@
                         components: [],
                         embeds: []
                     })
+                }
+            });
+
+            collector.on('end', async (collected) => {
+                if(collected.size === 0) {
+                    for (let i = 0; i < adminRow.components.length; i++) {
+                        adminRow.components[i].setDisabled(true);
+                    }
+    
+                    await interaction.editReply({
+                        components: [adminRow]
+                    });
+                } else {
+                    const lastregistered = collected.last();
+
+                    if (lastregistered.customId === 'modMenu') {
+                        for (let i = 0; i < modButtons.components.length; i++) {
+                            modButtons.components[i].setDisabled(true);
+                        }
+        
+                        await interaction.editReply({
+                            components: [modButtons]
+                        });
+                    }
+
+                    if (lastregistered.customId === 'adminMenu') {
+                        for (let i = 0; i < adminButtons.components.length; i++) {
+                            adminButtons.components[i].setDisabled(true);
+                        }
+        
+                        await interaction.editReply({
+                            components: [adminButtons]
+                        });
+                    }
+
+                    if (lastregistered.customId === 'devMenu') {
+                        for (let i = 0; i < devButtons.components.length; i++) {
+                            devButtons.components[i].setDisabled(true);
+                        }
+        
+                        await interaction.editReply({
+                            components: [devButtons]
+                        });
+                    }
                 }
             });
         }
