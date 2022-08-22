@@ -50,7 +50,7 @@ async function encounterspawn(message, rarity) {
     let channelToSend;
 
     if(parseInt(findserver.RedirectChannel) !== 0){
-        const redirectChannel = await message.guild.channels.fetch(`${findserver.RedirectChannel}`)
+        const redirectChannel = await message.guild.channels.fetch(`${findserver.RedirectChannel}`);
 
         channelToSend = redirectChannel;
     } else {
@@ -71,11 +71,22 @@ async function encounterspawn(message, rarity) {
                 text: generatedUUID
             })
         ]
-    })
+    });
 
     const guildId = message.guild.id;
     const channelId = channelToSend.id;
     const messageId = msg.id;
+
+    const hasSameNameSpawnedAlr = await spawned.findOne({
+        PokemonName: pokemontospawn.PokemonName
+    });
+
+    if (hasSameNameSpawnedAlr) {
+        await spawned.deleteOne({
+            PokemonName: pokemontospawn.PokemonName,
+            SpawnedChannelID: channelId
+        })
+    }
 
     await spawned.create({
         SpawnedServerID: parseInt(guildId),
@@ -102,8 +113,12 @@ async function encounterspawn(message, rarity) {
             await spawned.deleteOne({
                 PokemonID: generatedUUID
             })
-            msg.delete();
-            message.channel.send({
+
+            if (msg) {
+                await msg.delete();
+            }
+
+            await message.channel.send({
                 content: `:x: The \`${pokemontospawn.PokemonName}\` wasn't caught in time and therefore fled, better luck next time!`
             });
         } else {
@@ -324,10 +339,8 @@ async function maintenancemode(client, interaction, cooldown, length) {
             })
             await devmode.updateOne({
                 globalMaintenance: true
-            })
-
+            });
         }, 1000 * cooldown);
-
     }
 }
 

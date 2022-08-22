@@ -425,7 +425,6 @@
                         }).then(async (collected) => {
                             const pokemonargs = collected.first();
 
-                            const args = pokemonargs.content.split(/ +/).filter(Boolean);
 
                             if (pokemonargs.content.toString() === 'cancel') {
                                 return interactionCollector.editReply({
@@ -433,33 +432,35 @@
                                 })
                             }
 
-                            if (!args[0] || !args[1] || !args[2] || !args[3]) {
-                                return interactionCollector.editReply({
-                                    content: ':x: You have not inserted all 4 args as requested!'
-                                })
-                            }
+                            const newLines = pokemonargs.content.split('\n');
 
-                            const rarities = [
-                                "Common",
-                                "Uncommon",
-                                "Rare",
-                                "Legendary",
-                                "Mythical",
-                                "Ultra Beast",
-                                "Shiny"
-                            ]
+                            await newLines.forEach(async (line) => {
+                                const args = line.split(' ');
 
-                            if (!rarities.includes(args[3])) {
-                                return interactionCollector.editReply({
-                                    content: ':x: The supplied rarity does not include Common,Uncommon,Rare,Legendary,Mythical,Ultra Beast or Shiny. Please fix this asap!'
-                                })
-                            }
+                                const rarities = [
+                                    "Common",
+                                    "Uncommon",
+                                    "Rare",
+                                    "Legendary",
+                                    "Mythical",
+                                    "Ultra Beast",
+                                    "Shiny"
+                                ]
 
-                            await pokemon.create({
-                                PokemonID: args[0],
-                                PokemonName: args[1],
-                                PokemonPicture: args[2],
-                                PokemonRarity: args[3]
+                                if (!args[0] || !args[1] || !args[2] || !args[3]) {
+                                    return;
+                                }
+
+                                if (!rarities.includes(args[3])) {
+                                    return;
+                                }
+
+                                await pokemon.create({
+                                    PokemonID: args[0],
+                                    PokemonName: args[1],
+                                    PokemonPicture: args[2],
+                                    PokemonRarity: args[3]
+                                });
                             })
 
                             await pokemonargs.delete();

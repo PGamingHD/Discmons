@@ -36,7 +36,7 @@ client.on("messageCreate", async (message) => {
         return;
     }
 
-    const dev = await developer.findOne({
+    const dev = await developer.find({
         developerAccess: "accessStringforDeveloperOnly",
     })
 
@@ -149,7 +149,7 @@ client.on("messageCreate", async (message) => {
             //ULTRA BEAST 49850-49950 - 100/50000 TO GET
             //SHINY 49950-50000 - 50/50000 TO GET
 
-            let spawnedrarity;
+            let spawnedrarity = 'Common';
 
             if (randomRarity < 41950) { //COMMON RARITY RANDOMIZER
                 spawnedrarity = 'Common';
@@ -182,7 +182,7 @@ client.on("messageCreate", async (message) => {
             }
 
             if (message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.SendMessages) && message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.EmbedLinks) && message.channel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
-                encounterspawn(message, spawnedrarity)
+                encounterspawn(message, spawnedrarity);
             } else {
                 return;
             }

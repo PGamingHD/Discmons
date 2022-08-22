@@ -20,13 +20,13 @@
     module.exports = {
         name: 'status',
         description: 'Get some general information about the status of Discmon!',
+        startCmd: true,
         /** 
          * @param {Client} client 
          * @param {Message} message 
          * @param {String[]} args 
          */
         run: async (client, interaction, args) => {
-
             try {
                 cpuStat.usagePercent( async function (e, percent, seconds) {
                     if (e) return console.log(String(e.stack));
@@ -117,31 +117,31 @@
                             inline: true
                         }, {
                             name: 'Total Registered',
-                            value: `\`[ ${foundglobal.Registered} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.Registered)} ]\``,
                             inline: true
                         }, {
                             name: 'Total Caught',
-                            value: `\`[ ${foundglobal.totalCaught.toLocaleString('en-US')} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.totalCaught.toLocaleString('en-US'))} ]\``,
                             inline: true
                         }, {
                             name: 'Total Mythical',
-                            value: `\`[ ${foundglobal.MythicalCaught.toLocaleString('en-US')} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.MythicalCaught.toLocaleString('en-US'))} ]\``,
                             inline: true
                         }, {
                             name: 'Total Legendary',
-                            value: `\`[ ${foundglobal.LegendaryCaught.toLocaleString('en-US')} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.LegendaryCaught.toLocaleString('en-US'))} ]\``,
                             inline: true
                         }, {
                             name: 'Total Ultra Beasts',
-                            value: `\`[ ${foundglobal.UBCaught.toLocaleString('en-US')} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.UBCaught.toLocaleString('en-US'))} ]\``,
                             inline: true    
                         }, {
                             name: 'Total Shiny',
-                            value: `\`[ ${foundglobal.ShinyCaught.toLocaleString('en-US')} ]\``,
+                            value: `\`[ ${parseInt(foundglobal.ShinyCaught.toLocaleString('en-US'))} ]\``,
                             inline: true
                         }, {
                             name: 'Host Location',
-                            value: '\`[ England, Kettering (52.3984,-0.7257) ]\`',
+                            value: '\`[ Germany, Falkenstein (LOC UNKNOWN) ]\`',
                             inline: true
                         }, {
                             name: 'Bot Version',

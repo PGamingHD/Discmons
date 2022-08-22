@@ -15,16 +15,13 @@
     module.exports = {
         name: 'ping',
         description: 'Get the current Client & API ping.',
+        startCmd: true,
         /** 
          * @param {Client} client 
          * @param {Message} message 
          * @param {String[]} args 
          */
         run: async (client, interaction, args) => {
-
-            const test = Math.floor(0.01 * (2 * 45 + 31 + Math.floor(0.25 * 150)) * 100) + 100 + 10;
-            return console.log(test)
-
             const timeBefore = new Date().getTime();
             await dev.findOne({
                 developerAccess: "accessStringforDeveloperOnly"
@@ -42,7 +39,7 @@
                     })
                     .addFields([{
                         name: 'Bot Latency',
-                        value: `\`\`\`re\n[ ${Math.floor((Date.now() - interaction.createdTimestamp) - 2 * Math.floor(client.ws.ping))}ms ]\`\`\``,
+                        value: `\`\`\`re\n[ ${Math.floor(2 * Math.floor(client.ws.ping) - (Date.now() - interaction.createdTimestamp))}ms ]\`\`\``,
                         inline: true
                     }, {
                         name: 'API Latency',

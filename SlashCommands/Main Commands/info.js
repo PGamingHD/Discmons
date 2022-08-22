@@ -6,16 +6,14 @@
         MessageButton,
         ActionRowBuilder,
         ButtonBuilder,
-        ButtonStyle
+        ButtonStyle,
+        EmbedBuilder
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
     const emoji = require('../../botconfig/embed.json')
     const prettyMilliseconds = require('pretty-ms');
     const config = require('../../botconfig/config.json')
     const userdata = require("../../schemas/userData");
-    const {
-        EmbedBuilder
-    } = require('@discordjs/builders');
 
     module.exports = {
         name: 'info',

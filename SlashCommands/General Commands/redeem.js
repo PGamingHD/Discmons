@@ -18,12 +18,12 @@
 
     module.exports = {
         name: 'redeem',
-        description: 'View and use your available redeems you have purchased, redeem a pokémon of your own.',
+        description: 'Redeem a pokémon of your own.',
         options: [{
             name: 'name',
             description: 'Spawn a pokémon from a redeem, watch out as anyone can catch this!',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         }],
         /** 
          * @param {Client} client 

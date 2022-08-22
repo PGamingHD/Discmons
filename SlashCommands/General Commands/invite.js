@@ -14,6 +14,7 @@
     module.exports = {
         name: 'invite',
         description: 'Interested in inviting me, or maybe joining our support server?',
+        startCmd: true,
         /** 
          * @param {Client} client 
          * @param {Message} message 

@@ -68,11 +68,11 @@
                 })
             }
 
-            await interaction.reply({
+            const poke = await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setColor(ee.color)
-                    .setImage(`https://cdn.discordapp.com/attachments/977182945964077146/977183018450030622/ye.png`)
+                    .setImage(`https://cdn.discordapp.com/attachments/1011000689981403196/1011000721887469668/starters.png`)
                     .setTitle(`**Please pick a starter Pokémon from the 3 shown below!**`)
                     .setDescription(`Finally, it is now time for you to choose your Starter Pokémon.. But what are you going to choose? Are you going to go for the Grass-type Pokémon \`Bulbasaur\`? Or maybe you're more into fire-types? Why not try the Fire-type Pokémon \`Charmander\`. Or maybe you're the chill type, why not try the Water-type \`Squirtle\`!`)
                 ],
@@ -162,16 +162,17 @@
                         }
                     })
 
-                    interaction.followUp({
+                    await interaction.editReply({
                         embeds: [
                             new EmbedBuilder()
                             .setColor(ee.color)
                             .setDescription(`:white_check_mark: **Successfully registered, welcome to Discmon! :)**`)
                         ],
-                        ephemeral: true
+                        components: [],
+                        content: ''
                     })
 
-                    await interaction.deleteReply();
+                    //await poke.deleteReply();
                 };
 
                 if (interactionCollector.customId === "fire") {
@@ -245,16 +246,17 @@
                         }
                     })
 
-                    interaction.followUp({
+                    await interaction.followUp({
                         embeds: [
                             new EmbedBuilder()
                             .setColor(ee.color)
                             .setDescription(`:white_check_mark: **Successfully registered, welcome to Discmon! :)**`)
                         ],
-                        ephemeral: true
+                        components: [],
+                        content: ''
                     })
 
-                    await interaction.deleteReply();
+                    //await interaction.deleteReply();
                 };
 
                 if (interactionCollector.customId === "water") {
@@ -328,16 +330,17 @@
                         }
                     })
 
-                    interaction.followUp({
+                    await interaction.followUp({
                         embeds: [
                             new EmbedBuilder()
                             .setColor(ee.color)
                             .setDescription(`:white_check_mark: **Successfully registered, welcome to Discmon! :)**`)
                         ],
-                        ephemeral: true
+                        components: [],
+                        content: ''
                     })
 
-                    await interaction.deleteReply();
+                    //await interaction.deleteReply();
                 };
             });
 

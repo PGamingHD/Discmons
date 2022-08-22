@@ -29,7 +29,7 @@ const globalData = new mongoose.Schema({
         required: true
     },
     Registered: {
-        type: Number,
+        type: Long,
         required: true
     },
     NextMarketID: {

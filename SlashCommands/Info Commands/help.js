@@ -17,6 +17,7 @@
     module.exports = {
         name: 'help',
         description: 'Do something!',
+        startCmd: true,
         /** 
          * @param {Client} client 
          * @param {Message} message 

@@ -178,7 +178,7 @@
             })
 
             function generatePokemonEmbed(ownedpokes, currentPage) {
-                const embeds = []
+                const embeds = [];
                 let k = 20;
                 for (let i = 0; i < ownedpokes.length; i += 20) {
                     const current = ownedpokes.slice(i, k);
