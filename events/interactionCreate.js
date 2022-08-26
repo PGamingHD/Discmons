@@ -175,7 +175,7 @@ client.on("interactionCreate", async (interaction) => {
                     new EmbedBuilder()
                     .setColor(ee.color)
                     .setTitle(`Updated Terms of Service agreement!`)
-                    .setDescription(`**Whoops, wait one second there ${interaction.user}!**\n\nLooks like you have yet to read our new upgraded [Terms of Service](https://discord.gg/discmon) and agree to it.\nPlease read through our new ToS then agree with the buttons below, or decline.\n\n> We update our ToS agreements regulary, which is why you are seeing this again.`)
+                    .setDescription(`**Whoops, wait one second there ${interaction.user}!**\n\nLooks like you have yet to read our new upgraded [Terms of Service](https://pontus-2003.gitbook.io/discmon-docs/) and agree to it.\nPlease read through our new ToS then agree with the buttons below, or decline.\n\n> We update our ToS agreements regulary, which is why you are seeing this again.`)
                 ],
                 components: [agreementRow]
             });
@@ -186,13 +186,13 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand()) {
 
         try {
-            if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.EmbedLinks) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.UseExternalEmojis) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ReadMessageHistory)) {
+            if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.EmbedLinks) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.UseExternalEmojis)) {
                 await interaction.user.send({
                     embeds: [
                         new EmbedBuilder()
                         .setColor(ee.wrongcolor)
                         .setTitle(`:x: Missing Permissions :x:`)
-                        .setDescription(`Looks like I do not have **permission** to send messages in that channel, please **fix it** before trying to use commands there again. Try contacting the **server owner**!\n\nPermissions I require in channels: \`Send Messages\`, \`Embed Links\`, \`Use External Emoji\`, \`Read Message History\`!`)
+                        .setDescription(`Looks like I do not have **permission** to send messages in that channel, please **fix it** before trying to use commands there again. Try contacting the **server owner**!\n\nPermissions I require in channels: \`Send Messages\`, \`Embed Links\`, \`Use External Emoji\`!`)
                     ],
                     ephemeral: true,
                 })
