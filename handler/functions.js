@@ -28,6 +28,8 @@ module.exports.maintenancemode = maintenancemode;
 module.exports.calculatePercentage = calculatePercentage;
 module.exports.hintgame = hintgame;
 module.exports.redeemSpawn = redeemSpawn;
+module.exports.languageControl = languageControl;
+module.exports.stringTemplateParser = stringTemplateParser;
 
 //FUNCTIONS
 
@@ -370,4 +372,35 @@ function hintgame(word) {
     }
 
     return splitted.join("");
+}
+
+async function languageControl(guild, translateLine) {
+
+    const guildLangs = await server.findOne({
+        ServerID: guild.id
+    })
+
+    const guildLanguageRows = guildLangs.ServerLang;
+    let guildLanguage = 'en';
+    if (guildLanguageRows !== undefined) {
+       guildLanguage = guildLanguageRows;
+    }
+
+    const dataFile = require(`../language/${guildLanguage}.json`)
+    let translatedLine = dataFile[`${translateLine}`];
+
+    if (translatedLine === undefined) {
+        translatedLine = 'Invalid translation name'
+    }
+
+    return translatedLine;
+}
+
+function stringTemplateParser(expression, valueObj) {
+    const templateMatcher = /{{\s?([^{}\s]*)\s?}}/g;
+    let text = expression.replace(templateMatcher, (substring, value, index) => {
+      value = valueObj[value];
+      return value;
+    });
+    return text;
 }

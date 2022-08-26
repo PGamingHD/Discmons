@@ -16,6 +16,10 @@ const spawnedPokes = require("../schemas/Spawned");
 const globPromise = promisify(glob);
 const chalk = require("chalk");
 
+const {
+    readdirSync
+} = require("fs");
+
 /**
  * @param {Client} client
  */
@@ -56,6 +60,16 @@ module.exports = async (client) => {
     client.on("ready", async () => {
         await client.application.commands.set(arrayOfSlashCommands).then(console.log(chalk.green("[SLASH COMMANDS] <==> || Successfully loaded all slash commands globally! || <==> [SLASH COMMANDS]")))
         try{
+            const changelogs = readdirSync('./Changelog/');
+            changelogs.map(file => {
+                const filecontent = require(`../Changelog/${file}`);
+                const number = filecontent['ChangelogNumber'];
+                client.changelog.set(number, {
+                    ChangelogTitle: filecontent['ChangelogTitle'],
+                    ChangelogDescription: filecontent['ChangelogDescription'],
+                    ChangelogTimestamp: filecontent['ChangelogTimestamp']
+                })
+            });
             await mongoose.connect(process.env.MONGODB_CONNECT || '', {
                 keepAlive: true,
                 dbName: 'Discmons',

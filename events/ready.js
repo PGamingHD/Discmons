@@ -25,11 +25,11 @@ client.on("ready", async (client) => {
             type: ActivityType.Watching,
         }
         const act2 = {
-            text: `with around ${client.guilds.cache.size} servers!`,
+            text: `with ${client.guilds.cache.size} guilds!`,
             type: ActivityType.Playing,
         }
         const act3 = {
-            text: `over the awesome support server!`,
+            text: `over the support server!`,
             type: ActivityType.Watching,
         }
         const act4 = {

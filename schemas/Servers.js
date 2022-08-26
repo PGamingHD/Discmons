@@ -19,6 +19,10 @@ const ServerSchema = new mongoose.Schema({
     SpawningTime: {
         type: Number,
         required: true,
+    },
+    ServerLang: {
+        type: String,
+        required: true
     }
 });
 

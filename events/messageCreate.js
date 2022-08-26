@@ -30,7 +30,7 @@ const {
 
 client.on("messageCreate", async (message) => {
 
-    if (message.author.bot || !message.guild) return;
+    if (message.author.bot || message.system || !message.guild) return;
 
     if (startupCooldown.has("startupcooldown") && !config.developerID.includes(message.author.id)) {
         return;
@@ -51,15 +51,12 @@ client.on("messageCreate", async (message) => {
     if (finduser) {
 
         if (!xpCooldowns.has(message.author.id)) {
-
-            const randomXP = Math.floor(Math.random() * (30 - 10) + 10);
-
             const findselected = await userdata.findOne({
                 OwnerID: parseInt(message.author.id),
                 "Inventory.PokemonSelected": true
             }, {
                 "Inventory.$": 1
-            })
+            });
 
             let newLevelXP;
             if (findselected.Inventory[0].PokemonData.PokemonLevel === 1) {
@@ -68,7 +65,9 @@ client.on("messageCreate", async (message) => {
                 newLevelXP = findselected.Inventory[0].PokemonData.PokemonLevel * 750;
             }
 
-            if (findselected.Inventory[0].PokemonData.PokemonXP >= newLevelXP) {
+            if (findselected.Inventory[0].PokemonData.PokemonXP >= newLevelXP && findselected.Inventory[0].PokemonData.PokemonLevel < 100) {
+
+                //EVOLVE CHECK HERE (IF STATEMENT)
 
                 await userdata.findOneAndUpdate({
                     OwnerID: parseInt(message.author.id),
@@ -85,6 +84,11 @@ client.on("messageCreate", async (message) => {
                 } else {
                     return;
                 }
+            }
+
+            let randomXP = 0;
+            if (findselected.Inventory[0].PokemonData.PokemonLevel < 100) {
+                randomXP = Math.floor(Math.random() * (30 - 10) + 10);
             }
 
             await userdata.findOneAndUpdate({
@@ -121,7 +125,17 @@ client.on("messageCreate", async (message) => {
             return;
         }
 
-        if (!awardCooldowns.has(message.guild.id)) {
+        if (!awardCooldowns.has(message.guild.id) && finduser.TrainerRank > 0) {
+            await findserver.updateOne({
+                $inc: {
+                    SpawningTime: 2
+                }
+            });
+            awardCooldowns.set(message.guild.id, "Server set on 5 second cooldown!");
+            setTimeout(() => {
+                awardCooldowns.delete(message.guild.id);
+            }, 1000 * 3.6);
+        } else if (!awardCooldowns.has(message.guild.id)) {
             await findserver.updateOne({
                 $inc: {
                     SpawningTime: 1

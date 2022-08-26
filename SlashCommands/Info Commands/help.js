@@ -16,9 +16,9 @@
 
     module.exports = {
         name: 'help',
-        description: 'Do something!',
+        description: 'Dont know what commands the client has? Then this is the command for you',
         startCmd: true,
-        /** 
+        /**
          * @param {Client} client 
          * @param {Message} message 
          * @param {String[]} args 
@@ -48,20 +48,17 @@
             embed1.setTitle(`Discmon Commands`)
             embed1.setDescription(`Information can be found on the slash command simply by typing the slash command.\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
             embed1.addFields([{
-                name: 'Market',
-                value: `The main Marketplace for selling and purchasing Pokémons.\n\`market\``
-            }, {
                 name: 'Configuration',
                 value: `Configure the client to your own needs.\n\`redirect\``
             }, {
                 name: 'Pokémon',
-                value: `General Pokémon related commands.\n\`info\`, \`pokemons\`, \`select\``,
+                value: `General Pokémon related commands.\n\`info\`, \`pokemons\`, \`select\`, \`release\``,
             }, {
                 name: 'Shops',
-                value: `Purchasing items from the shop.\n\`shop\`, \`store\``
+                value: `Purchasing items from the shop.\n\`shop\`, \`store\`, \`market\``
             }, {
                 name: 'Information',
-                value: `Main information commands, will display both Pokémon and client info.\n\`help\`, \`status\`, \`profile\`, \`ping\``
+                value: `Main information commands, will display both Pokémon and client info.\n\`help\`, \`status\`, \`profile\`, \`ping\`, \`changelog\``
             }, {
                 name: 'Client',
                 value: `Everything related to the bot-client, and starting your adventure.\n\`start\``
@@ -76,7 +73,10 @@
             embed2.setDescription(`Information can be found on the slash command simply by typing the slash command.\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
             embed2.addFields([{
                 name: 'Catching',
-                value: `\`catch\`, \`hint\``
+                value: `Everything that has to do with your adventure/catching to do.\n\`catch\`, \`hint\``
+            }, {
+                name: 'Trainer',
+                value: 'Everything Trainer related will be put up here.\n\`item\`, \`gift\`, \`trade\`'
             }])
             embed2.setFooter({
                 text: 'Page 2 of 2'

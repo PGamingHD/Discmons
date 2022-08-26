@@ -97,6 +97,44 @@
                 .setCustomId('tosupdate')
                 .setStyle(ButtonStyle.Primary)
             ])
+            devButtons.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "🔂"
+                })
+                .setLabel('Reload Command')
+                .setCustomId('reloadcmd')
+                .setStyle(ButtonStyle.Primary)
+            ])
+
+            const devButtons2 = new ActionRowBuilder()
+            devButtons2.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "🥇"
+                })
+                .setLabel('Set Rank')
+                .setCustomId('setrank')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons2.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "💸"
+                })
+                .setLabel('Set Money')
+                .setCustomId('setmoney')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons2.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "🪙"
+                })
+                .setLabel('Set Tokens')
+                .setCustomId('settokens')
+                .setStyle(ButtonStyle.Primary)
+            ])
 
             const findrank = await userData.findOne({
                 OwnerID: parseInt(interaction.user.id),
@@ -273,7 +311,7 @@
                             .setTitle(`**Developer Menu - Welcome back ${interaction.user.username}!**`)
                         ],
                         ephemeral: true,
-                        components: [devButtons]
+                        components: [devButtons, devButtons2]
                     })
                 }
 
@@ -293,14 +331,16 @@
                         }).then(async (collected) => {
                             const blacklistuserid = collected.first();
 
+                            await blacklistuserid.delete();
+
                             if (blacklistuserid.content.toString() === 'cancel') {
-                                return interaction.followUp({
+                                return interactionCollector.editReply({
                                     content: ':white_check_mark: Successfully cancelled command!',
                                 })
                             }
 
                             if (blacklistuserid.content.length < 18) {
-                                return interaction.editReply({
+                                return interactionCollector.editReply({
                                     content: ':x: That user ID is not valid, must be 18 characters in length.',
                                 })
                             }
@@ -310,7 +350,7 @@
                             })
 
                             if (!userfound) {
-                                return interaction.editReply({
+                                return interactionCollector.editReply({
                                     content: ':x: The user with the specified ID could not be found, please try again!',
                                 })
                             }
@@ -320,23 +360,41 @@
                                     Blacklisted: false
                                 })
 
-                                interaction.editReply({
+                                await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully removed blacklist for the user with ID \`[${blacklistuserid.content}]\` as requested!`
                                 })
+
+                                await adminLogs.send({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.color)
+                                        .setTitle(`Whitelist Detected`)
+                                        .setDescription(`**User <@!${interaction.user.id}> has just removed the blacklist from user with ID \`${blacklistuserid.content}\`**`)
+                                        .setTimestamp()
+                                    ]
+                                });
                             } else {
                                 await userfound.updateOne({
                                     Blacklisted: true
                                 })
 
-                                interaction.editReply({
+                                await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully blacklisted the user with ID \`[${blacklistuserid.content}]\` as requested!`
                                 })
+
+                                await adminLogs.send({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.color)
+                                        .setTitle(`Blacklist Detected`)
+                                        .setDescription(`**User <@!${interaction.user.id}> has just blacklisted user with ID \`${blacklistuserid.content}\`**`)
+                                        .setTimestamp()
+                                    ]
+                                });
                             }
 
-                            await blacklistuserid.delete();
-                            return;
                         }).catch((collected) => {
-                            interactionCollector.editReply({
+                            return interactionCollector.editReply({
                                 content: ':x: The interaction response has timed out, please rerun this command again!'
                             })
                         })
@@ -358,6 +416,8 @@
                             time: 1000 * 60, // SECONDS
                         }).then(async (collected) => {
                             const blacklistserverid = collected.first();
+
+                            await blacklistserverid.delete();
 
                             if (blacklistserverid.content.toString() === 'cancel') {
                                 return interactionCollector.editReply({
@@ -386,23 +446,41 @@
                                     Blacklisted: false
                                 })
 
-                                interactionCollector.editReply({
+                                await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully removed blacklist from the server with ID \`[${blacklistserverid.content}]\` as requested!`
                                 })
+
+                                await adminLogs.send({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.color)
+                                        .setTitle(`Whitelist Detected`)
+                                        .setDescription(`**User <@!${interaction.user.id}> has just removed the blacklist from server with ID \`${blacklistserverid.content}\`**`)
+                                        .setTimestamp()
+                                    ]
+                                });
                             } else {
                                 await serverfound.updateOne({
                                     Blacklisted: true
                                 })
 
-                                interactionCollector.editReply({
+                                await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully blacklisted the server with ID \`[${blacklistserverid.content}]\` as requested!`
                                 })
+
+                                await adminLogs.send({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.color)
+                                        .setTitle(`Blacklist Detected`)
+                                        .setDescription(`**User <@!${interaction.user.id}> has just blacklisted from server with ID \`${blacklistserverid.content}\`**`)
+                                        .setTimestamp()
+                                    ]
+                                });
                             }
 
-                            await blacklistserverid.delete();
-
                         }).catch((collected) => {
-                            interaction.editReply({
+                            return interactionCollector.editReply({
                                 content: ':x: The response was timed out, please use the command again!'
                             })
                         })
@@ -425,6 +503,7 @@
                         }).then(async (collected) => {
                             const pokemonargs = collected.first();
 
+                            await pokemonargs.delete();
 
                             if (pokemonargs.content.toString() === 'cancel') {
                                 return interactionCollector.editReply({
@@ -463,8 +542,6 @@
                                 });
                             })
 
-                            await pokemonargs.delete();
-
                             return interactionCollector.editReply({
                                 content: `:white_check_mark: Successfully inserted pokémon into the database!`
                             })
@@ -494,6 +571,8 @@
 
                             const args = maintenanceargs.content.split(/ +/).filter(Boolean);
 
+                            await maintenanceargs.delete();
+
                             if (maintenanceargs.content.toString() === 'cancel') {
                                 return interactionCollector.editReply({
                                     content: ':white_check_mark: Successfully cancelled command!'
@@ -508,8 +587,6 @@
 
                             maintenancemode(client, interaction, args[0], args[1]);
 
-                            await maintenanceargs.delete();
-
                             return interactionCollector.editReply({
                                 content: ':white_check_mark: Successfully toggled Maintenance mode!'
                             })
@@ -522,7 +599,7 @@
                     })
                 }
 
-                if(interactionCollector.customId === "spawnpokemon") {
+                if (interactionCollector.customId === "spawnpokemon") {
                     await interactionCollector.deferUpdate();
                     let filter = m => m.author.id === interaction.user.id;
                     return interactionCollector.editReply({
@@ -537,27 +614,57 @@
                             time: 1000 * 60, // SECONDS
                         }).then(async (collected) => {
                             const pokemonargs = collected.first();
-        
+
                             const args = pokemonargs.content.split(/ +/).filter(Boolean);
-        
+
+                            await pokemonargs.delete();
+
                             if (pokemonargs.content.toString() === 'cancel') {
                                 return interactionCollector.editReply({
                                     content: ':white_check_mark: Successfully cancelled command!'
                                 })
                             }
-        
+
                             if (!args[0] || !args[1]) {
                                 return interactionCollector.editReply({
                                     content: ':x: You have not inserted both args as requested!'
                                 })
                             }
-        
+
+                            const findRank = await userData.findOne({
+                                OwnerID: parseInt(interaction.user.id)
+                            });
+
+                            if (parseInt(args[1]) > 100 && findRank.TrainerRank !== 7) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Only developers may set a Pokémons level to over 100 for testing purposes!'
+                                })
+                            }
+
                             let makeCapital = s => s.replace(/./, c => c.toUpperCase())
                             const pokemonName = makeCapital(args[0]);
-        
+
+                            const findpoke = await pokemon.findOne({
+                                PokemonName: pokemonName
+                            })
+
+                            if (!findpoke) {
+                                return interactionCollector.editReply({
+                                    content: `:x: The pokémon with the name \`${pokemonName}\` could not be found in the database!`
+                                })
+                            }
+
                             forcespawn(interaction, pokemonName, args[1])
-        
-                            await pokemonargs.delete();
+
+                            await adminLogs.send({
+                                embeds: [
+                                    new EmbedBuilder()
+                                    .setColor(ee.color)
+                                    .setTitle(`PokeSpawn Detected`)
+                                    .setDescription(`**User <@!${interaction.user.id}> has just spawned a pokemon called \`${pokemonName}\` with a level of \`${args[1]}\`!**`)
+                                    .setTimestamp()
+                                ]
+                            });
 
                             return interactionCollector.editReply({
                                 content: `:white_check_mark: Successfully spawned Pokémon \`[ ${pokemonName} ]\` as requested!`
@@ -571,62 +678,369 @@
                     })
                 }
 
-                if(interactionCollector.customId === "tosupdate") {
+                if (interactionCollector.customId === "tosupdate") {
                     await interactionCollector.deferUpdate();
                     await developer.findOneAndUpdate({
                         developerAccess: "accessStringforDeveloperOnly"
                     }, {
                         LastTOSUpdate: Date.now()
                     })
-        
+
                     return interactionCollector.editReply({
                         content: `:white_check_mark: Successfully set new ToS agreement date to \`${Date.now()}\`, everyone will have to reagree to use features!`,
                         components: [],
                         embeds: []
                     })
                 }
+
+                if (interactionCollector.customId === "reloadcmd") {
+                    await interactionCollector.deferUpdate();
+                    let filter = m => m.author.id === interaction.user.id;
+                    return interactionCollector.editReply({
+                        content: ':white_check_mark: Please enter the following arguments to reload a command, \`CommandName\` in the correct order! (Say \`cancel\` to cancel the command)',
+                        components: [],
+                        embeds: [],
+                        fetchReply: true
+                    }).then(() => {
+                        interactionCollector.channel.awaitMessages({
+                            filter,
+                            max: 1, //MAX COLLECTIONS
+                            time: 1000 * 60, // SECONDS
+                        }).then(async (collected) => {
+                            const cmdargs = collected.first();
+
+                            const args = cmdargs.content.split(/ +/).filter(Boolean);
+
+                            await cmdargs.delete();
+
+                            if (cmdargs.content.toString() === 'cancel') {
+                                return interactionCollector.editReply({
+                                    content: ':white_check_mark: Successfully cancelled command!'
+                                })
+                            }
+
+                            if (!args[0]) {
+                                return interactionCollector.editReply({
+                                    content: ':x: You have not inserted a command name as requested!',
+                                })
+                            }
+
+                            try {
+                                let reload = false;
+                                const commandname = args[0].toLowerCase();
+                                for (let i = 0; i < client.slashcategories.length; i += 1) {
+                                    let dir = client.slashcategories[i];
+                                    try {
+                                        if (!commandname)
+                                            return interactionCollector.editReply({
+                                                embeds: [
+                                                    new EmbedBuilder()
+                                                    .setColor(ee.errorColor)
+                                                    .setDescription(`Please include an argument.`),
+                                                ],
+                                            });
+                                        delete require.cache[require.resolve(`../../SlashCommands/${dir}/${commandname}.js`)];
+                                        client.slashCommands.delete(commandname);
+                                        const pull = require(`../../SlashCommands/${dir}/${commandname}.js`);
+                                        client.slashCommands.set(commandname, pull);
+                                        reload = true;
+                                    } catch {}
+                                }
+                                if (reload) return interactionCollector.editReply({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.color)
+                                        .setDescription(`:white_check_mark: Successfully reloaded slashcommand \`[ ${commandname} ]\``),
+                                    ],
+                                    content: ' '
+                                });
+
+                                return interactionCollector.editReply({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.errorColor)
+                                        .setDescription(`:x: Could not reload slashcommand: \`[ ${commandname} ]\``)
+                                    ],
+                                    content: ' '
+                                });
+                            } catch (e) {
+                                return interactionCollector.editReply({
+                                    embeds: [
+                                        new EmbedBuilder()
+                                        .setColor(ee.errorColor)
+                                        .setTitle(`:x: Something went very wrong`)
+                                        .setDescription(`\`\`\`${e.message}\`\`\``),
+                                    ],
+                                    content: ' '
+                                });
+                            }
+                        }).catch((collected) => {
+                            return interactionCollector.editReply({
+                                content: ':x: The response was timed out, please use the command again!'
+                            })
+                        })
+                    })
+                }
+
+                if (interactionCollector.customId === "setrank") {
+                    await interactionCollector.deferUpdate();
+                    let filter = m => m.author.id === interaction.user.id;
+                    return interactionCollector.editReply({
+                        content: ':white_check_mark: Please enter the following arguments to reload a command, \`UserID\` & \`NewRank\` in the correct order! (Say \`cancel\` to cancel the command)',
+                        components: [],
+                        embeds: [],
+                        fetchReply: true
+                    }).then(() => {
+                        interactionCollector.channel.awaitMessages({
+                            filter,
+                            max: 1, //MAX COLLECTIONS
+                            time: 1000 * 60, // SECONDS
+                        }).then(async (collected) => {
+                            const cmdargs = collected.first();
+
+                            const args = cmdargs.content.split(/ +/).filter(Boolean);
+
+                            await cmdargs.delete();
+
+                            if (cmdargs.content.toString() === 'cancel') {
+                                return interactionCollector.editReply({
+                                    content: ':white_check_mark: Successfully cancelled command!'
+                                })
+                            }
+
+                            if (!args[0] || !args[1]) {
+                                return interactionCollector.editReply({
+                                    content: ':x: You have not inserted the args as requested!',
+                                })
+                            }
+
+                            const finduser = await userData.findOne({
+                                OwnerID: args[0]
+                            })
+
+                            if (!finduser) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Could not found a registered user with the supplied UserID!',
+                                })
+                            }
+
+                            const value = parseInt(args[1]);
+
+                            if (isNaN(value)) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Value must be a valid number!',
+                                })
+                            }
+
+                            if (value < 0 || value > 7) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Value must be between 0-7!',
+                                })
+                            }
+
+                            await finduser.updateOne({
+                                $set: {
+                                    TrainerRank: value
+                                }
+                            });
+
+                            return interactionCollector.editReply({
+                                content: ':white_check_mark: Successfully changed users rank!',
+                            })
+                        }).catch((collected) => {
+                            return interactionCollector.editReply({
+                                content: ':x: The response was timed out, please use the command again!'
+                            })
+                        })
+                    })
+                }
+
+                if (interactionCollector.customId === "setmoney") {
+                    await interactionCollector.deferUpdate();
+                    let filter = m => m.author.id === interaction.user.id;
+                    return interactionCollector.editReply({
+                        content: ':white_check_mark: Please enter the following arguments to reload a command, \`UserID\` & \`MoneyValue\` in the correct order! (Say \`cancel\` to cancel the command)',
+                        components: [],
+                        embeds: [],
+                        fetchReply: true
+                    }).then(() => {
+                        interactionCollector.channel.awaitMessages({
+                            filter,
+                            max: 1, //MAX COLLECTIONS
+                            time: 1000 * 60, // SECONDS
+                        }).then(async (collected) => {
+                            const cmdargs = collected.first();
+
+                            const args = cmdargs.content.split(/ +/).filter(Boolean);
+                            
+                            await cmdargs.delete();
+
+                            if (cmdargs.content.toString() === 'cancel') {
+                                return interactionCollector.editReply({
+                                    content: ':white_check_mark: Successfully cancelled command!'
+                                })
+                            }
+
+                            if (!args[0] || !args[1]) {
+                                return interactionCollector.editReply({
+                                    content: ':x: You have not inserted the args as requested!',
+                                })
+                            }
+
+                            const finduser = await userData.findOne({
+                                OwnerID: args[0]
+                            })
+
+                            if (!finduser) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Could not found a registered user with the supplied UserID!',
+                                })
+                            }
+
+                            const value = parseInt(args[1]);
+
+                            if (isNaN(value)) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Value must be a valid number!',
+                                })
+                            }
+
+                            await finduser.updateOne({
+                                $set: {
+                                    Pokecoins: value
+                                }
+                            });
+
+                            return interactionCollector.editReply({
+                                content: ':white_check_mark: Successfully changed users money!',
+                            })
+                        }).catch((collected) => {
+                            return interactionCollector.editReply({
+                                content: ':x: The response was timed out, please use the command again!'
+                            })
+                        })
+                    })
+                }
+
+                if (interactionCollector.customId === "settokens") {
+                    await interactionCollector.deferUpdate();
+                    let filter = m => m.author.id === interaction.user.id;
+                    return interactionCollector.editReply({
+                        content: ':white_check_mark: Please enter the following arguments to reload a command, \`UserID\` & \`NewTokens\` in the correct order! (Say \`cancel\` to cancel the command)',
+                        components: [],
+                        embeds: [],
+                        fetchReply: true
+                    }).then(() => {
+                        interactionCollector.channel.awaitMessages({
+                            filter,
+                            max: 1, //MAX COLLECTIONS
+                            time: 1000 * 60, // SECONDS
+                        }).then(async (collected) => {
+                            const cmdargs = collected.first();
+
+                            const args = cmdargs.content.split(/ +/).filter(Boolean);
+                            
+                            await cmdargs.delete();
+
+                            if (cmdargs.content.toString() === 'cancel') {
+                                return interactionCollector.editReply({
+                                    content: ':white_check_mark: Successfully cancelled command!'
+                                })
+                            }
+
+                            if (!args[0] || !args[1]) {
+                                return interactionCollector.editReply({
+                                    content: ':x: You have not inserted the args as requested!',
+                                })
+                            }
+
+                            const finduser = await userData.findOne({
+                                OwnerID: args[0]
+                            })
+
+                            if (!finduser) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Could not found a registered user with the supplied UserID!',
+                                })
+                            }
+
+                            const value = parseInt(args[1]);
+
+                            if (isNaN(value)) {
+                                return interactionCollector.editReply({
+                                    content: ':x: Value must be a valid number!',
+                                })
+                            }
+
+                            await finduser.updateOne({
+                                $set: {
+                                    Poketokens: value
+                                }
+                            });
+
+                            return interactionCollector.editReply({
+                                content: ':white_check_mark: Successfully changed users tokens!',
+                            })
+                        }).catch((collected) => {
+                            return interactionCollector.editReply({
+                                content: ':x: The response was timed out, please use the command again!'
+                            })
+                        })
+                    })
+                }
             });
 
             collector.on('end', async (collected) => {
-                if(collected.size === 0) {
-                    for (let i = 0; i < adminRow.components.length; i++) {
-                        adminRow.components[i].setDisabled(true);
-                    }
-    
-                    await interaction.editReply({
-                        components: [adminRow]
-                    });
-                } else {
-                    const lastregistered = collected.last();
-
-                    if (lastregistered.customId === 'modMenu') {
-                        for (let i = 0; i < modButtons.components.length; i++) {
-                            modButtons.components[i].setDisabled(true);
+                try {
+                    if (collected.size === 0) {
+                        for (let i = 0; i < adminRow.components.length; i++) {
+                            adminRow.components[i].setDisabled(true);
                         }
-        
-                        await interaction.editReply({
-                            components: [modButtons]
-                        });
-                    }
 
-                    if (lastregistered.customId === 'adminMenu') {
-                        for (let i = 0; i < adminButtons.components.length; i++) {
-                            adminButtons.components[i].setDisabled(true);
-                        }
-        
                         await interaction.editReply({
-                            components: [adminButtons]
+                            components: [adminRow]
                         });
-                    }
+                    } else {
+                        const lastregistered = collected.last();
 
-                    if (lastregistered.customId === 'devMenu') {
-                        for (let i = 0; i < devButtons.components.length; i++) {
-                            devButtons.components[i].setDisabled(true);
+                        if (lastregistered.customId === 'modMenu') {
+                            for (let i = 0; i < modButtons.components.length; i++) {
+                                modButtons.components[i].setDisabled(true);
+                            }
+
+                            await interaction.editReply({
+                                components: [modButtons]
+                            });
                         }
-        
-                        await interaction.editReply({
-                            components: [devButtons]
-                        });
+
+                        if (lastregistered.customId === 'adminMenu') {
+                            for (let i = 0; i < adminButtons.components.length; i++) {
+                                adminButtons.components[i].setDisabled(true);
+                            }
+
+                            await interaction.editReply({
+                                components: [adminButtons]
+                            });
+                        }
+
+                        if (lastregistered.customId === 'devMenu') {
+                            for (let i = 0; i < devButtons.components.length; i++) {
+                                devButtons.components[i].setDisabled(true);
+                            }
+                            for (let i = 0; i < devButtons2.components.length; i++) {
+                                devButtons2.components[i].setDisabled(true);
+                            }
+
+                            await interaction.editReply({
+                                components: [devButtons, devButtons2]
+                            });
+                        }
+                    }
+                } catch (error) {
+                    if (error.message === "Unknown Message") {
+                        return;
+                    } else {
+                        console.log(error)
                     }
                 }
             });

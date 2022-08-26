@@ -23,7 +23,8 @@ client.on("guildCreate", async (guild, Client) => {
             ServerID: parseInt(guild.id),
             Blacklisted: false,
             SpawningTime: 0,
-            RedirectChannel: 0
+            RedirectChannel: 0,
+            ServerLang: 'en'
         })
     }
 

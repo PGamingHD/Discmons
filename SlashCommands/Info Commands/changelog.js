@@ -4,20 +4,20 @@
         MessageEmbed,
         MessageActionRow,
         MessageButton,
+        ApplicationCommandOptionType,
+        EmbedBuilder,
         ActionRowBuilder,
-        ButtonBuilder,
         ButtonStyle,
-        EmbedBuilder
+        ButtonBuilder
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
-    const emoji = require('../../botconfig/embed.json')
+    const emoji = require('../../botconfig/embed.json');
     const prettyMilliseconds = require('pretty-ms');
-    const config = require('../../botconfig/config.json')
-    const userdata = require("../../schemas/userData");
+    const config = require('../../botconfig/config.json');
 
     module.exports = {
-        name: 'info',
-        description: 'Get information about the currently selected pokemon!',
+        name: 'changelog',
+        description: 'Display all the changelogs!',
         /** 
          * @param {Client} client 
          * @param {Message} message 
@@ -57,30 +57,16 @@
                 .setStyle(ButtonStyle.Primary)
             ])
 
-            const ownedpokemons = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
-            })
-
-            const pokemons = ownedpokemons.Inventory;
-
-            /*const findselected = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
-                "Inventory.PokemonSelected": true
-            }, {
-                "Inventory.$": 1
-            });*/
-
-            let selectedNum;
-            for (let i = 0; i < ownedpokemons.Inventory.length; i++) {
-                if (ownedpokemons.Inventory[i].PokemonSelected) {
-                    selectedNum = ownedpokemons.Inventory[i].PokemonData.PokemonOrder;
-                }
+            const changelogs = [];
+            for (let i = 0; i < client.changelog.size; i++) {
+                const element = client.changelog.get(i + 1);
+                changelogs.push(element);
             }
 
-            let currentPage = selectedNum - 1;
-            const embeds = generateInfoEmbed(pokemons, currentPage)
+            const embeds = generateChangelogs(changelogs);
+            let currentPage = embeds.length - 1;
 
-            if (pokemons.length > 1) {
+            if (changelogs.length > 1) {
                 await interaction.reply({
                     embeds: [embeds[currentPage].setFooter({
                         text: `Page ${currentPage+1} of ${embeds.length}`
@@ -117,7 +103,7 @@
                             })]
                         })
                     } else {
-                        currentPage = 0;
+                        --currentPage;
                         interactionCollector.editReply({
                             embeds: [embeds[currentPage].setFooter({
                                 text: `Page ${currentPage+1} of ${embeds.length}`
@@ -136,7 +122,7 @@
                             })]
                         })
                     } else {
-                        currentPage = embeds.length - 1;
+                        currentPage++;
                         interactionCollector.editReply({
                             embeds: [embeds[currentPage].setFooter({
                                 text: `Page ${currentPage+1} of ${embeds.length}`
@@ -171,38 +157,42 @@
                     await interactionCollector.deferUpdate();
                     collector.stop();
                 }
-            });
+            })
 
             collector.on('end', async (collected) => {
                 if (collected.size > 0) {
-                    for (let i = 0; i < mainRow.components.length; i++) {
-                        mainRow.components[i].setDisabled(true);
+                    try {
+                        for (let i = 0; i < mainRow.components.length; i++) {
+                            mainRow.components[i].setDisabled(true);
+                        }
+    
+                        await interaction.editReply({
+                            components: [mainRow]
+                        });
+                    } catch (error) {
+                        if (error.message === "Unknown Message") {
+                            return;
+                        } else {
+                            console.log(error)
+                        }
                     }
-
-                    await interaction.editReply({
-                        components: [mainRow]
-                    });
                 }
             })
-
-            function generateInfoEmbed(ownedpokes, currentPage) {
-                const embeds = []
-                let k = 1;
-                for (let i = 0; i < ownedpokes.length; i += 1) {
-                    const current = ownedpokes.slice(i, k);
-                    let j = i;
-                    k += 1;
-                    const embed = new EmbedBuilder()
-                        .setColor(ee.color)
-                        .setImage(ownedpokes[i].PokemonPicture)
-                        .setTitle(`Level. ${ownedpokes[i].PokemonData.PokemonLevel} ${ownedpokes[i].PokemonName}`)
-                        .setDescription(`__**Details**__\n**XP**: ${ownedpokes[i].PokemonData.PokemonXP}/${ownedpokes[i].PokemonData.PokemonLevel * 750}\n**Gender**: NOT ADDED YET\n**Nature**: NOT ADDED YET\n\n__**Stats**__\n**HP**: ${ownedpokes[i].PokemonData.PokemonIVs.HP}/31\n**Attack**: ${ownedpokes[i].PokemonData.PokemonIVs.Attack}/31\n**Defense**: ${ownedpokes[i].PokemonData.PokemonIVs.Defense}/31\n**Special Attack**: ${ownedpokes[i].PokemonData.PokemonIVs.SpecialAtk}/31\n**Special Defense**: ${ownedpokes[i].PokemonData.PokemonIVs.SpecialDef}/31\n**Speed**: ${ownedpokes[i].PokemonData.PokemonIVs.Speed}/31\n**Total IVs**: ${ownedpokes[i].PokemonData.PokemonIVs.TotalIV}%\n\n__**Extras**__\n**ID**: ${ownedpokes[i].PokemonData.PokemonOrder}\n**Pokémon ID**: ${ownedpokes[i].PokemonID}\n**Original Trainer ID:** ${ownedpokes[i].PokemonData.PokemonOriginalOwner}`)
-                        .setFooter({
-                            text: `ID: ${ownedpokes[i].PokemonData.PokemonOrder}\nPokémon ID: ${ownedpokes[i].PokemonID}`
-                        })
-                    embeds.push(embed)
-                }
-                return embeds;
-            }
         }
     }
+
+function generateChangelogs(changelogs) {
+    const embeds = [];
+    let k = 1;
+    for (let i = 0; i < changelogs.length; i += 1) {
+        const current = changelogs.slice(i, k);
+        let j = i;
+        k += 1;
+        const embed = new EmbedBuilder()
+            .setDescription(`${current[0].ChangelogDescription}\n\nFrom: ${current[0].ChangelogTimestamp}`)
+            .setTitle(`${current[0].ChangelogTitle}`)
+            .setColor(ee.color)
+        embeds.push(embed)
+    }
+    return embeds;
+}

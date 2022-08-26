@@ -207,7 +207,7 @@
                     },
                     $inc: {
                         Pokecoins: pokeinfo.MarketPrice
-                    }
+                    },
                 });
 
                 const findtotal = await user.aggregate([{

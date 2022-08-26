@@ -63,7 +63,10 @@ client.slashCommands = new Collection();
 client.awardCooldowns = new Collection();
 client.xpCooldowns = new Collection();
 client.startupCooldown = new Collection();
+client.userCooldown = new Collection();
+client.changelog = new Collection();
 client.categories = readdirSync("./commands/");
+client.slashcategories = readdirSync("./SlashCommands/");
 client.config = require("./botconfig/config.json");
 
 //           --------------------<GLOBAL VARIABLES CONSTRUCTION>--------------------

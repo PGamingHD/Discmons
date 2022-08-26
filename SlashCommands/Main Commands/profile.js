@@ -27,7 +27,7 @@
                 OwnerID: parseInt(interaction.user.id),
             })
 
-            let rankname;
+            let rankname = "Unknown";
             if (user.TrainerRank === 0) {
                 rankname = "Trainer";
             } else if (user.TrainerRank === 1) {

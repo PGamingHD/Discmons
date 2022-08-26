@@ -28,7 +28,7 @@
          */
         run: async (client, interaction, args) => {
             try {
-                cpuStat.usagePercent( async function (e, percent, seconds) {
+                cpuStat.usagePercent(async function (e, percent, seconds) {
                     if (e) return console.log(String(e.stack));
 
                     const foundglobal = await globalData.findOne({
@@ -134,17 +134,17 @@
                         }, {
                             name: 'Total Ultra Beasts',
                             value: `\`[ ${parseInt(foundglobal.UBCaught.toLocaleString('en-US'))} ]\``,
-                            inline: true    
+                            inline: true
                         }, {
                             name: 'Total Shiny',
                             value: `\`[ ${parseInt(foundglobal.ShinyCaught.toLocaleString('en-US'))} ]\``,
                             inline: true
                         }, {
                             name: 'Host Location',
-                            value: '\`[ Germany, Falkenstein (LOC UNKNOWN) ]\`',
+                            value: '\`[ Germany, Falkenstein (50.479372224058956, 12.335669268117156) ]\`',
                             inline: true
                         }, {
-                            name: 'Bot Version',
+                            name: 'Running Version',
                             value: `\`[ ${config.botVersion} ]\``,
                             inline: true
                         }])

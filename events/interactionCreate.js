@@ -31,12 +31,12 @@ const {
 
 client.on("interactionCreate", async (interaction) => {
 
-    if (startupCooldown.has("startupcooldown") && !config.developerID.includes(interaction.user.id)) {
+    /*if (startupCooldown.has("startupcooldown") && !config.developerID.includes(interaction.user.id)) {
         return interaction.reply({
             content: ':x: The bot is still starting up, please be patient and wait for the cooldown to end!',
             ephemeral: true
         })
-    }
+    }*/
 
     const dev = await developer.findOne({
         developerAccess: "accessStringforDeveloperOnly",
@@ -58,7 +58,8 @@ client.on("interactionCreate", async (interaction) => {
             ServerID: parseInt(interaction.guild.id),
             Blacklisted: false,
             SpawningTime: 0,
-            RedirectChannel: 0
+            RedirectChannel: 0,
+            ServerLang: 'en'
         })
     } else {
         if (findserver.Blacklisted) {
@@ -238,6 +239,33 @@ client.on("interactionCreate", async (interaction) => {
             })
         }
 
+        if (client.userCooldown.has(`${interaction.user.id}`)) {
+            const usercd = await client.userCooldown.get(`${interaction.user.id}`);
+            let prettified = prettyMilliseconds(usercd - Date.now(), {
+                verbose: true
+            });
+
+            return interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                    .setColor(ee.errorColor)
+                    .setDescription(stringTemplateParser(await languageControl(interaction.guild, 'ON_COOLDOWN'), {
+                        timeLeft: prettified
+                    }))
+                ],
+                ephemeral: true
+            })
+        }
+
+        if (cmd?.cooldown) {
+            let expireDate = Date.now() + 1000 * cmd?.cooldown;
+            await client.userCooldown.set(`${interaction.user.id}`, expireDate);
+
+            setTimeout(async () => {
+                await client.userCooldown.delete(`${interaction.user.id}`);
+            }, 1000 * cmd?.cooldown);
+        }
+
         if (cmd.DeveloperCommand && !interaction.user.id.includes(config.developerID)) {
             return interaction.reply({
                 content: ':x: Looks like you do not have permissions to execute this command.',
@@ -273,12 +301,15 @@ client.on("interactionCreate", async (interaction) => {
         }
         interaction.member = interaction.guild.members.cache.get(interaction.user.id);
 
-        if (!interaction.member.permissions.has(cmd.userPermissions || []))
-            return interaction.reply({
+        if (!interaction.member.permissions.has(cmd.userPermissions || [])) return interaction.reply({
                 content: "You do not have permissions to use this command!",
-            });
+        });
 
-        await cmd.run(client, interaction, con, args);
+        try {
+            await cmd.run(client, interaction, con, args);
+        } catch (error) {
+            console.log(error);
+        }
         //INTERACTION ABOVE
     }
 

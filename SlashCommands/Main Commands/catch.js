@@ -62,7 +62,6 @@
                 });
             }
 
-            //return console.log(findpoke.SpawnedChannelID);
             const spawnedchannel = await interaction.channel.messages.fetch(findpoke.SpawnedMessageID);
             spawnedchannel.delete();
 
