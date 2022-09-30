@@ -61,6 +61,14 @@
                 .setCustomId('votes')
                 .setStyle(ButtonStyle.Primary)
             ])
+            lbTypes.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "❌"
+                })
+                .setCustomId('exit')
+                .setStyle(ButtonStyle.Primary)
+            ])
 
             const initialReply = await interaction.reply({
                 embeds: [
@@ -176,6 +184,29 @@
                             })
                         ],
                     });
+                }
+
+                if (interactionCollector.customId === "exit") {
+                    await interactionCollector.deferUpdate();
+                    return collector.stop();
+                }
+            });
+
+            collector.on('end', async (collected) => {
+                try {
+                    for (let i = 0; i < lbTypes.components.length; i++) {
+                        lbTypes.components[i].setDisabled(true);
+                    }
+
+                    await interaction.editReply({
+                        components: [lbTypes]
+                    });
+                } catch (error) {
+                    if (error.message === "Unknown Message") {
+                        return;
+                    } else {
+                        console.log(error)
+                    }
                 }
             });
         }
