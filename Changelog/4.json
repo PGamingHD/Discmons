@@ -1,6 +1,6 @@
 {
     "ChangelogNumber": 4,
     "ChangelogTitle": "Changelog - V1.1.6_DEV",
-    "ChangelogDescription": "**New Features**\n\n*• Added bug report system to report bugs (/reportbug)*\n*• Added suggestion system to suggest new features (/suggest)*\n\n**Tweaked Features**\n\n*• Fully fixed changelog pagination*\n*• Small tweaks to leaderboards, added exit button and autodisable*\n*• Fixed invite links to be correct and display correct required permissions!*",
+    "ChangelogDescription": "**New Features**\n\n*• Added the rest of Generation 1, entire Gen 1 is added now*\n*• Added bug report system to report bugs (/reportbug)*\n*• Added suggestion system to suggest new features (/suggest)*\n\n**Tweaked Features**\n\n*• Fully fixed changelog pagination*\n*• Small tweaks to leaderboards, added exit button and autodisable*\n*• Fixed invite links to be correct and display correct required permissions!*",
     "ChangelogTimestamp": "30. September [2022]"
 }
