@@ -29,7 +29,8 @@ const {
     findServer,
     findUser,
     tosInteraction,
-    tosFunction
+    tosFunction,
+    sendWebhook
 } = require("../handler/functions");
 
 client.on("interactionCreate", async (interaction) => {
@@ -250,6 +251,30 @@ client.on("interactionCreate", async (interaction) => {
         } = interaction;
 
         //TRY TO USE COLLECTORS INSTEAD OF THIS! (WILL SURVIVE FOREVER)
+    }
+
+    if (interaction.isModalSubmit()) {
+        if (interaction.customId === "bugReportModal") {
+            const reportedBug = interaction.fields.getTextInputValue('reportedBug');
+
+            await interaction.reply({
+                content: '**Bug report recieved, thank you for your help in making our services the best possible!** ❤️',
+                ephemeral: true
+            });
+
+            await sendWebhook("https://discord.com/api/webhooks/1025464359343886468/x5y4lcJqO_a1KpwfwhMdhkHC6APgOPlyTla7WfTm5AnYPrPh7jtVKmLjnstXUBug-nqQ", "✉️ Bug Report Recieved ✉️", `**Reporter:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${reportedBug}\`\`\``, ee.successcolor);
+        }
+
+        if (interaction.customId === "suggestionModal") {
+            const suggestedFeature = interaction.fields.getTextInputValue('suggestion');
+
+            await interaction.reply({
+                content: '**Suggestion recieved, thank you for your help in making our services the best possible!** ❤️',
+                ephemeral: true
+            });
+
+            await sendWebhook("https://discord.com/api/webhooks/1025466745827364907/VKptuiOpZIRqEsDzPqOlI7-By_wLwKf7GcUbHEsMJmgLRCvH3zPO6HTAh0jpUEnx3HXK", "✉️ Suggestion Recieved ✉️", `**Suggester:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${suggestedFeature}\`\`\``, ee.successcolor);
+        }
     }
 });
 
