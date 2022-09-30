@@ -380,6 +380,12 @@
                     });
                 }
 
+                if (findpoke.Inventory[0].PokemonFavorited) {
+                    return interaction.reply({
+                        content: ':x: That Pokémon is currently on your favorites list, please remove it before gifting it!'
+                    });
+                }
+
                 if (parseInt(findTarget.OwnerID) === parseInt(interaction.user.id)) {
                     return interaction.reply({
                         content: ':x: You may not send gifts to yourself, try sending it to someone else!',
@@ -442,6 +448,7 @@
                                     PokemonPicture: findpoke.Inventory[0].PokemonPicture,
                                     PokemonSelected: false,
                                     PokemonOnMarket: false,
+                                    PokemonFavorited: false,
                                     PokemonData: {
                                         PokemonOriginalOwner: findpoke.Inventory[0].PokemonData.PokemonOriginalOwner,
                                         PokemonLevel: findpoke.Inventory[0].PokemonData.PokemonLevel,

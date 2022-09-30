@@ -103,7 +103,7 @@
                             })]
                         })
                     } else {
-                        --currentPage;
+                        currentPage = 0;
                         interactionCollector.editReply({
                             embeds: [embeds[currentPage].setFooter({
                                 text: `Page ${currentPage+1} of ${embeds.length}`
@@ -160,39 +160,37 @@
             })
 
             collector.on('end', async (collected) => {
-                if (collected.size > 0) {
-                    try {
-                        for (let i = 0; i < mainRow.components.length; i++) {
-                            mainRow.components[i].setDisabled(true);
-                        }
-    
-                        await interaction.editReply({
-                            components: [mainRow]
-                        });
-                    } catch (error) {
-                        if (error.message === "Unknown Message") {
-                            return;
-                        } else {
-                            console.log(error)
-                        }
+                try {
+                    for (let i = 0; i < mainRow.components.length; i++) {
+                        mainRow.components[i].setDisabled(true);
+                    }
+
+                    await interaction.editReply({
+                        components: [mainRow]
+                    });
+                } catch (error) {
+                    if (error.message === "Unknown Message") {
+                        return;
+                    } else {
+                        console.log(error)
                     }
                 }
             })
         }
     }
 
-function generateChangelogs(changelogs) {
-    const embeds = [];
-    let k = 1;
-    for (let i = 0; i < changelogs.length; i += 1) {
-        const current = changelogs.slice(i, k);
-        let j = i;
-        k += 1;
-        const embed = new EmbedBuilder()
-            .setDescription(`${current[0].ChangelogDescription}\n\nFrom: ${current[0].ChangelogTimestamp}`)
-            .setTitle(`${current[0].ChangelogTitle}`)
-            .setColor(ee.color)
-        embeds.push(embed)
+    function generateChangelogs(changelogs) {
+        const embeds = [];
+        let k = 1;
+        for (let i = 0; i < changelogs.length; i += 1) {
+            const current = changelogs.slice(i, k);
+            let j = i;
+            k += 1;
+            const embed = new EmbedBuilder()
+                .setDescription(`${current[0].ChangelogDescription}\n\nFrom: ${current[0].ChangelogTimestamp}`)
+                .setTitle(`${current[0].ChangelogTitle}`)
+                .setColor(ee.color)
+            embeds.push(embed)
+        }
+        return embeds;
     }
-    return embeds;
-}

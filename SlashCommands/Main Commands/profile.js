@@ -6,7 +6,7 @@
         MessageButton
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
-    const emoji = require('../../botconfig/embed.json')
+    const emoji = require('../../botconfig/emojis.json');
     const prettyMilliseconds = require('pretty-ms');
     const config = require('../../botconfig/config.json')
     const userData = require("../../schemas/userData");
@@ -57,11 +57,11 @@
                     .setTitle(`**Display Trainer Profile**`)
                     .addFields([{
                         name: 'Trainer Stats',
-                        value: `**Pokécoins:** x${user.Pokecoins.toLocaleString('en-US')}\n**Pokétokens:** x${user.Poketokens.toLocaleString('en-US')}\n**Trainer Rank:** *${rankname}*`,
+                        value: `${emoji.pokecoin} *${parseInt(user.Pokecoins).toLocaleString('en-US')}*\n${emoji.token} *${parseInt(user.Poketokens).toLocaleString('en-US')}*\n${emoji.id} ${user.TrainerNumber}\n${emoji.rank} *${rankname}*`,
                         inline: true
                     }, {
                         name: 'Pokémon Caught',
-                        value: `**Total:** x${user.TotalCaught.toLocaleString('en-US')}\n**Mythical:** x${user.MythicalCaught.toLocaleString('en-US')}\n**Legendary:** x${user.LegendaryCaught.toLocaleString('en-US')}\n**Ultra Beast:** x${user.UBCaught.toLocaleString('en-US')}\n**Shiny:** x${user.ShinyCaught.toLocaleString('en-US')}`,
+                        value: `**Total:** ${parseInt(user.TotalCaught).toLocaleString('en-US')}\n**Mythical:** ${parseInt(user.MythicalCaught).toLocaleString('en-US')}\n**Legendary:** ${parseInt(user.LegendaryCaught).toLocaleString('en-US')}\n**Ultra Beast:** ${parseInt(user.UBCaught).toLocaleString('en-US')}\n**Shiny:** ${parseInt(user.ShinyCaught).toLocaleString('en-US')}`,
                         inline: true
                     }])
                     .setTimestamp()

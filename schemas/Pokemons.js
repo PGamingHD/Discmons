@@ -19,6 +19,46 @@ const PokemonSchema = new mongoose.Schema({
     PokemonRarity: {
         type: String,
         required: true
+    },
+    PokemonEvolve: {
+        currentStage: {
+            type: Number,
+            required: true
+        },
+        totalStages: {
+            type: Number,
+            required: true
+        },
+        stageOne: {
+            newName: {
+                type: String,
+                required: true
+            },
+            newLevel: {
+                type: Number,
+                required: true
+            }
+        },
+        stageTwo: {
+            newName: {
+                type: String,
+                required: true
+            },
+            newLevel: {
+                type: Number,
+                required: true
+            }
+        },
+        stageThree: {
+            newName: {
+                type: String,
+                required: true
+            },
+            newLevel: {
+                type: Number,
+                required: true
+            }
+        }
     }
 });
 

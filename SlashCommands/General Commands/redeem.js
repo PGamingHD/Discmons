@@ -61,7 +61,7 @@
             if (arrayOfItems.length === 1) {
                 const redeems = arrayOfItems[0].ItemAmount;
 
-                redeemSpawn(interaction, pokename);
+                await redeemSpawn(interaction, pokename);
 
                 const newredeems = redeems - 1;
 

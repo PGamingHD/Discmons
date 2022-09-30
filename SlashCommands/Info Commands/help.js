@@ -52,13 +52,13 @@
                 value: `Configure the client to your own needs.\n\`redirect\``
             }, {
                 name: 'Pokémon',
-                value: `General Pokémon related commands.\n\`info\`, \`pokemons\`, \`select\`, \`release\``,
+                value: `General Pokémon related commands.\n\`info\`, \`pokemons\`, \`select\`, \`release\`, \`favorite\``,
             }, {
                 name: 'Shops',
                 value: `Purchasing items from the shop.\n\`shop\`, \`store\`, \`market\``
             }, {
                 name: 'Information',
-                value: `Main information commands, will display both Pokémon and client info.\n\`help\`, \`status\`, \`profile\`, \`ping\`, \`changelog\``
+                value: `Main information commands, will display both Pokémon and client info.\n\`help\`, \`status\`, \`profile\`, \`ping\`, \`changelog\`, \`leaderboard\``
             }, {
                 name: 'Client',
                 value: `Everything related to the bot-client, and starting your adventure.\n\`start\``
@@ -136,13 +136,21 @@
             });
 
             collector.on('end', async (interactionCollected) => {
-                for (let i = 0; i < mainRow.components.length; i++) {
-                    mainRow.components[i].setDisabled(true);
+                try {
+                    for (let i = 0; i < mainRow.components.length; i++) {
+                        mainRow.components[i].setDisabled(true);
+                    }
+    
+                    await interaction.editReply({
+                        components: [mainRow]
+                    });
+                } catch (error) {
+                    if (error.message === "Unknown Message") {
+                        return;
+                    } else {
+                        console.log(error)
+                    }
                 }
-
-                await interaction.editReply({
-                    components: [mainRow]
-                });
             });
         }
     }

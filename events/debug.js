@@ -1,8 +1,11 @@
 const client = require("../index");
+const config = require("../botconfig/config.json");
 
-client.on("debug", async (info) => {
-    console.log(info)
-});
+if (config.enableDebug) {
+    client.on("debug", async (info) => {
+        console.log(info)
+    });
+}
 
 /*
 

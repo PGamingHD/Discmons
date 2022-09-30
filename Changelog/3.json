@@ -1,0 +1,6 @@
+{
+    "ChangelogNumber": 3,
+    "ChangelogTitle": "Changelog - V1.1.5_DEV",
+    "ChangelogDescription": "**New Features**\n\n*• Added automatic voting rewards, vote and get free Pokétokens! (/vote)*\n*• Added favorites system, add a Pokémon to your favorites!*\n*• Added leaderboards for Pokécoins & Pokétokens for now, more later!*\n\n**Tweaked Features**\n\n*• Fixed /changelog buttons not automatically disabling upon timeout!*\n*• Fixed start command not always working correctly, giving wrong unique TrainerIDs!*\n*• Changed /profile command a bit, and fixing values!*\n*• Fixed start command issuing wrong Discord IDs to users!*\n*• Fixes to spawn not spawning in correct channel if redirect is enabled*\n*• Small fixes to changelog pagination not working as intended.*",
+    "ChangelogTimestamp": "30. September [2022]"
+}

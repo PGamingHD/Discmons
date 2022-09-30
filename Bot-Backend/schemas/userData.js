@@ -88,6 +88,10 @@ const userDataSchema = new mongoose.Schema({
             type: Boolean,
             required: true
         },
+        PokemonFavorited: {
+            type: Boolean,
+            required: true
+        },
         PokemonData: {
             PokemonOriginalOwner: {
                 type: Number,

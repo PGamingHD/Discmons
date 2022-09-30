@@ -8,15 +8,26 @@ const {
     Partials,
     IntentsBitField
 } = require("discord.js");
+const ee = require("./botconfig/embed.json");
 const {
     readdirSync
 } = require("fs");
 const config = require("./botconfig/config.json");
 const chalk = require("chalk");
+const userData = require('./schemas/userData');
+const {
+    sendWebhook,
+    findUser,
+} = require("./handler/functions");
 const {
     Webhook
 } = require("@top-gg/sdk");
+const {
+    AutoPoster
+} = require('topgg-autoposter')
 const express = require('express');
+
+const server = express();
 
 //           --------------------<CONSTRUCTORS>--------------------
 
@@ -39,12 +50,13 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
     ],
-
     partials: [
         Partials.ActivityType,
     ],
-
 });
+
+const autoposter = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTEwMDIzODQwNjQ5NzA5NDQiLCJib3QiOnRydWUsImlhdCI6MTY2Mzk2NTkyNX0.K-uh5rGxi6Vj-5RFcPmVZQJ4q1GBGOVtpEH_UVfiHZI', client)
+const webhook = new Webhook("epicGamers123!#fromtopggPost");
 
 //           --------------------<CONSTRUCTING CLIENTS>--------------------
 
@@ -84,7 +96,30 @@ require("./handler")(client);
 
 //           --------------------<STATS POSTER>--------------------
 
-//HERE
+autoposter.on('posted', () => {
+    console.log(chalk.green('[AUTOPOST] <==> || Successfully posted all relevant stats to the Top.gg site! <==> || [AUTOPOST]'));
+});
+
+server.post("/dblwebhook", webhook.listener(async (vote) => {
+    const findregistered = await findUser(vote.user);
+
+    if (findregistered) {
+        await sendWebhook("https://discord.com/api/webhooks/1022982782651216012/6v-oWzGgTSPhxCIbOG3FSqfAnd62ya2Me-Vaoc6I572Jtug_wUFnHf44smGoAheKTod8", "🎉 New Registered Vote 🎉", `**A new vote was registered by <@!${vote.user}>!**\n\n*User has been successfully automatically given their voting rewards, make sure to vote below to get your own rewards!*\n\n*Click [here](https://top.gg/bot/1011002384064970944/vote) to vote for us and get free Pokétokens!*`, ee.color);
+
+        await userData.findOneAndUpdate({
+            OwnerID: parseInt(vote.user)
+        }, {
+            $inc: {
+                Poketokens: 5,
+            },
+            VotedCooldown: Date.now()
+        });
+    } else {
+        await sendWebhook("https://discord.com/api/webhooks/1022982782651216012/6v-oWzGgTSPhxCIbOG3FSqfAnd62ya2Me-Vaoc6I572Jtug_wUFnHf44smGoAheKTod8", "🎉 New Registered Vote 🎉", `**A new vote was registered by <@!${vote.user}>!**\n\n*Sadly user does not have an account registered, and was not given their automatic rewards. Please contact Staff to have this fixed after registering!*\n\n*Click [here](https://top.gg/bot/1011002384064970944/vote) to vote for us and get free Pokétokens!*`, ee.color);
+    }
+}));
+
+server.listen(3000);
 
 //           --------------------<STATS POSTER>--------------------
 

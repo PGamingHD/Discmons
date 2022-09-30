@@ -15,8 +15,10 @@
     const prettyMilliseconds = require('pretty-ms');
     const config = require('../../botconfig/config.json');
     const {
-        v4: uuidv4
-    } = require("uuid");
+        generateSnowflake,
+        findUser,
+        getGlobalData
+    } = require("../../handler/functions");
 
     //SCHEMAS
     const userData = require("../../schemas/userData");
@@ -53,9 +55,7 @@
                 .setStyle(ButtonStyle.Primary)
             ])
 
-            const userdata = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id),
-            })
+            const userdata = await findUser(interaction.user.id);
 
             if (userdata) {
                 return interaction.reply({
@@ -95,16 +95,11 @@
                     await interactionCollector.deferUpdate();
                     const pokename = "Bulbasaur";
                     const pokepic = "https://img.pokemondb.net/artwork/vector/large/bulbasaur.png";
-                    const generatedUUID = uuidv4();
+                    const generatedUUID = generateSnowflake();
 
-                    const highestTrainer = await userData.find();
+                    const highestTrainer = await getGlobalData();
 
-                    let nextTrainerNumber;
-                    if (highestTrainer.length === 0) {
-                        nextTrainerNumber = 1;
-                    } else {
-                        nextTrainerNumber = highestTrainer.length + 1;
-                    }
+                    const nextTrainerNumber = parseInt(highestTrainer.Registered) + 1;
 
                     const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
                     const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
@@ -117,7 +112,7 @@
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
 
                     await userData.create({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         Poketokens: 0,
                         Pokecoins: 50000,
                         Blacklisted: false,
@@ -136,11 +131,13 @@
                             PokemonPicture: pokepic,
                             PokemonSelected: true,
                             PokemonOnMarket: false,
+                            PokemonFavorited: false,
                             PokemonData: {
                                 PokemonOriginalOwner: nextTrainerNumber,
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                //EVOLVE CODE HERE
                                 PokemonIVs: {
                                     HP: HPiv,
                                     Attack: ATKiv,
@@ -179,16 +176,11 @@
                     await interactionCollector.deferUpdate();
                     const pokename = "Charmander";
                     const pokepic = "https://img.pokemondb.net/artwork/vector/large/charmander.png";
-                    const generatedUUID = uuidv4();
+                    const generatedUUID = generateSnowflake();
 
-                    const highestTrainer = await userData.find();
+                    const highestTrainer = await getGlobalData();
 
-                    let nextTrainerNumber;
-                    if (highestTrainer.length === 0) {
-                        nextTrainerNumber = 1;
-                    } else {
-                        nextTrainerNumber = highestTrainer.length + 1;
-                    }
+                    const nextTrainerNumber = parseInt(highestTrainer.Registered) + 1;
 
                     const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
                     const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
@@ -201,7 +193,7 @@
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
 
                     await userData.create({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         Poketokens: 0,
                         Pokecoins: 50000,
                         Blacklisted: false,
@@ -220,6 +212,7 @@
                             PokemonPicture: pokepic,
                             PokemonSelected: true,
                             PokemonOnMarket: false,
+                            PokemonFavorited: false,
                             PokemonData: {
                                 PokemonOriginalOwner: nextTrainerNumber,
                                 PokemonLevel: 5,
@@ -263,16 +256,11 @@
                     await interactionCollector.deferUpdate();
                     const pokename = "Squirtle";
                     const pokepic = "https://img.pokemondb.net/artwork/vector/large/squirtle.png";
-                    const generatedUUID = uuidv4();
+                    const generatedUUID = generateSnowflake();
 
-                    const highestTrainer = await userData.find();
+                    const highestTrainer = await getGlobalData();
 
-                    let nextTrainerNumber;
-                    if (highestTrainer.length === 0) {
-                        nextTrainerNumber = 1;
-                    } else {
-                        nextTrainerNumber = highestTrainer.length + 1;
-                    }
+                    const nextTrainerNumber = parseInt(highestTrainer.Registered) + 1;
 
                     const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
                     const ATKiv = Math.floor(Math.random() * (31 - 1) + 1);
@@ -285,7 +273,7 @@
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
 
                     await userData.create({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         Poketokens: 0,
                         Pokecoins: 50000,
                         Blacklisted: false,
@@ -304,6 +292,7 @@
                             PokemonPicture: pokepic,
                             PokemonSelected: true,
                             PokemonOnMarket: false,
+                            PokemonFavorited: false,
                             PokemonData: {
                                 PokemonOriginalOwner: nextTrainerNumber,
                                 PokemonLevel: 5,
@@ -345,13 +334,21 @@
             });
 
             collector.on('end', async (collected) => {
-                for (let i = 0; i < pokeRow.components.length; i++) {
-                    pokeRow.components[i].setDisabled(true);
+                try {
+                    for (let i = 0; i < pokeRow.components.length; i++) {
+                        pokeRow.components[i].setDisabled(true);
+                    }
+    
+                    await interaction.editReply({
+                        components: [pokeRow]
+                    });
+                } catch (error) {
+                    if (error.message === "Unknown Message") {
+                        return;
+                    } else {
+                        console.log(error)
+                    }
                 }
-
-                await interaction.editReply({
-                    components: [pokeRow]
-                });
             });
         }
     }

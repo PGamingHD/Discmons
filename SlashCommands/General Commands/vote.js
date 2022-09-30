@@ -9,11 +9,12 @@
     const emoji = require('../../botconfig/embed.json')
     const prettyMilliseconds = require('pretty-ms');
     const config = require('../../botconfig/config.json')
-    const axios = require('axios');
-    const userData = require('../../schemas/userData');
     const {
         EmbedBuilder
     } = require('@discordjs/builders');
+    const {
+        findUser
+    } = require("../../handler/functions");
 
     module.exports = {
         name: 'vote',
@@ -24,9 +25,7 @@
          * @param {String[]} args 
          */
         run: async (client, interaction, args) => {
-            const user = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id)
-            })
+            const user = await findUser(interaction.user.id);
 
             const votedcooldown = parseInt(user.VotedCooldown);
 
@@ -37,7 +36,7 @@
                         new EmbedBuilder()
                         .setColor(ee.color)
                         .setTitle(`Voting Rewards`)
-                        .setDescription(`Vote for us on [top.gg](https://top.gg/bot/904757023797813339/vote) to recieve tokens that can then be spent in the Shop. You can vote once per 12 hours!`)
+                        .setDescription(`Vote for us on [top.gg](https://top.gg/bot/1011002384064970944/vote) to recieve tokens that can then be spent in the Shop. You can vote once per 12 hours!`)
                         .addFields([{
                             name: 'Voting Timer',
                             value: `Your vote seems to be ready, vote and get your rewards now!`
@@ -58,7 +57,7 @@
                         new EmbedBuilder()
                         .setColor(ee.color)
                         .setTitle(`Voting Rewards`)
-                        .setDescription(`Vote for us on [top.gg](https://top.gg/bot/904757023797813339/vote) to recieve tokens that can then be spent in the Shop. You can vote once per 12 hours!`)
+                        .setDescription(`Vote for us on [top.gg](https://top.gg/bot/1011002384064970944/vote) to recieve tokens that can then be spent in the Shop. You can vote once per 12 hours!`)
                         .addFields([{
                             name: 'Voting Timer',
                             value: `You can vote again in **${prettyMilliseconds(timeleft, {verbose: true})}**!`

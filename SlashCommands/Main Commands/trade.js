@@ -521,6 +521,7 @@
                                                 PokemonPicture: pokemon.PokemonPicture,
                                                 PokemonSelected: false,
                                                 PokemonOnMarket: false,
+                                                PokemonFavorited: false,
                                                 PokemonData: {
                                                     PokemonOriginalOwner: pokemon.PokemonData.PokemonOriginalOwner,
                                                     PokemonLevel: pokemon.PokemonData.PokemonLevel,
@@ -655,6 +656,7 @@
                                                 PokemonPicture: pokemon.PokemonPicture,
                                                 PokemonSelected: false,
                                                 PokemonOnMarket: false,
+                                                PokemonFavorited: false,
                                                 PokemonData: {
                                                     PokemonOriginalOwner: pokemon.PokemonData.PokemonOriginalOwner,
                                                     PokemonLevel: pokemon.PokemonData.PokemonLevel,
@@ -916,6 +918,13 @@
                         });
                     }
 
+                    if (findpoke.Inventory[0].PokemonFavorited) {
+                        return interaction.reply({
+                            content: ':x: That Pokémon is currently favorited, please unfavorite it before listing it on the market!',
+                            ephemeral: true
+                        })
+                    }
+
                     if (isInitiator) {
                         const findtotal = await tradeData.aggregate([{
                             $match: {
@@ -950,6 +959,7 @@
                                         PokemonPicture: findpoke.Inventory[0].PokemonPicture,
                                         PokemonSelected: false,
                                         PokemonOnMarket: false,
+                                        PokemonFavorited: false,
                                         PokemonData: {
                                             PokemonOriginalOwner: findpoke.Inventory[0].PokemonData.PokemonOriginalOwner,
                                             PokemonLevel: findpoke.Inventory[0].PokemonData.PokemonLevel,
@@ -1006,6 +1016,7 @@
                                         PokemonPicture: findpoke.Inventory[0].PokemonPicture,
                                         PokemonSelected: false,
                                         PokemonOnMarket: false,
+                                        PokemonFavorited: false,
                                         PokemonData: {
                                             PokemonOriginalOwner: findpoke.Inventory[0].PokemonData.PokemonOriginalOwner,
                                             PokemonLevel: findpoke.Inventory[0].PokemonData.PokemonLevel,

@@ -184,7 +184,7 @@
                     const current = ownedpokes.slice(i, k);
                     let j = i;
                     k += 20;
-                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` **${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}　•　IV ${currentpokemon.PokemonData.PokemonIVs.TotalIV}%`).join('\n');
+                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` ${currentpokemon.PokemonFavorited ? "⭐" : ""}**${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}　•　IV ${currentpokemon.PokemonData.PokemonIVs.TotalIV}%`).join('\n');
                     const embed = new EmbedBuilder()
                         .setDescription(`${info}`)
                         .setTitle(`Your Pokémons`)

@@ -195,7 +195,7 @@
                     const embed = new EmbedBuilder()
                         .setColor(ee.color)
                         .setImage(ownedpokes[i].PokemonPicture)
-                        .setTitle(`Level. ${ownedpokes[i].PokemonData.PokemonLevel} ${ownedpokes[i].PokemonName}`)
+                        .setTitle(`${ownedpokes[i].PokemonFavorited ? "⭐" : ""}Level. ${ownedpokes[i].PokemonData.PokemonLevel} ${ownedpokes[i].PokemonName}`)
                         .setDescription(`__**Details**__\n**XP**: ${ownedpokes[i].PokemonData.PokemonXP}/${ownedpokes[i].PokemonData.PokemonLevel * 750}\n**Gender**: NOT ADDED YET\n**Nature**: NOT ADDED YET\n\n__**Stats**__\n**HP**: ${ownedpokes[i].PokemonData.PokemonIVs.HP}/31\n**Attack**: ${ownedpokes[i].PokemonData.PokemonIVs.Attack}/31\n**Defense**: ${ownedpokes[i].PokemonData.PokemonIVs.Defense}/31\n**Special Attack**: ${ownedpokes[i].PokemonData.PokemonIVs.SpecialAtk}/31\n**Special Defense**: ${ownedpokes[i].PokemonData.PokemonIVs.SpecialDef}/31\n**Speed**: ${ownedpokes[i].PokemonData.PokemonIVs.Speed}/31\n**Total IVs**: ${ownedpokes[i].PokemonData.PokemonIVs.TotalIV}%\n\n__**Extras**__\n**ID**: ${ownedpokes[i].PokemonData.PokemonOrder}\n**Pokémon ID**: ${ownedpokes[i].PokemonID}\n**Original Trainer ID:** ${ownedpokes[i].PokemonData.PokemonOriginalOwner}`)
                         .setFooter({
                             text: `ID: ${ownedpokes[i].PokemonData.PokemonOrder}\nPokémon ID: ${ownedpokes[i].PokemonID}`

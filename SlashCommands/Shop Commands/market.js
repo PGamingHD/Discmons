@@ -103,14 +103,21 @@
                     return interaction.reply({
                         content: ':x: You may not put your selected Pokémon up for sale!',
                         ephemeral: true
-                    })
+                    });
+                }
+
+                if (findpoke.Inventory[0].PokemonFavorited) {
+                    return interaction.reply({
+                        content: ':x: You may not put one of your favorite Pokémons up for sale!',
+                        ephemeral: true
+                    });
                 }
 
                 if (findpoke.Inventory[0].PokemonOnMarket) {
                     return interaction.reply({
                         content: ':x: This Pokémon has already been added to the market!',
                         ephemeral: true
-                    })
+                    });
                 }
 
                 if (price < 0 || price > 2000000000) {
@@ -236,6 +243,7 @@
                             PokemonPicture: pokeinfo.PokemonPicture,
                             PokemonSelected: false,
                             PokemonOnMarket: false,
+                            PokemonFavorited: false,
                             PokemonData: {
                                 PokemonOriginalOwner: pokeinfo.PokemonOriginalOwner,
                                 PokemonLevel: pokeinfo.PokemonLevel,

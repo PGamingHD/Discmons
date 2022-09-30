@@ -25,22 +25,23 @@ const pokemon = require("../schemas/Pokemons");
 const developer = require("../schemas/developerData");
 const server = require("../schemas/Servers");
 const {
-    maintenancemode,
-    forcespawn
+    getDeveloperData,
+    findServer,
+    findUser,
+    tosInteraction,
+    tosFunction
 } = require("../handler/functions");
 
 client.on("interactionCreate", async (interaction) => {
 
-    /*if (startupCooldown.has("startupcooldown") && !config.developerID.includes(interaction.user.id)) {
+    if (startupCooldown.has("startupcooldown") && !config.developerID.includes(interaction.user.id)) {
         return interaction.reply({
             content: ':x: The bot is still starting up, please be patient and wait for the cooldown to end!',
             ephemeral: true
         })
-    }*/
+    }
 
-    const dev = await developer.findOne({
-        developerAccess: "accessStringforDeveloperOnly",
-    })
+    const dev = await getDeveloperData();
 
     if (dev.globalMaintenance && !config.developerID.includes(interaction.user.id)) {
         return interaction.reply({
@@ -49,9 +50,7 @@ client.on("interactionCreate", async (interaction) => {
         })
     }
 
-    const findserver = await server.findOne({
-        ServerID: parseInt(interaction.guild.id),
-    })
+    const findserver = await findServer(interaction.guild.id);
 
     if (!findserver) {
         await server.create({
@@ -60,19 +59,17 @@ client.on("interactionCreate", async (interaction) => {
             SpawningTime: 0,
             RedirectChannel: 0,
             ServerLang: 'en'
-        })
+        });
     } else {
         if (findserver.Blacklisted) {
             return interaction.reply({
                 content: ':x: This server has been blacklisted from the usage of this bots functions, please open a ticket on the Support Server to get this fixed.',
                 ephemeral: true
-            })
+            });
         }
     }
 
-    const finduser = await userData.findOne({
-        OwnerID: parseInt(interaction.user.id),
-    })
+    const finduser = await findUser(interaction.user.id);
 
     if (finduser) {
 
@@ -84,108 +81,20 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         if (dev.LastTOSUpdate > finduser.LatestAgreed && interaction.isButton()) {
-            if (interaction.customId === "agree") {
-                await interaction.deferUpdate();
-
-                const agreementRow = new ActionRowBuilder()
-                agreementRow.addComponents([
-                    new ButtonBuilder()
-                    .setEmoji('✅')
-                    .setCustomId('agree')
-                    .setStyle(ButtonStyle.Primary)
-                ])
-                agreementRow.addComponents([
-                    new ButtonBuilder()
-                    .setEmoji('❎')
-                    .setCustomId('disagree')
-                    .setStyle(ButtonStyle.Primary)
-                ])
-
-                for (let i = 0; i < agreementRow.components.length; i++) {
-                    agreementRow.components[i].setDisabled(true);
-                }
-
-                await interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                        .setColor(851712)
-                        .setTitle(`Successfully agreed to ToS`)
-                        .setDescription(`Thank you for agreeing to our newly update Terms of Service, you may now continue using the bot features.`)
-                    ],
-                    components: [agreementRow]
-                })
-
-                await finduser.updateOne({
-                    LatestAgreed: Date.now()
-                });
-                return;
-            } else if (interaction.customId === "disagree") {
-                await interaction.deferUpdate();
-
-                const agreementRow = new ActionRowBuilder()
-                agreementRow.addComponents([
-                    new ButtonBuilder()
-                    .setEmoji('✅')
-                    .setCustomId('agree')
-                    .setStyle(ButtonStyle.Primary)
-                ])
-                agreementRow.addComponents([
-                    new ButtonBuilder()
-                    .setEmoji('❎')
-                    .setCustomId('disagree')
-                    .setStyle(ButtonStyle.Primary)
-                ])
-
-                for (let i = 0; i < agreementRow.components.length; i++) {
-                    agreementRow.components[i].setDisabled(true);
-                }
-
-                await interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                        .setColor(ee.wrongcolor)
-                        .setTitle(`Successfully disagreed to our ToS`)
-                        .setDescription(`You have now declined agreement to our ToS, please note that no further bot access can be given unless you agree to the new Terms of Service.`)
-                    ],
-                    components: [agreementRow]
-                });
-                return;
-            } else {
-                return;
-            }
+            await tosInteraction(interaction, finduser);
+            return;
         }
 
         if (dev.LastTOSUpdate > finduser.LatestAgreed && !interaction.isButton()) {
-            const agreementRow = new ActionRowBuilder()
-            agreementRow.addComponents([
-                new ButtonBuilder()
-                .setEmoji('✅')
-                .setCustomId('agree')
-                .setStyle(ButtonStyle.Primary)
-            ])
-            agreementRow.addComponents([
-                new ButtonBuilder()
-                .setEmoji('❎')
-                .setCustomId('disagree')
-                .setStyle(ButtonStyle.Primary)
-            ])
-
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                    .setColor(ee.color)
-                    .setTitle(`Updated Terms of Service agreement!`)
-                    .setDescription(`**Whoops, wait one second there ${interaction.user}!**\n\nLooks like you have yet to read our new upgraded [Terms of Service](https://pontus-2003.gitbook.io/discmon-docs/) and agree to it.\nPlease read through our new ToS then agree with the buttons below, or decline.\n\n> We update our ToS agreements regulary, which is why you are seeing this again.`)
-                ],
-                components: [agreementRow]
-            });
+            await tosFunction(interaction);
+            return;
         }
     }
 
     // Slash Command Handling
     if (interaction.isChatInputCommand()) {
 
-        try {
+        /*try {
             if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.EmbedLinks) || !interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.UseExternalEmojis)) {
                 await interaction.user.send({
                     embeds: [
@@ -215,6 +124,13 @@ client.on("interactionCreate", async (interaction) => {
                     })
                 }
             }
+        }*/
+
+        if (interaction.guild.id === "1010999169676222514" && interaction.channel.id !== "1010999277927006340" && !interaction.user.id.includes(config.developerID)) {
+            return interaction.reply({
+                content: ':x: You may only use my functions inside of the <#1010999277927006340> channel!',
+                ephemeral: true
+            });
         }
 
         const cmd = client.slashCommands.get(interaction.commandName);
@@ -229,7 +145,7 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         const founduser = await userData.findOne({
-            OwnerID: parseInt(interaction.user.id),
+            OwnerID: interaction.user.id,
         })
 
         if (!cmd.startCmd && !founduser) {

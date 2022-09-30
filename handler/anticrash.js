@@ -9,7 +9,7 @@ module.exports = async (client) => {
     process.on("uncaughtException", (err, origin) => {
         console.log(chalk.red(' [ANTICRASH] <==> || Uncaught Exception/Catch || <==> [ANTICRASH]'));
         console.log(err, origin);
-    })
+    });
     process.on('uncaughtExceptionMonitor', (err, origin) => {
         console.log(chalk.red(' [ANTICRASH] <==>  || Uncaught Exception/Catch (MONITOR) || <==> [ANTICRASH]'));
         console.log(err, origin);

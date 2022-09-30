@@ -10,16 +10,16 @@ const emoji = require("../botconfig/emojis.json")
 const ee = require("../botconfig/embed.json");
 const config = require("../botconfig/config.json");
 const client = require("../index");
-const schema = require('../schemas/Servers');
+const servers = require('../schemas/Servers');
 
 client.on("guildCreate", async (guild, Client) => {
 
-    const hasdata = await schema.findOne({
+    const hasdata = await servers.findOne({
         ServerID: parseInt(guild.id),
     });
 
     if (!hasdata) {
-        const creation = await schema.create({
+        const creation = await servers.create({
             ServerID: parseInt(guild.id),
             Blacklisted: false,
             SpawningTime: 0,

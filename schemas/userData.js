@@ -5,7 +5,8 @@ const {Types: {Long}} = mongoose;
 const userDataSchema = new mongoose.Schema({
     OwnerID: {
         type: Long,
-        required: true
+        required: true,
+        unique: true
     },
     Blacklisted: {
         type: Boolean,
@@ -85,6 +86,10 @@ const userDataSchema = new mongoose.Schema({
             required: true
         },
         PokemonOnMarket: {
+            type: Boolean,
+            required: true
+        },
+        PokemonFavorited: {
             type: Boolean,
             required: true
         },

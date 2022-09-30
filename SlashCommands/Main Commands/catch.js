@@ -149,6 +149,7 @@
                         PokemonPicture: findpoke.PokemonPicture,
                         PokemonSelected: false,
                         PokemonOnMarket: false,
+                        PokemonFavorited: false,
                         PokemonData: {
                             PokemonOriginalOwner: originalownerid.TrainerNumber,
                             PokemonLevel: findpoke.PokemonLevel,

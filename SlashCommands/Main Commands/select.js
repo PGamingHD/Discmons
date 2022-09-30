@@ -40,9 +40,9 @@
                 return interaction.reply({
                     content: ':x: That Pokémon could not be found in your inventory, do you own a Pokémon with this ID?',
                     ephemeral: true
-                })
+                });
             }
-            if(findnewselect.Inventory[0].PokemonSelected === true){
+            if (findnewselect.Inventory[0].PokemonSelected) {
                 return interaction.reply({
                     content: ':x: You already have that Pokémon selected, please select another one!',
                     ephemeral: true

@@ -81,6 +81,13 @@
                 });
             }
 
+            if (findpoke.Inventory[0].PokemonFavorited) {
+                return interaction.reply({
+                    content: ':x: You may not release this Pokémon because it is on your favorites list!',
+                    ephemeral: true
+                });
+            }
+
             const pokeName = findpoke.Inventory[0].PokemonName;
             const pokeLevel = findpoke.Inventory[0].PokemonData.PokemonLevel;
             const mainMsg = await interaction.reply({

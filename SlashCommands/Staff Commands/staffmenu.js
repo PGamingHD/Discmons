@@ -7,15 +7,11 @@
         ActionRowBuilder,
         ButtonBuilder,
         ButtonStyle,
-        WebhookClient
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
     const emoji = require('../../botconfig/embed.json')
     const prettyMilliseconds = require('pretty-ms');
     const config = require('../../botconfig/config.json');
-    const adminLogs = new WebhookClient({
-        url: config.adminLogs
-    });
     const {
         EmbedBuilder
     } = require('@discordjs/builders');
@@ -25,8 +21,12 @@
     const developer = require("../../schemas/developerData");
     const {
         maintenancemode,
-        forcespawn
+        forcespawn,
+        sendWebhook
     } = require("../../handler/functions");
+    const {
+        inspect
+    } = require(`util`);
 
     module.exports = {
         name: 'staffmenu',
@@ -73,10 +73,10 @@
             devButtons.addComponents([
                 new ButtonBuilder()
                 .setEmoji({
-                    name: "✅"
+                    name: "☢️"
                 })
-                .setLabel('Insert Pokemon')
-                .setCustomId('insertpokemon')
+                .setLabel('Shutdown')
+                .setCustomId('shutdown')
                 .setStyle(ButtonStyle.Primary)
             ])
             devButtons.addComponents([
@@ -133,6 +133,24 @@
                 })
                 .setLabel('Set Tokens')
                 .setCustomId('settokens')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons2.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "♻️"
+                })
+                .setLabel('Evaluate')
+                .setCustomId('evaluate')
+                .setStyle(ButtonStyle.Primary)
+            ])
+            devButtons2.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "☢️"
+                })
+                .setLabel('Developer Info')
+                .setCustomId('devinfo')
                 .setStyle(ButtonStyle.Primary)
             ])
 
@@ -221,7 +239,7 @@
                 ])
             }
 
-            await interaction.reply({
+            const initialReply = await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setColor(ee.color)
@@ -236,10 +254,10 @@
                 components: [adminRow]
             })
 
-            const newInteraction = await interaction.fetchReply();
+            //const newInteraction = await interaction.fetchReply();
 
             let filter = m => m.user.id === interaction.user.id;
-            const collector = newInteraction.createMessageComponentCollector({
+            const collector = initialReply.createMessageComponentCollector({
                 filter,
                 idle: 1000 * 60,
                 time: 1000 * 120
@@ -248,15 +266,8 @@
             collector.on('collect', async (interactionCollector) => {
                 if (interactionCollector.customId === "modMenu") {
                     await interactionCollector.deferUpdate();
-                    adminLogs.send({
-                        embeds: [
-                            new EmbedBuilder()
-                            .setColor(ee.color)
-                            .setTitle(`**Moderator Login Detected**`)
-                            .setDescription(`**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`)
-                            .setTimestamp()
-                        ]
-                    })
+
+                    await sendWebhook(config.adminLogs, "**Moderator Login Detected**", `**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`, ee.color);
 
                     return interactionCollector.editReply({
                         embeds: [
@@ -271,15 +282,8 @@
 
                 if (interactionCollector.customId === "adminMenu") {
                     await interactionCollector.deferUpdate();
-                    adminLogs.send({
-                        embeds: [
-                            new EmbedBuilder()
-                            .setColor(ee.color)
-                            .setTitle(`**Admin Login Detected**`)
-                            .setDescription(`**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`)
-                            .setTimestamp()
-                        ]
-                    })
+
+                    await sendWebhook(config.adminLogs, "**Admin Login Detected**", `**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`, ee.color);
 
                     return interactionCollector.editReply({
                         embeds: [
@@ -294,15 +298,8 @@
 
                 if (interactionCollector.customId === "devMenu") {
                     await interactionCollector.deferUpdate();
-                    adminLogs.send({
-                        embeds: [
-                            new EmbedBuilder()
-                            .setColor(ee.color)
-                            .setTitle(`**Developer Login Detected**`)
-                            .setDescription(`**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`)
-                            .setTimestamp()
-                        ]
-                    })
+
+                    await sendWebhook(config.adminLogs, "**Developer Login Detected**", `**Logged in user: \`${interaction.user.tag}\` (\`${interaction.user.id}\`)**`, ee.color);
 
                     return interactionCollector.editReply({
                         embeds: [
@@ -364,15 +361,7 @@
                                     content: `:white_check_mark: Successfully removed blacklist for the user with ID \`[${blacklistuserid.content}]\` as requested!`
                                 })
 
-                                await adminLogs.send({
-                                    embeds: [
-                                        new EmbedBuilder()
-                                        .setColor(ee.color)
-                                        .setTitle(`Whitelist Detected`)
-                                        .setDescription(`**User <@!${interaction.user.id}> has just removed the blacklist from user with ID \`${blacklistuserid.content}\`**`)
-                                        .setTimestamp()
-                                    ]
-                                });
+                                await sendWebhook(config.adminLogs, "Whitelist Detected", `**User <@!${interaction.user.id}> has just removed the blacklist from user with ID \`${blacklistuserid.content}\`**`, ee.color);
                             } else {
                                 await userfound.updateOne({
                                     Blacklisted: true
@@ -380,17 +369,9 @@
 
                                 await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully blacklisted the user with ID \`[${blacklistuserid.content}]\` as requested!`
-                                })
-
-                                await adminLogs.send({
-                                    embeds: [
-                                        new EmbedBuilder()
-                                        .setColor(ee.color)
-                                        .setTitle(`Blacklist Detected`)
-                                        .setDescription(`**User <@!${interaction.user.id}> has just blacklisted user with ID \`${blacklistuserid.content}\`**`)
-                                        .setTimestamp()
-                                    ]
                                 });
+
+                                await sendWebhook(config.adminLogs, "Blacklist Detected", `**User <@!${interaction.user.id}> has just blacklisted user with ID \`${blacklistuserid.content}\`**`, ee.color);
                             }
 
                         }).catch((collected) => {
@@ -450,15 +431,7 @@
                                     content: `:white_check_mark: Successfully removed blacklist from the server with ID \`[${blacklistserverid.content}]\` as requested!`
                                 })
 
-                                await adminLogs.send({
-                                    embeds: [
-                                        new EmbedBuilder()
-                                        .setColor(ee.color)
-                                        .setTitle(`Whitelist Detected`)
-                                        .setDescription(`**User <@!${interaction.user.id}> has just removed the blacklist from server with ID \`${blacklistserverid.content}\`**`)
-                                        .setTimestamp()
-                                    ]
-                                });
+                                await sendWebhook(config.adminLogs, "Whitelist Detected", `**User <@!${interaction.user.id}> has just removed the blacklist from server with ID \`${blacklistserverid.content}\`**`, ee.color);
                             } else {
                                 await serverfound.updateOne({
                                     Blacklisted: true
@@ -466,17 +439,9 @@
 
                                 await interactionCollector.editReply({
                                     content: `:white_check_mark: Successfully blacklisted the server with ID \`[${blacklistserverid.content}]\` as requested!`
-                                })
-
-                                await adminLogs.send({
-                                    embeds: [
-                                        new EmbedBuilder()
-                                        .setColor(ee.color)
-                                        .setTitle(`Blacklist Detected`)
-                                        .setDescription(`**User <@!${interaction.user.id}> has just blacklisted from server with ID \`${blacklistserverid.content}\`**`)
-                                        .setTimestamp()
-                                    ]
                                 });
+
+                                await sendWebhook(config.adminLogs, "Blacklist Detected", `**User <@!${interaction.user.id}> has just blacklisted from server with ID \`${blacklistserverid.content}\`**`, ee.color);
                             }
 
                         }).catch((collected) => {
@@ -656,15 +621,7 @@
 
                             forcespawn(interaction, pokemonName, args[1])
 
-                            await adminLogs.send({
-                                embeds: [
-                                    new EmbedBuilder()
-                                    .setColor(ee.color)
-                                    .setTitle(`PokeSpawn Detected`)
-                                    .setDescription(`**User <@!${interaction.user.id}> has just spawned a pokemon called \`${pokemonName}\` with a level of \`${args[1]}\`!**`)
-                                    .setTimestamp()
-                                ]
-                            });
+                            await sendWebhook(config.adminLogs, "PokeSpawn Detected", `**User <@!${interaction.user.id}> has just spawned a pokemon called \`${pokemonName}\` with a level of \`${args[1]}\`!**`, ee.color);
 
                             return interactionCollector.editReply({
                                 content: `:white_check_mark: Successfully spawned Pokémon \`[ ${pokemonName} ]\` as requested!`
@@ -872,7 +829,7 @@
                             const cmdargs = collected.first();
 
                             const args = cmdargs.content.split(/ +/).filter(Boolean);
-                            
+
                             await cmdargs.delete();
 
                             if (cmdargs.content.toString() === 'cancel') {
@@ -939,7 +896,7 @@
                             const cmdargs = collected.first();
 
                             const args = cmdargs.content.split(/ +/).filter(Boolean);
-                            
+
                             await cmdargs.delete();
 
                             if (cmdargs.content.toString() === 'cancel') {
@@ -987,6 +944,264 @@
                             })
                         })
                     })
+                }
+
+                if (interactionCollector.customId === "devinfo") {
+                    await interactionCollector.deferUpdate();
+
+                    const devInfoRow = new ActionRowBuilder()
+                    devInfoRow.addComponents([
+                        new ButtonBuilder()
+                        .setEmoji('⏪')
+                        .setCustomId('fastbackward')
+                        .setStyle(ButtonStyle.Primary)
+                    ])
+                    devInfoRow.addComponents([
+                        new ButtonBuilder()
+                        .setEmoji('⬅️')
+                        .setCustomId('backward')
+                        .setStyle(ButtonStyle.Primary)
+                    ])
+                    devInfoRow.addComponents([
+                        new ButtonBuilder()
+                        .setEmoji('➡️')
+                        .setCustomId('forward')
+                        .setStyle(ButtonStyle.Primary)
+                    ])
+                    devInfoRow.addComponents([
+                        new ButtonBuilder()
+                        .setEmoji('⏩')
+                        .setCustomId('fastforward')
+                        .setStyle(ButtonStyle.Primary)
+                    ])
+                    devInfoRow.addComponents([
+                        new ButtonBuilder()
+                        .setEmoji('❌')
+                        .setCustomId('exit')
+                        .setStyle(ButtonStyle.Primary)
+                    ])
+
+                    const devInfoEmbeds = [];
+                    let currentPage = 0;
+                    const guilds = client.guilds.cache.map(guild => {
+                        devInfoEmbeds.push(guild);
+                    })
+
+                    const embeds = generateDevEmbed(devInfoEmbeds, currentPage);
+                    const filter = m => m.user.id === interaction.user.id;
+                    const collector = interactionCollector.message.createMessageComponentCollector({
+                        filter,
+                        idle: 1000 * 60,
+                        time: 1000 * 120
+                    });
+
+                    let mainMsg;
+                    if (guilds.length > 20) {
+                        mainMsg = await interactionCollector.editReply({
+                            embeds: [embeds[currentPage].setFooter({
+                                text: `Page ${currentPage+1} of ${embeds.length}`
+                            })],
+                            components: [mainRow],
+                            fetchReply: true
+                        })
+                    } else {
+                        mainMsg = await interactionCollector.editReply({
+                            embeds: [embeds[currentPage].setFooter({
+                                text: `Page ${currentPage+1} of ${embeds.length}`
+                            })],
+                            components: [],
+                            fetchReply: true
+                        })
+                    }
+
+                    collector.on('collect', async (interactionCollector) => {
+                        if (interactionCollector.customId === "forward") {
+                            await interactionCollector.deferUpdate();
+                            if (currentPage < embeds.length - 1) {
+                                currentPage++;
+                                interactionCollector.editReply({
+                                    embeds: [embeds[currentPage].setFooter({
+                                        text: `Page ${currentPage+1} of ${embeds.length}`
+                                    })]
+                                })
+                            } else {
+                                --currentPage;
+                                interactionCollector.editReply({
+                                    embeds: [embeds[currentPage].setFooter({
+                                        text: `Page ${currentPage+1} of ${embeds.length}`
+                                    })]
+                                })
+                            }
+                        }
+            
+                        if (interactionCollector.customId === "backward") {
+                            await interactionCollector.deferUpdate();
+                            if (currentPage !== 0) {
+                                --currentPage;
+                                interactionCollector.editReply({
+                                    embeds: [embeds[currentPage].setFooter({
+                                        text: `Page ${currentPage+1} of ${embeds.length}`
+                                    })]
+                                })
+                            } else {
+                                currentPage++;
+                                interactionCollector.editReply({
+                                    embeds: [embeds[currentPage].setFooter({
+                                        text: `Page ${currentPage+1} of ${embeds.length}`
+                                    })]
+                                })
+                            }
+                        }
+            
+                        if (interactionCollector.customId === "fastforward") {
+                            await interactionCollector.deferUpdate();
+                            if (currentPage < embeds.length - 1) {
+                                currentPage = embeds.length - 1;
+                                interactionCollector.editReply({
+                                    embeds: [embeds[currentPage].setFooter({
+                                        text: `Page ${currentPage+1} of ${embeds.length}`
+                                    })]
+                                })
+                            }
+                        }
+            
+                        if (interactionCollector.customId === "fastbackward") {
+                            await interactionCollector.deferUpdate();
+                            currentPage = 0;
+                            interactionCollector.editReply({
+                                embeds: [embeds[currentPage].setFooter({
+                                    text: `Page ${currentPage+1} of ${embeds.length}`
+                                })]
+                            })
+                        }
+            
+                        if (interactionCollector.customId === "exit") {
+                            await interactionCollector.deferUpdate();
+                            collector.stop();
+                        }
+                    })
+            
+                    collector.on('end', async (collected, reason) => {
+                        if (reason === "messageDelete") {
+                            return;
+                        } else {
+                            try {
+                                for (let i = 0; i < mainRow.components.length; i++) {
+                                    mainRow.components[i].setDisabled(true);
+                                }
+                
+                                await mainMsg.edit({
+                                    components: [mainRow]
+                                });
+                            } catch {}
+                        }
+                    })
+
+                    function generateDevEmbed(helpEmbedPage, currentPage) {
+                        const embeds = []
+                        let k = 20;
+                        for (let i = 0; i < helpEmbedPage.length; i += 20) {
+                            const current = helpEmbedPage.slice(i, k);
+                            let j = i;
+                            k += 1;
+                            const info = current.map(currentEmbed => `- ${currentEmbed}`).join('\n');
+                            const embed = new EmbedBuilder()
+                                .setDescription(`\`\`\`yaml\n${info}\`\`\``)
+                                .setTitle(`🤖 Total Servers 🤖`)
+                                .setColor(ee.color)
+                            embeds.push(embed)
+                        }
+                        return embeds;
+                    }
+                }
+
+                if (interactionCollector.customId === "evaluate") {
+                    await interactionCollector.deferUpdate();
+                    let filter = m => m.author.id === interaction.user.id;
+                    return interactionCollector.editReply({
+                        content: ':white_check_mark: Please enter the following arguments to evalute, \`Code\` in the correct order! (Say \`cancel\` to cancel the command)',
+                        components: [],
+                        embeds: [],
+                        fetchReply: true
+                    }).then(() => {
+                        interactionCollector.channel.awaitMessages({
+                            filter,
+                            max: 1, //MAX COLLECTIONS
+                            time: 1000 * 60, // SECONDS
+                        }).then(async (collected) => {
+                            const cmdargs = collected.first();
+
+                            await cmdargs.delete();
+
+                            if (cmdargs.content.toString() === 'cancel') {
+                                return interactionCollector.editReply({
+                                    content: ':white_check_mark: Successfully cancelled command!'
+                                })
+                            }
+
+                            if (!cmdargs.content) {
+                                return interactionCollector.editReply({
+                                    content: ':x: You have not inserted the args as requested!',
+                                })
+                            }
+
+                            try {
+                                if (cmdargs.content.includes(`token`)) return;
+                    
+                                let evaled = await eval(cmdargs.content);
+                                let string = inspect(evaled);
+                    
+                                if (string.includes(client.token)) return;
+                    
+                                let evalEmbed = new EmbedBuilder().setTitle(`${client.user.username} | EVALUTION`);
+                                evalEmbed.setDescription(`***Input:***\n\`\`\`js\n${cmdargs.content}\n\`\`\`\n***Output:***\n\`\`\`js\n${string}\n\`\`\``);
+                                await interactionCollector.editReply({
+                                    embeds: [evalEmbed.setColor(ee.color).setTimestamp()],
+                                    components: [],
+                                    content: ' ',
+                                });
+                            } catch (e) {
+                                const evalEmbed2 = new EmbedBuilder();
+                                evalEmbed2.setTitle(`Something went wrong`);
+                                evalEmbed2.setDescription(`\`\`\`${e.message}\`\`\``);
+                                return interactionCollector.editReply({
+                                    embeds: [evalEmbed2.setColor(ee.wrongcolor).setTimestamp()],
+                                    components: [],
+                                    content: ' ',
+                                });
+                            }
+                        }).catch((collected) => {
+                            return interactionCollector.editReply({
+                                content: ':x: The response was timed out, please use the command again!'
+                            })
+                        })
+                    })
+                }
+
+                if (interactionCollector.customId === "shutdown") {
+                    await interactionCollector.deferUpdate();
+
+                    let time = 60;
+                    const countdown = setInterval(async () => {
+                        if (time === 0) {
+                            await interactionCollector.editReply({
+                                content: 'Restarting!',
+                                components: [],
+                                embeds: [],
+                            });
+                            clearInterval(countdown);
+                            return process.exit();
+                        }
+
+                        if (time % 5 === 0) {
+                            interactionCollector.editReply({
+                                content: 'Restarting in: ' + time + ' seconds!',
+                                components: [],
+                                embeds: [],
+                            });
+                        }
+                        time--;
+                    }, 1000 * 1);
                 }
             });
 

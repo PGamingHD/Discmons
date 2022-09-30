@@ -1,3 +1,5 @@
+:test
 @echo off
-cd "C:\Users\pontu\OneDrive\Dokument\GitHub\Discmons"
+cls
 node .
+goto test

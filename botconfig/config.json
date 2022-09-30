@@ -3,7 +3,9 @@
    "token": "MTAxMTU5MDgxMTAzNDU5OTQ4NQ.GKAPdm.hICOSq0i9q0rvAFrNZXFvP2vyWqWbS2pDSk_nQ",
    "botID": "1011002384064970944",
    "prefix": "/",
-   "botVersion": "v1.0.0_DEV",
+   "botVersion": "v1.1.0_DEV",
    "adminLogs": "https://discord.com/api/webhooks/1011020747931648030/Y_tz2UyzlyjB-3u3MpP9i-75eqRx6WiyWd5Dhnec849WMBndxKxdRkTdVhR4cDU13YOD",
-   "maintenanceChannel": "1010999951838416896"
+   "maintenanceChannel": "1010999951838416896",
+   "enableDebug": false,
+   "warnRatelimit": false
 }
