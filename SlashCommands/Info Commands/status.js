@@ -44,7 +44,7 @@
                     ])
                     buttonrow.addComponents([
                         new ButtonBuilder()
-                        .setURL(`https://discord.gg/discmon`)
+                        .setURL(`${config.mainSupport}`)
                         .setLabel('Support')
                         .setStyle(ButtonStyle.Link)
                     ])
