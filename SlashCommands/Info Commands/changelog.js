@@ -122,7 +122,7 @@
                             })]
                         })
                     } else {
-                        currentPage++;
+                        currentPage = embeds.length - 1;
                         interactionCollector.editReply({
                             embeds: [embeds[currentPage].setFooter({
                                 text: `Page ${currentPage+1} of ${embeds.length}`
