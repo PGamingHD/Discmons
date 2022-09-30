@@ -38,7 +38,7 @@
                     const buttonrow = new ActionRowBuilder()
                     buttonrow.addComponents([
                         new ButtonBuilder()
-                        .setURL(`https://discord.com/api/oauth2/authorize?client_id=904757023797813339&permissions=517543939136&scope=bot%20applications.commands`)
+                        .setURL(`${config.mainInvite}`)
                         .setLabel('Invite')
                         .setStyle(ButtonStyle.Link)
                     ])

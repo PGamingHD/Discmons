@@ -6,6 +6,7 @@
    "botVersion": "v1.1.6_DEV",
    "adminLogs": "https://discord.com/api/webhooks/1011020747931648030/Y_tz2UyzlyjB-3u3MpP9i-75eqRx6WiyWd5Dhnec849WMBndxKxdRkTdVhR4cDU13YOD",
    "maintenanceChannel": "1010999951838416896",
+   "mainInvite": "https://discord.com/api/oauth2/authorize?client_id=1011002384064970944&permissions=137439276096&scope=bot%20applications.commands",
    "enableDebug": false,
    "warnRatelimit": false
 }

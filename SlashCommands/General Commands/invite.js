@@ -26,7 +26,7 @@
                     new EmbedBuilder()
                     .setColor(ee.color)
                     .setTitle(`Want to join our Support Server or Invite me?`)
-                    .setDescription(`**Invite Me**\n[Invite](https://discord.com/api/oauth2/authorize?client_id=1011002384064970944&permissions=137439341640&scope=applications.commands%20bot)\n\n**Support Server**\n[Support](https://discord.gg/xQFFRzhJu2)`)
+                    .setDescription(`**Invite Me**\n[Invite](${config.mainInvite})\n\n**Support Server**\n[Support](https://discord.gg/xQFFRzhJu2)`)
                 ]
             })
         }
