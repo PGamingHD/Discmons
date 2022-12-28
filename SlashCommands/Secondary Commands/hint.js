@@ -25,12 +25,12 @@
         run: async (client, interaction, args) => {
 
             const findspawned = await spawned.findOne({
-                SpawnedServerID: parseInt(interaction.guild.id),
+                SpawnedServerID: interaction.guild.id,
                 SpawnedChannelID: interaction.channel.id
             }).limit(1);
 
             const userdata = await user.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             }).limit(1);
 
             if(!findspawned){

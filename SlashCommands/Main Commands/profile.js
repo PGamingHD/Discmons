@@ -24,7 +24,7 @@
          */
         run: async (client, interaction, args) => {
             const user = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             })
 
             let rankname = "Unknown";

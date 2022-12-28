@@ -58,7 +58,7 @@
             ])
 
             const bagitems = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id)
+                OwnerID: interaction.user.id
             })
 
             const user = bagitems;

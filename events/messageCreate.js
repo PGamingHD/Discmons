@@ -50,7 +50,7 @@ client.on("messageCreate", async (message) => {
 
     if (!findserver) {
         await server.create({
-            ServerID: parseInt(message.guild.id),
+            ServerID: message.guild.id,
             Blacklisted: false,
             SpawningTime: 0,
             RedirectChannel: 0,

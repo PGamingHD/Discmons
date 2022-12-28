@@ -4,6 +4,7 @@ const {
     connectToMongo
 } = require("./handler/functions");
 const mainRouter = require("./routes/router");
+const chalk = require("chalk");
 
 require("./handler/anticrash");
 
@@ -11,4 +12,4 @@ connectToMongo();
 
 app.use('/', mainRouter)
 
-app.listen(3500, () => console.log(`[EXPRESS-SERVER] <==> || Successfully started Express server at port 3500, listener ready! || <==> [EXPRESS-SERVER]`));
+app.listen(80, () => console.log(chalk.green(`[PURCHASE-SERVER] <==> || Successfully started Purchases Server at port 80! || <==> [PURCHASE-SERVER]`)));

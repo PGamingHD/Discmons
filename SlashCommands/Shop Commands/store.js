@@ -16,6 +16,7 @@
         EmbedBuilder
     } = require('@discordjs/builders');
     const paypal = require('paypal-rest-sdk');
+    const shopLink = "http://localhost:80";
 
     module.exports = {
         name: 'store',
@@ -290,8 +291,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/bronze",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/roles/bronze`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -369,8 +370,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/silver",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/roles/silver`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -448,8 +449,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/gold",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/roles/gold`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -527,8 +528,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/roles/platinum",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/roles/platinum`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -608,8 +609,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t1",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t1`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -687,8 +688,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t2",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t2`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -766,8 +767,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t3",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t3`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -845,8 +846,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t4",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t4`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -924,8 +925,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t5",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t5`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -1003,8 +1004,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/tokens/t6",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/tokens/t6`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -1084,8 +1085,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c1",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/coins/c1`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -1163,8 +1164,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c2",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/coins/c2`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -1242,8 +1243,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c3",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/coins/c3`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {
@@ -1321,8 +1322,8 @@
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": "http://localhost:3500/success/coins/c4",
-                            "cancel_url": "http://localhost:3500/cancel"
+                            "return_url": `${shopLink}/success/coins/c4`,
+                            "cancel_url": `${shopLink}/cancel`
                         },
                         "transactions": [{
                             "item_list": {

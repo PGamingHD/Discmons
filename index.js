@@ -26,8 +26,8 @@ const {
     AutoPoster
 } = require('topgg-autoposter')
 const express = require('express');
-
 const server = express();
+require('dotenv').config();
 
 //           --------------------<CONSTRUCTORS>--------------------
 
@@ -55,7 +55,7 @@ const client = new Client({
     ],
 });
 
-const autoposter = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTEwMDIzODQwNjQ5NzA5NDQiLCJib3QiOnRydWUsImlhdCI6MTY2Mzk2NTkyNX0.K-uh5rGxi6Vj-5RFcPmVZQJ4q1GBGOVtpEH_UVfiHZI', client)
+const autoposter = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTEwMDIzODQwNjQ5NzA5NDQiLCJib3QiOnRydWUsImlhdCI6MTY3MjE0NzgxOX0.CXYPN5AUk4LZ5vD6tjb4Vt_pcOourjqvU-xvAytJawA', client)
 const webhook = new Webhook("epicGamers123!#fromtopggPost");
 
 //           --------------------<CONSTRUCTING CLIENTS>--------------------
@@ -86,10 +86,12 @@ client.config = require("./botconfig/config.json");
 
 //           --------------------<REQUIRES>--------------------
 
+// Initialize the Purchase Backend
+require("./Bot-Backend/index");
+// Initialize the anticrash handler
 require("./handler/anticrash")(client)
 // Initializing the project
 require("./handler")(client);
-//require("./database/db")
 
 //           --------------------<REQUIRES>--------------------
 
@@ -100,6 +102,10 @@ autoposter.on('posted', () => {
     console.log(chalk.green('[AUTOPOST] <==> || Successfully posted all relevant stats to the Top.gg site! <==> || [AUTOPOST]'));
 });
 
+autoposter.on('error', (error) => {
+    console.log(chalk.red('[AUTOPOST ERROR] <==> || Ran into error explained below. <==> || [AUTOPOST ERROR]\n', error))
+})
+
 server.post("/dblwebhook", webhook.listener(async (vote) => {
     const findregistered = await findUser(vote.user);
 
@@ -107,7 +113,7 @@ server.post("/dblwebhook", webhook.listener(async (vote) => {
         await sendWebhook("https://discord.com/api/webhooks/1022982782651216012/6v-oWzGgTSPhxCIbOG3FSqfAnd62ya2Me-Vaoc6I572Jtug_wUFnHf44smGoAheKTod8", "🎉 New Registered Vote 🎉", `**A new vote was registered by <@!${vote.user}>!**\n\n*User has been successfully automatically given their voting rewards, make sure to vote below to get your own rewards!*\n\n*Click [here](https://top.gg/bot/1011002384064970944/vote) to vote for us and get free Pokétokens!*`, ee.color);
 
         await userData.findOneAndUpdate({
-            OwnerID: parseInt(vote.user)
+            OwnerID: vote.user
         }, {
             $inc: {
                 Poketokens: 5,
@@ -127,7 +133,7 @@ server.listen(3000);
 
 //           --------------------<STARTER>--------------------
 
-client.login(client.config.token);
+client.login(process.env.LOGIN_TOKEN);
 
 //           --------------------<STARTER>--------------------
 

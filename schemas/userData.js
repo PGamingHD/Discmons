@@ -4,7 +4,7 @@ const {Types: {Long}} = mongoose;
 
 const userDataSchema = new mongoose.Schema({
     OwnerID: {
-        type: Long,
+        type: String,
         required: true,
         unique: true
     },

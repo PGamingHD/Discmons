@@ -30,7 +30,7 @@
             const id = interaction.options.getInteger('id');
 
             const findnewselect = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
                 "Inventory.PokemonData.PokemonOrder": id
             }, {
                 "Inventory.$": 1
@@ -50,14 +50,14 @@
             }
 
             await userdata.findOneAndUpdate({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
                 "Inventory.PokemonSelected": true
             }, {
                 "Inventory.$.PokemonSelected": false,
             })
 
             await userdata.findOneAndUpdate({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
                 "Inventory.PokemonData.PokemonOrder": id,
             }, {
                 "Inventory.$.PokemonSelected": true,

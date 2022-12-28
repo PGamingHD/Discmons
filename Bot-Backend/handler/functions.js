@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const user = require("../schemas/userData");
 const purchased = require("../schemas/purchasedOrders");
+const chalk = require("chalk");
 
 module.exports.connectToMongo = connectToMongo;
 module.exports.addUserCoins = addUserCoins;
@@ -11,7 +12,7 @@ async function connectToMongo() {
     await mongoose.connect("mongodb://localhost:27017" || '', {
         keepAlive: true,
         dbName: 'Discmons',
-    }).then(() => console.log("[DATABASE] <==> || Successfully connected to the MongoDB database! || <==> [DATABASE]"))
+    }).then(() => console.log(chalk.green("[DATABASE] <==> || Successfully connected to the MongoDB database! || <==> [DATABASE]")))
 }
 
 async function addUserCoins(userid, amount, paymentID) {

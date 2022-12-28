@@ -100,7 +100,7 @@
                             force: true
                         });
                         newArray.push({
-                            name: `${getUser.tag}`,
+                            name: `[${i + 1}] ${getUser.tag}`,
                             value: `${emoji.pokecoin} ${parseInt(vals[i].Pokecoins).toLocaleString('en-US')}`,
                             inline: true
                         });
@@ -132,7 +132,7 @@
                             force: true
                         });
                         newArray.push({
-                            name: `${getUser.tag}`,
+                            name: `[${i + 1}] ${getUser.tag}`,
                             value: `${emoji.token} ${parseInt(vals[i].Poketokens).toLocaleString('en-US')}`,
                             inline: true
                         });

@@ -42,7 +42,7 @@
                 const ch = interaction.options.getChannel('channel');
 
                 const foundserver = await server.findOne({
-                    ServerID: parseInt(interaction.guild.id)
+                    ServerID: interaction.guild.id
                 });
 
                 if (ch.type !== 0) {
@@ -71,7 +71,7 @@
 
             if (interaction.options.getSubcommand() === "disable") {
                 const foundserver = await server.findOne({
-                    ServerID: parseInt(interaction.guild.id)
+                    ServerID: interaction.guild.id
                 });
 
                 if (parseInt(foundserver.RedirectChannel) === 0) {

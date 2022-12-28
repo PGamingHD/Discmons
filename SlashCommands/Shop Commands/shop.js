@@ -81,7 +81,7 @@ module.exports = {
             const shopitems = await shopData.find()
 
             const user = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id)
+                OwnerID: interaction.user.id
             })
 
             const embeds = generateShopEmbed(shopitems, currentPage, user)
@@ -252,7 +252,7 @@ module.exports = {
             }
 
             const founduser = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id)
+                OwnerID: interaction.user.id
             })
 
             await interaction.reply({
@@ -314,7 +314,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -360,7 +360,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -417,7 +417,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -463,7 +463,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -520,7 +520,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -566,7 +566,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {
@@ -623,7 +623,7 @@ module.exports = {
                             })
                         } else {
                             await userData.findOneAndUpdate({
-                                OwnerID: parseInt(interaction.user.id),
+                                OwnerID: interaction.user.id,
                             }, {
                                 $push: {
                                     Items: {

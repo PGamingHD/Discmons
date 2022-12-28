@@ -82,7 +82,7 @@
                 const price = interaction.options.getInteger('price');
 
                 const findpoke = await user.findOne({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                     "Inventory.PokemonData.PokemonOrder": id
                 }, {
                     "Inventory.$": 1
@@ -153,7 +153,7 @@
                 });
 
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                     "Inventory.PokemonData.PokemonOrder": id
                 }, {
                     $set: {
@@ -184,10 +184,10 @@
                 const interactionTarget = await client.users.fetch(`${pokeinfo.PokemonOwner}`);
 
                 const userdata = await user.findOne({
-                    OwnerID: parseInt(interaction.user.id)
+                    OwnerID: interaction.user.id
                 });
                 const ownerdata = await user.findOne({
-                    OwnerID: parseInt(pokeinfo.PokemonOwner)
+                    OwnerID: pokeinfo.PokemonOwner
                 });
 
                 if (userdata.Pokecoins < pokeinfo.MarketPrice) {
@@ -205,7 +205,7 @@
                 }
 
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(ownerdata.OwnerID),
+                    OwnerID: ownerdata.OwnerID,
                 }, {
                     $pull: {
                         Inventory: {
@@ -219,7 +219,7 @@
 
                 const findtotal = await user.aggregate([{
                     $match: {
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                     }
                 }, {
                     $unwind: "$Inventory"
@@ -234,7 +234,7 @@
                 const newMoney = userdata.Pokecoins - pokeinfo.MarketPrice;
 
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(userdata.OwnerID)
+                    OwnerID: userdata.OwnerID
                 }, {
                     $push: {
                         Inventory: {
@@ -309,7 +309,7 @@
                 }
 
                 const findininventory = await user.findOne({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                     "Inventory.PokemonID": pokeinfo.PokemonID
                 }, {
                     "Inventory.$": 1
@@ -320,7 +320,7 @@
                 })
 
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                     "Inventory.PokemonData.PokemonOrder": id
                 }, {
                     $set: {

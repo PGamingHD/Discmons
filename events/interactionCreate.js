@@ -55,7 +55,7 @@ client.on("interactionCreate", async (interaction) => {
 
     if (!findserver) {
         await server.create({
-            ServerID: parseInt(interaction.guild.id),
+            ServerID: interaction.guild.id,
             Blacklisted: false,
             SpawningTime: 0,
             RedirectChannel: 0,
@@ -73,7 +73,6 @@ client.on("interactionCreate", async (interaction) => {
     const finduser = await findUser(interaction.user.id);
 
     if (finduser) {
-
         if (finduser.Blacklisted) {
             return interaction.reply({
                 content: ':x: You have been blacklisted from the usage of this bots functions, please open a ticket on the Support Server to get this fixed.',
@@ -262,7 +261,7 @@ client.on("interactionCreate", async (interaction) => {
                 ephemeral: true
             });
 
-            await sendWebhook("https://discord.com/api/webhooks/1025464359343886468/x5y4lcJqO_a1KpwfwhMdhkHC6APgOPlyTla7WfTm5AnYPrPh7jtVKmLjnstXUBug-nqQ", "✉️ Bug Report Recieved ✉️", `**Reporter:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${reportedBug}\`\`\``, ee.successcolor);
+            await sendWebhook("https://discord.com/api/webhooks/1057285201513951262/HC0n71S2dRDBCPuUDPYErlySpBrOm3k7_Xw3SCD8MXFQ8UwvBHbSu7sRABdYtiwU2bpb", "✉️ Bug Report Recieved ✉️", `**Reporter:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${reportedBug}\`\`\``, ee.successcolor);
         }
 
         if (interaction.customId === "suggestionModal") {
@@ -273,7 +272,7 @@ client.on("interactionCreate", async (interaction) => {
                 ephemeral: true
             });
 
-            await sendWebhook("https://discord.com/api/webhooks/1025466745827364907/VKptuiOpZIRqEsDzPqOlI7-By_wLwKf7GcUbHEsMJmgLRCvH3zPO6HTAh0jpUEnx3HXK", "✉️ Suggestion Recieved ✉️", `**Suggester:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${suggestedFeature}\`\`\``, ee.successcolor);
+            await sendWebhook("https://discord.com/api/webhooks/1057285267209343057/dEdY4qhBOTs6B6KcKeX27SveKm9ysg_eoFXFhLtneOnk17V1uxRcYzFoDTVe1FfvXWMN", "✉️ Suggestion Recieved ✉️", `**Suggester:** *${interaction.user.tag} [${interaction.user.id}]*\n\n**Explanation:**\n\`\`\`${suggestedFeature}\`\`\``, ee.successcolor);
         }
     }
 });

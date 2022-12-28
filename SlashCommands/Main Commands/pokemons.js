@@ -64,7 +64,7 @@
             ])
 
             const ownedpokemons = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             })
 
             const pokemons = ownedpokemons.Inventory;

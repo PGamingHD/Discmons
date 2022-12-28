@@ -15,12 +15,12 @@ const servers = require('../schemas/Servers');
 client.on("guildCreate", async (guild, Client) => {
 
     const hasdata = await servers.findOne({
-        ServerID: parseInt(guild.id),
+        ServerID: guild.id,
     });
 
     if (!hasdata) {
-        const creation = await servers.create({
-            ServerID: parseInt(guild.id),
+        await servers.create({
+            ServerID: guild.id,
             Blacklisted: false,
             SpawningTime: 0,
             RedirectChannel: 0,

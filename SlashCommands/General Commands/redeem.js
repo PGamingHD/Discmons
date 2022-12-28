@@ -48,7 +48,7 @@
             }
 
             const user = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id)
+                OwnerID: interaction.user.id
             });
 
             let arrayOfItems = [];
@@ -68,7 +68,7 @@
 
                 if (newredeems > 0) {
                     await userData.findOneAndUpdate({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         "Items.ItemName": "Redeem",
                     }, {
                         $set: {
@@ -77,7 +77,7 @@
                     })
                 } else {
                     await userData.findOneAndUpdate({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                     }, {
                         $pull: {
                             Items: {

@@ -99,7 +99,7 @@
                 });
 
                 const findMain = await userData.findOne({
-                    OwnerID: parseInt(interaction.user.id)
+                    OwnerID: interaction.user.id
                 })
 
                 if (!findTarget) {
@@ -147,7 +147,7 @@
                         await interactionCollector.deferUpdate();
 
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id)
+                            OwnerID: interaction.user.id
                         }, {
                             $set: {
                                 Poketokens: newMainBal
@@ -222,7 +222,7 @@
                 });
 
                 const findMain = await userData.findOne({
-                    OwnerID: parseInt(interaction.user.id)
+                    OwnerID: interaction.user.id
                 })
 
                 if (!findTarget) {
@@ -271,7 +271,7 @@
                         await interactionCollector.deferUpdate();
 
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id)
+                            OwnerID: interaction.user.id
                         }, {
                             $set: {
                                 Pokecoins: newMainBal
@@ -346,7 +346,7 @@
                 });
 
                 const findpoke = await userData.findOne({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                     "Inventory.PokemonData.PokemonOrder": pokemonid
                 }, {
                     "Inventory.$": 1
@@ -415,7 +415,7 @@
                         await interactionCollector.deferUpdate();
 
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id),
+                            OwnerID: interaction.user.id,
                         }, {
                             $pull: {
                                 Inventory: {

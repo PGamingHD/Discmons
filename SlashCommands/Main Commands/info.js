@@ -58,17 +58,10 @@
             ])
 
             const ownedpokemons = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             })
 
             const pokemons = ownedpokemons.Inventory;
-
-            /*const findselected = await userdata.findOne({
-                OwnerID: parseInt(interaction.user.id),
-                "Inventory.PokemonSelected": true
-            }, {
-                "Inventory.$": 1
-            });*/
 
             let selectedNum;
             for (let i = 0; i < ownedpokemons.Inventory.length; i++) {

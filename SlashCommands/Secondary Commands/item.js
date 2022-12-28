@@ -59,6 +59,7 @@
         run: async (client, interaction, args) => {
             if (interaction.options.getSubcommand() === "use") {
                 const itemname = interaction.options.getString('itemname');
+                let pokemonId = interaction.options.getInteger('pokemonid');
                 const lowercased = itemname.toLowerCase();
                 const splitted = lowercased.split(' ');
     
@@ -72,7 +73,7 @@
                 const remadeName = name.join(' ');
 
                 const user = await userData.findOne({
-                    OwnerID: parseInt(interaction.user.id)
+                    OwnerID: interaction.user.id
                 });
 
                 let amountOfItem = 0;
@@ -94,12 +95,23 @@
                 }
 
                 if (remadeName === "Rare Candy") {
-                    const findSelected = await userData.findOne({
-                        OwnerID: parseInt(interaction.user.id),
-                        "Inventory.PokemonSelected": true
-                    }, {
-                        "Inventory.$": 1
-                    })
+
+                    let findSelected = undefined;
+                    if (!pokemonId) {
+                        findSelected = await userData.findOne({
+                            OwnerID: interaction.user.id,
+                            "Inventory.PokemonSelected": true
+                        }, {
+                            "Inventory.$": 1
+                        });
+                    } else {
+                        findSelected = await userData.findOne({
+                            OwnerID: interaction.user.id,
+                            "Inventory.PokemonData.PokemonOrder": pokemonId
+                        }, {
+                            "Inventory.$": 1
+                        });
+                    }
 
                     if (amountOfItem < 1) {
                         return interaction.reply({
@@ -108,9 +120,16 @@
                         });
                     }
 
+                    if (!findSelected) {
+                        return interaction.reply({
+                            content: ':x: Looks like the PokemonID you entered was not found, is it a valid Pokémon?',
+                            ephemeral: true
+                        });
+                    }
+
                     if (findSelected.Inventory[0].PokemonData.PokemonLevel >= 100) {
                         return interaction.reply({
-                            content: ':x: Your selected Pokémon might not be leveled up any further, it reached its max level!',
+                            content: ':x: That Pokémon might not be leveled up any further, it reached its max level!',
                             ephemeral: true
                         });
                     }
@@ -119,7 +138,7 @@
 
                     if (newcandies > 0) {
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id),
+                            OwnerID: interaction.user.id,
                             "Items.ItemName": "Rare Candy",
                         }, {
                             $set: {
@@ -128,16 +147,17 @@
                         })
 
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id),
+                            OwnerID: interaction.user.id,
                             "Inventory.PokemonSelected": true
                         }, {
                             $inc: {
                                 "Inventory.$.PokemonData.PokemonLevel": 1
                             },
+                            "Inventory.$.PokemonData.PokemonXP": 0
                         });
                     } else {
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id),
+                            OwnerID: interaction.user.id,
                         }, {
                             $pull: {
                                 Items: {
@@ -147,12 +167,13 @@
                         })
 
                         await userData.findOneAndUpdate({
-                            OwnerID: parseInt(interaction.user.id),
+                            OwnerID: interaction.user.id,
                             "Inventory.PokemonSelected": true
                         }, {
                             $inc: {
                                 "Inventory.$.PokemonData.PokemonLevel": 1
                             },
+                            "Inventory.$.PokemonData.PokemonXP": 0
                         });
                     }
 
@@ -198,7 +219,7 @@
                 }
 
                 const mainuser = await userData.findOne({
-                    OwnerID: parseInt(interaction.user.id)
+                    OwnerID: interaction.user.id
                 });
 
                 let amountOfItem = 0;
@@ -272,7 +293,7 @@
 
                 if (newMainBalance > 0) {
                     await userData.findOneAndUpdate({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         "Items.ItemName": remadeName,
                     }, {
                         $set: {
@@ -281,7 +302,7 @@
                     });
                 } else {
                     await userData.findOneAndUpdate({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                     }, {
                         $pull: {
                             Items: {

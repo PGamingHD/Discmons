@@ -142,7 +142,7 @@
                 }
 
                 const findTarget = await userData.findOne({
-                    OwnerID: parseInt(target.id)
+                    OwnerID: target.id
                 });
 
                 if (!findTarget) {
@@ -486,15 +486,15 @@
                                 if (findTrade.initiatorOffers[i].itemType === "poke") {
                                     const pokemon = findTrade.initiatorOffers[i].object;
                                     const findTarget = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.targetID)
+                                        OwnerID: findTrade.targetID
                                     });
                                     const findMain = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.initiatorID)
+                                        OwnerID: findTrade.initiatorID
                                     });
 
                                     const findtotal = await userData.aggregate([{
                                         $match: {
-                                            OwnerID: parseInt(findTarget.OwnerID),
+                                            OwnerID: findTarget.OwnerID,
                                         }
                                     }, {
                                         $unwind: "$Inventory"
@@ -544,10 +544,10 @@
                                 } else if (findTrade.initiatorOffers[i].itemType === "item") {
                                     const item = findTrade.initiatorOffers[i].object;
                                     const findTarget = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.targetID)
+                                        OwnerID: findTrade.targetID
                                     });
                                     const findMain = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.initiatorID)
+                                        OwnerID: findTrade.initiatorID
                                     });
 
                                     let targetAmountOfItem = 0;
@@ -568,7 +568,7 @@
                                     const newMainBalance = mainAmountOfItem - item.ItemAmount;
 
                                     const findselected = await userData.findOne({
-                                        OwnerID: parseInt(findTarget.OwnerID),
+                                        OwnerID: findTarget.OwnerID,
                                         "Items.ItemName": item.ItemName
                                     }, {
                                         "Inventory.$": 1
@@ -576,7 +576,7 @@
 
                                     if (findselected) {
                                         await userData.findOneAndUpdate({
-                                            OwnerID: parseInt(findTarget.OwnerID),
+                                            OwnerID: findTarget.OwnerID,
                                             "Items.ItemName": item.ItemName
                                         }, {
                                             $set: {
@@ -596,7 +596,7 @@
 
                                     if (newMainBalance > 0) {
                                         await userData.findOneAndUpdate({
-                                            OwnerID: parseInt(findMain.OwnerID),
+                                            OwnerID: findMain.OwnerID,
                                             "Items.ItemName": item.ItemName,
                                         }, {
                                             $set: {
@@ -621,15 +621,15 @@
                                 if (findTrade.targetOffers[i].itemType === "poke") {
                                     const pokemon = findTrade.targetOffers[i].object;
                                     const findTarget = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.initiatorID)
+                                        OwnerID: findTrade.initiatorID
                                     });
                                     const findMain = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.targetID)
+                                        OwnerID: findTrade.targetID
                                     });
 
                                     const findtotal = await userData.aggregate([{
                                         $match: {
-                                            OwnerID: parseInt(findTarget.OwnerID),
+                                            OwnerID: findTarget.OwnerID,
                                         }
                                     }, {
                                         $unwind: "$Inventory"
@@ -678,10 +678,10 @@
                                 } else if (findTrade.targetOffers[i].itemType === "item") {
                                     const item = findTrade.targetOffers[i].object;
                                     const findTarget = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.initiatorID)
+                                        OwnerID: findTrade.initiatorID
                                     });
                                     const findMain = await userData.findOne({
-                                        OwnerID: parseInt(findTrade.targetID)
+                                        OwnerID: findTrade.targetID
                                     });
 
                                     let targetAmountOfItem = 0;
@@ -702,7 +702,7 @@
                                     const newMainBalance = mainAmountOfItem - item.ItemAmount;
 
                                     const findselected = await userData.findOne({
-                                        OwnerID: parseInt(findTarget.OwnerID),
+                                        OwnerID: findTarget.OwnerID,
                                         "Items.ItemName": item.ItemName
                                     }, {
                                         "Inventory.$": 1
@@ -710,7 +710,7 @@
 
                                     if (findselected) {
                                         await userData.findOneAndUpdate({
-                                            OwnerID: parseInt(findTarget.OwnerID),
+                                            OwnerID: findTarget.OwnerID,
                                             "Items.ItemName": item.ItemName
                                         }, {
                                             $set: {
@@ -730,7 +730,7 @@
 
                                     if (newMainBalance > 0) {
                                         await userData.findOneAndUpdate({
-                                            OwnerID: parseInt(findMain.OwnerID),
+                                            OwnerID: findMain.OwnerID,
                                             "Items.ItemName": item.ItemName,
                                         }, {
                                             $set: {
@@ -846,7 +846,7 @@
                     const pokemonid = interaction.options.getInteger('pokemonid');
 
                     const findpoke = await userData.findOne({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                         "Inventory.PokemonData.PokemonOrder": pokemonid
                     }, {
                         "Inventory.$": 1
@@ -1108,7 +1108,7 @@
                     const remadeName = name.join(' ');
 
                     const mainuser = await userData.findOne({
-                        OwnerID: parseInt(interaction.user.id)
+                        OwnerID: interaction.user.id
                     });
 
                     let amountOfItem = 0;

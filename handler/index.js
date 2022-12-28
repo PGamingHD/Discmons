@@ -79,7 +79,7 @@ module.exports = async (client) => {
             }).then(() => console.log(chalk.green("[DATABASE] <==> || Successfully connected to the MongoDB database! || <==> [DATABASE]"))).then(async () => await spawnedPokes.deleteMany().then(console.log(chalk.green('[DATABASE] <==> || Successfully wiped all spawned pokemons for new restart! || <==> [DATABASE]'))))
         } catch(dberror) {
             console.log(chalk.red(`[DATABASE] <==> || Database seems to have ran into an error and could not connect! || <==> [DATABASE]\n\n${dberror}`));
-            sendWebhook("https://discord.com/api/webhooks/1024361902266138727/p-UFqyZWePDE_m5FrajWEIwJiAPfNvAVwdBIJsxRiISjF-0HwtHaGKkiFFavrtk0gCgo", "Database connection failed", "It seems as if the Database connection has failed, please have a look at that!", ee.wrongcolor);
+            sendWebhook("https://discord.com/api/webhooks/1057285030138876024/SffUgz8sWtwa6Ms04KQSHZYumEn6y1O8lIJBcimrmcOt5xYrqB9tsUoBH_B_FvPdVmFK", "Database connection failed", "It seems as if the Database connection has failed, please have a look at that!", ee.wrongcolor);
         }
     });
 };

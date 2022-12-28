@@ -54,7 +54,7 @@
             ])
 
             const findpoke = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
                 "Inventory.PokemonData.PokemonOrder": releaseid
             }, {
                 "Inventory.$": 1
@@ -112,7 +112,7 @@
                     await interactionCollector.deferUpdate();
                     
                     await userData.findOneAndUpdate({
-                        OwnerID: parseInt(interaction.user.id),
+                        OwnerID: interaction.user.id,
                     }, {
                         $pull: {
                             Inventory: {

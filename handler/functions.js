@@ -109,12 +109,12 @@ async function encounterspawn(message, rarity) {
     }).skip(pokemonAmount)
 
     const findserver = await server.findOne({
-        ServerID: parseInt(message.guild.id)
+        ServerID: message.guild.id
     });
 
     let channelToSend;
 
-    if(parseInt(findserver.RedirectChannel) !== 0){
+    if(parseInt(findserver.RedirectChannel) !== 0) {
         let redirectChannel;
 
         try {
@@ -160,7 +160,7 @@ async function encounterspawn(message, rarity) {
     }
 
     await spawned.create({
-        SpawnedServerID: parseInt(guildId),
+        SpawnedServerID: guildId,
         SpawnedChannelID: channelId,
         SpawnedMessageID: messageId,
         PokemonID: generatedUUID,
@@ -170,7 +170,7 @@ async function encounterspawn(message, rarity) {
     })
 
     await server.findOneAndUpdate({
-        ServerID: parseInt(message.guild.id),
+        ServerID: message.guild.id,
     }, {
         SpawningTime: 0
     })
@@ -204,6 +204,15 @@ async function forcespawn(interaction, pokemonname, pokemonlevel) {
         PokemonName: pokemonname
     })
 
+    let actualPLevel = pokemonlevel;
+    if (pokemonlevel < 1) {
+        actualPLevel = 1;
+    }
+
+    if (pokemonlevel > 100) {
+        actualPLevel = 100;
+    }
+
     if (!forcedpokemon) {
         interaction.reply({
             embeds: [
@@ -216,7 +225,7 @@ async function forcespawn(interaction, pokemonname, pokemonlevel) {
     }
 
     const findserver = await server.findOne({
-        ServerID: parseInt(interaction.guild.id)
+        ServerID: interaction.guild.id
     });
 
     let channelToSend;
@@ -254,13 +263,13 @@ async function forcespawn(interaction, pokemonname, pokemonlevel) {
     const messageId = msg.id;
 
     await spawned.create({
-        SpawnedServerID: parseInt(guildId),
+        SpawnedServerID: guildId,
         SpawnedChannelID: channelId,
         SpawnedMessageID: messageId,
         PokemonID: generatedUUID,
         PokemonName: forcedpokemon.PokemonName,
         PokemonPicture: forcedpokemon.PokemonPicture,
-        PokemonLevel: pokemonlevel
+        PokemonLevel: actualPLevel
     })
 
     setTimeout(async () => {
@@ -300,7 +309,7 @@ async function redeemSpawn(interaction, pokemonname) {
     }
 
     const findserver = await server.findOne({
-        ServerID: parseInt(interaction.guild.id)
+        ServerID: interaction.guild.id
     });
 
     let channelToSend;
@@ -340,7 +349,7 @@ async function redeemSpawn(interaction, pokemonname) {
     const messageId = msg.id;
 
     await spawned.create({
-        SpawnedServerID: parseInt(guildId),
+        SpawnedServerID: guildId,
         SpawnedChannelID: channelId,
         SpawnedMessageID: messageId,
         PokemonID: generatedUUID,
@@ -373,7 +382,7 @@ async function maintenancemode(client, interaction, cooldown, length) {
         developerAccess: 'accessStringforDeveloperOnly'
     });
 
-    const mainChannel = client.channels.cache.get(config.maintenanceChannel);
+    const mainChannel = await client.channels.cache.get(config.maintenanceChannel);
 
 
     if (devmode.globalMaintenance) {
@@ -390,6 +399,7 @@ async function maintenancemode(client, interaction, cooldown, length) {
                 })
             ]
         })
+        
         interaction.followUp({
             content: `:arrows_clockwise: Maintenance Mode will be turned off in \`[${cooldown}]\` Second(s)!`,
             ephemeral: true
@@ -412,7 +422,7 @@ async function maintenancemode(client, interaction, cooldown, length) {
 
             await devmode.updateOne({
                 globalMaintenance: false
-            })
+            });
         }, 1000 * cooldown);
 
     } else {
@@ -521,20 +531,20 @@ function generateSnowflake() {
 async function giveActivityXP(message, xpCooldowns) {
     if (!xpCooldowns.has(message.author.id)) {
         const findselected = await userdata.findOne({
-            OwnerID: parseInt(message.author.id),
+            OwnerID: message.author.id,
             "Inventory.PokemonSelected": true
         }, {
             "Inventory.$": 1
         });
 
         let newLevelXP;
-        if (findselected.Inventory[0].PokemonData.PokemonLevel === 1) {
+        if (parseInt(findselected.Inventory[0].PokemonData.PokemonLevel) === 1) {
             newLevelXP = 500;
         } else {
-            newLevelXP = findselected.Inventory[0].PokemonData.PokemonLevel * 750;
+            newLevelXP = parseInt(findselected.Inventory[0].PokemonData.PokemonLevel) * 750;
         }
 
-        if (findselected.Inventory[0].PokemonData.PokemonXP >= newLevelXP && findselected.Inventory[0].PokemonData.PokemonLevel < 100) {
+        if (parseInt(findselected.Inventory[0].PokemonData.PokemonXP) >= newLevelXP && parseInt(findselected.Inventory[0].PokemonData.PokemonLevel) < 100) {
 
             //EVOLVE FUNCTION HERE (FUNC INSTEAD OF RAW CODE)
             const currentPoke = findselected.Inventory[0].PokemonName;
@@ -566,7 +576,7 @@ async function giveActivityXP(message, xpCooldowns) {
                     });
                     
                     await userdata.findOneAndUpdate({
-                        OwnerID: parseInt(message.author.id),
+                        OwnerID: message.author.id,
                         "Inventory.PokemonSelected": true
                     }, {
                         "Inventory.$.PokemonName": nextStageData.PokemonName,
@@ -574,7 +584,7 @@ async function giveActivityXP(message, xpCooldowns) {
                     });
 
                     await userdata.findOneAndUpdate({
-                        OwnerID: parseInt(message.author.id),
+                        OwnerID: message.author.id,
                         "Inventory.PokemonSelected": true
                     }, {
                         "Inventory.$.PokemonData.PokemonXP": 0,
@@ -593,7 +603,7 @@ async function giveActivityXP(message, xpCooldowns) {
             //EVOLVE
 
             await userdata.findOneAndUpdate({
-                OwnerID: parseInt(message.author.id),
+                OwnerID: message.author.id,
                 "Inventory.PokemonSelected": true
             }, {
                 "Inventory.$.PokemonData.PokemonXP": 0,
@@ -615,7 +625,7 @@ async function giveActivityXP(message, xpCooldowns) {
         }
 
         await userdata.findOneAndUpdate({
-            OwnerID: parseInt(message.author.id),
+            OwnerID: message.author.id,
             "Inventory.PokemonSelected": true
         }, {
             $inc: {
@@ -670,7 +680,7 @@ async function increaseSpawnChance(findserver, finduser, awardCooldowns, message
 
 async function findServer(serverId) {
     const found = await server.findOne({
-        ServerID: parseInt(serverId),
+        ServerID: serverId,
     });
 
     return found;

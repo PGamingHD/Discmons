@@ -4,7 +4,7 @@ const {Types: {Long}} = mongoose;
 
 const ServerSchema = new mongoose.Schema({
     ServerID: {
-        type: Long,
+        type: String,
         required: true,
         unique: true
     },

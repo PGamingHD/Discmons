@@ -36,14 +36,14 @@
             const pokemonGuess = makeCapital(name);
 
             const findpoke = await spawned.findOne({
-                SpawnedServerID: parseInt(interaction.guild.id),
+                SpawnedServerID: interaction.guild.id,
                 SpawnedChannelID: interaction.channel.id,
                 PokemonName: pokemonGuess
             });
 
             const findtotal = await user.aggregate([{
                 $match: {
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                 }
             }, {
                 $unwind: "$Inventory"
@@ -75,7 +75,7 @@
 
             if (foundRarity === "Common" || foundRarity === "Uncommon" || foundRarity === "Rare") {
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                 }, {
                     $inc: {
                         TotalCaught: 1
@@ -91,7 +91,7 @@
                 });
             } else if (foundRarity === "Mythical") {
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                 }, {
                     $inc: {
                         MythicalCaught: 1,
@@ -108,7 +108,7 @@
                 });
             } else if (foundRarity === "Legendary") {
                 await user.findOneAndUpdate({
-                    OwnerID: parseInt(interaction.user.id),
+                    OwnerID: interaction.user.id,
                 }, {
                     $inc: {
                         LegendaryCaught: 1,
@@ -126,7 +126,7 @@
             }
 
             const originalownerid = await user.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             });
 
             const HPiv = Math.floor(Math.random() * (31 - 1) + 1);
@@ -140,7 +140,7 @@
             const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
 
             await user.findOneAndUpdate({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             }, {
                 $push: {
                     Inventory: {
@@ -170,7 +170,7 @@
             });
 
             await spawned.deleteOne({
-                SpawnedServerID: parseInt(interaction.guild.id),
+                SpawnedServerID: interaction.guild.id,
                 SpawnedChannelID: interaction.channel.id,
                 PokemonName: pokemonGuess
             });

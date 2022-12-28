@@ -155,7 +155,7 @@
             ])
 
             const findrank = await userData.findOne({
-                OwnerID: parseInt(interaction.user.id),
+                OwnerID: interaction.user.id,
             })
 
             if (findrank.TrainerRank < 5) {
@@ -343,7 +343,7 @@
                             }
 
                             const userfound = await userData.findOne({
-                                OwnerID: parseInt(blacklistuserid.content),
+                                OwnerID: blacklistuserid.content,
                             })
 
                             if (!userfound) {
@@ -413,7 +413,7 @@
                             }
 
                             const serverfound = await server.findOne({
-                                ServerID: parseInt(blacklistserverid.content),
+                                ServerID: blacklistserverid.content,
                             })
 
                             if (!serverfound) {
@@ -597,7 +597,7 @@
                             }
 
                             const findRank = await userData.findOne({
-                                OwnerID: parseInt(interaction.user.id)
+                                OwnerID: interaction.user.id
                             });
 
                             if (parseInt(args[1]) > 100 && findRank.TrainerRank !== 7) {

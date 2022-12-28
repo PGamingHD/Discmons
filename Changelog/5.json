@@ -1,0 +1,6 @@
+{
+    "ChangelogNumber": 5,
+    "ChangelogTitle": "Changelog - V1.1.7_DEV",
+    "ChangelogDescription": "**Tweaked Features**\n\n*• Large tweaks to userData to prevent errors with data*\n*• Large tweaks to serverData to prevent errors with data*",
+    "ChangelogTimestamp": "1. October [2022]"
+}
