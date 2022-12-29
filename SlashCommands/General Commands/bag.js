@@ -209,7 +209,7 @@
                         }])
                     })
 
-                    embed.setDescription(`**Pokécoins**: ${parseInt(user.Pokecoins).toLocaleString('en-US')}\n**Pokétokens**: ${parseInt(user.Poketokens).toLocaleString('en-US')}\n\nUse your buttons to flip pages and display more items!`)
+                    embed.setDescription(`**Pokécoins**: ${parseInt(user.Pokecoins).toLocaleString('en-US')}\n**Pokétokens**: ${parseInt(user.Poketokens).toLocaleString('en-US')}${ownedpokes.length < 6 ? "" : "\n\nUse your buttons to flip pages and display more items!"}`)
                     embed.setAuthor({
                         name: interaction.user.username,
                         iconURL: interaction.user.displayAvatarURL()

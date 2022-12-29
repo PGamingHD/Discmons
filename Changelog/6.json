@@ -1,0 +1,6 @@
+{
+    "ChangelogNumber": 6,
+    "ChangelogTitle": "Changelog - V1.1.8_DEV",
+    "ChangelogDescription": "**New Features**\n\n*• Added Pokémon Genders*\n*• Added Pokémon Natures*\n*• Added Pokémon sorting by Lvl, Favorite, IVs*\n\n**Tweaked Features**\n\n*• Fixed issue with taking Pokémon off sale from market.*\n*• Tweaked feature with bag text displaying button text without buttons displayed.*",
+    "ChangelogTimestamp": "29. December [2022]"
+}

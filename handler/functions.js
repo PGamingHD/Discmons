@@ -118,9 +118,9 @@ async function encounterspawn(message, rarity) {
         let redirectChannel;
 
         try {
-            redirectChannel = await interaction.guild.channels.fetch(`${findserver.RedirectChannel}`);
+            redirectChannel = await message.guild.channels.fetch(`${findserver.RedirectChannel}`);
         } catch {
-            redirectChannel = interaction.channel;
+            redirectChannel = message.channel;
         }
 
         channelToSend = redirectChannel;

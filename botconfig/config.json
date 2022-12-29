@@ -2,7 +2,7 @@
    "developerID": ["266726434855321600"],
    "botID": "1011002384064970944",
    "prefix": "/",
-   "botVersion": "v1.1.6_DEV",
+   "botVersion": "v1.1.8_DEV",
    "adminLogs": "https://discord.com/api/webhooks/1057285030138876024/SffUgz8sWtwa6Ms04KQSHZYumEn6y1O8lIJBcimrmcOt5xYrqB9tsUoBH_B_FvPdVmFK",
    "maintenanceChannel": "1057277697002324030",
    "mainInvite": "https://discord.com/api/oauth2/authorize?client_id=1011002384064970944&permissions=137439276096&scope=bot%20applications.commands",

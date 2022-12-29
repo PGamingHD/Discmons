@@ -72,7 +72,7 @@
                 embeds: [
                     new EmbedBuilder()
                     .setColor(ee.color)
-                    .setImage(`https://cdn.discordapp.com/attachments/1011000689981403196/1011000721887469668/starters.png`)
+                    .setImage(`https://cdn.discordapp.com/attachments/1010999257899204769/1057280526190387271/starters.png`)
                     .setTitle(`**Please pick a starter Pokémon from the 3 shown below!**`)
                     .setDescription(`Finally, it is now time for you to choose your Starter Pokémon.. But what are you going to choose? Are you going to go for the Grass-type Pokémon \`Bulbasaur\`? Or maybe you're more into fire-types? Why not try the Fire-type Pokémon \`Charmander\`. Or maybe you're the chill type, why not try the Water-type \`Squirtle\`!`)
                 ],
@@ -110,6 +110,43 @@
 
                     const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+                    let PokemonGender = null;
+
+                    if (Math.random() < 0.5) {
+                        PokemonGender = "Female"   
+                    } else {
+                        PokemonGender = "Male"
+                    }
+
+                    const availableNatures = [
+                        "Hardy",
+                        "Lonely",
+                        "Brave",
+                        "Adamant",
+                        "Naughty",
+                        "Bold",
+                        "Docile",
+                        "Relaxed",
+                        "Impish",
+                        "Lax",
+                        "Timid",
+                        "Hasty",
+                        "Serious",
+                        "Jolly",
+                        "Naive",
+                        "Modest",
+                        "Mild",
+                        "Quiet",
+                        "Bashful",
+                        "Rash",
+                        "Calm",
+                        "Gentle",
+                        "Sassy",
+                        "Careful",
+                        "Quirky"
+                    ];
+        
+                    const chosenNature = Math.floor(Math.random() * 24);
 
                     await userData.create({
                         OwnerID: interaction.user.id,
@@ -137,7 +174,8 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
-                                //EVOLVE CODE HERE
+                                PokemonGender: PokemonGender,
+                                PokemonNature: availableNatures[chosenNature],
                                 PokemonIVs: {
                                     HP: HPiv,
                                     Attack: ATKiv,
@@ -191,6 +229,43 @@
 
                     const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+                    let PokemonGender = null;
+
+                    if (Math.random() < 0.5) {
+                        PokemonGender = "Female"   
+                    } else {
+                        PokemonGender = "Male"
+                    }
+
+                    const availableNatures = [
+                        "Hardy",
+                        "Lonely",
+                        "Brave",
+                        "Adamant",
+                        "Naughty",
+                        "Bold",
+                        "Docile",
+                        "Relaxed",
+                        "Impish",
+                        "Lax",
+                        "Timid",
+                        "Hasty",
+                        "Serious",
+                        "Jolly",
+                        "Naive",
+                        "Modest",
+                        "Mild",
+                        "Quiet",
+                        "Bashful",
+                        "Rash",
+                        "Calm",
+                        "Gentle",
+                        "Sassy",
+                        "Careful",
+                        "Quirky"
+                    ];
+        
+                    const chosenNature = Math.floor(Math.random() * 24);
 
                     await userData.create({
                         OwnerID: interaction.user.id,
@@ -218,6 +293,8 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                PokemonGender: PokemonGender,
+                                PokemonNature: availableNatures[chosenNature],
                                 PokemonIVs: {
                                     HP: HPiv,
                                     Attack: ATKiv,
@@ -271,6 +348,43 @@
 
                     const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
                     const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+                    let PokemonGender = null;
+
+                    if (Math.random() < 0.5) {
+                        PokemonGender = "Female"   
+                    } else {
+                        PokemonGender = "Male"
+                    }
+
+                    const availableNatures = [
+                        "Hardy",
+                        "Lonely",
+                        "Brave",
+                        "Adamant",
+                        "Naughty",
+                        "Bold",
+                        "Docile",
+                        "Relaxed",
+                        "Impish",
+                        "Lax",
+                        "Timid",
+                        "Hasty",
+                        "Serious",
+                        "Jolly",
+                        "Naive",
+                        "Modest",
+                        "Mild",
+                        "Quiet",
+                        "Bashful",
+                        "Rash",
+                        "Calm",
+                        "Gentle",
+                        "Sassy",
+                        "Careful",
+                        "Quirky"
+                    ];
+        
+                    const chosenNature = Math.floor(Math.random() * 24);
 
                     await userData.create({
                         OwnerID: interaction.user.id,
@@ -298,6 +412,8 @@
                                 PokemonLevel: 5,
                                 PokemonXP: 0,
                                 PokemonOrder: 1,
+                                PokemonGender: PokemonGender,
+                                PokemonNature: availableNatures[chosenNature],
                                 PokemonIVs: {
                                     HP: HPiv,
                                     Attack: ATKiv,

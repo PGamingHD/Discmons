@@ -138,6 +138,43 @@
 
             const IVpercentage = HPiv + ATKiv + DEFiv + SPECATKiv + SPECDEFiv + SPEEDiv;
             const IVtotal = (IVpercentage / 186 * 100).toFixed(2);
+            let PokemonGender = null;
+
+            if (Math.random() < 0.5) {
+                PokemonGender = "Female";
+            } else {
+                PokemonGender = "Male";
+            }
+
+            const availableNatures = [
+                "Hardy",
+                "Lonely",
+                "Brave",
+                "Adamant",
+                "Naughty",
+                "Bold",
+                "Docile",
+                "Relaxed",
+                "Impish",
+                "Lax",
+                "Timid",
+                "Hasty",
+                "Serious",
+                "Jolly",
+                "Naive",
+                "Modest",
+                "Mild",
+                "Quiet",
+                "Bashful",
+                "Rash",
+                "Calm",
+                "Gentle",
+                "Sassy",
+                "Careful",
+                "Quirky"
+            ];
+
+            const chosenNature = Math.floor(Math.random() * 24);
 
             await user.findOneAndUpdate({
                 OwnerID: interaction.user.id,
@@ -155,6 +192,8 @@
                             PokemonLevel: findpoke.PokemonLevel,
                             PokemonXP: 0,
                             PokemonOrder: incrementID,
+                            PokemonGender: PokemonGender,
+                            PokemonNature: availableNatures[chosenNature],
                             PokemonIVs: {
                                 HP: HPiv,
                                 Attack: ATKiv,

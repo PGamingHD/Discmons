@@ -6,7 +6,8 @@
         MessageButton,
         ButtonBuilder,
         ActionRowBuilder,
-        ButtonStyle
+        ButtonStyle,
+        ApplicationCommandOptionType
     } = require('discord.js');
     const ee = require('../../botconfig/embed.json');
     const emoji = require('../../botconfig/embed.json')
@@ -19,17 +20,24 @@
         calculatePercentage
     } = require('../../handler/functions');
     const userdata = require("../../schemas/userData");
+const userData = require('../../schemas/userData');
 
     module.exports = {
         name: 'pokemons',
         description: 'View all your Pokémons in one list!',
+        options: [{
+            name: 'sort',
+            description: 'Choose if you wish to sort by IVs, Fav, Lvl or EVs.',
+            type: ApplicationCommandOptionType.String,
+            required: false
+        }],
         /** 
          * @param {Client} client 
          * @param {Message} message 
          * @param {String[]} args 
          */
         run: async (client, interaction, args) => {
-
+            const sorting = interaction.options.getString('sort');
 
             const mainRow = new ActionRowBuilder()
             mainRow.addComponents([
@@ -63,11 +71,79 @@
                 .setStyle(ButtonStyle.Primary)
             ])
 
-            const ownedpokemons = await userdata.findOne({
-                OwnerID: interaction.user.id,
-            })
+            let pokemons = null;
+            if (!sorting) {
+                const ownedpokemons = await userData.aggregate([{
+                    $match: {
+                        OwnerID: interaction.user.id,
+                    }
+                }, {
+                    $unwind: "$Inventory"
+                }])
 
-            const pokemons = ownedpokemons.Inventory;
+                pokemons = ownedpokemons;
+            }
+
+
+            if (sorting && sorting.toLowerCase() === "fav" || sorting && sorting.toLowerCase() === "favs" || sorting && sorting.toLowerCase() === "favorite" || sorting && sorting.toLowerCase() === "favorites") {
+                const ownedpokemons = await userData.aggregate([{
+                    $match: {
+                        OwnerID: interaction.user.id,
+                    }
+                }, {
+                    $unwind: "$Inventory"
+                }, {
+                    $sort: {
+                        "Inventory.PokemonFavorited": -1
+                    }
+                }])
+
+                pokemons = ownedpokemons;
+            }
+
+            if (sorting && sorting.toLowerCase() === "lvl" || sorting && sorting.toLowerCase() === "lvls" || sorting && sorting.toLowerCase() === "level" || sorting && sorting.toLowerCase() === "levels") {
+                const ownedpokemons = await userData.aggregate([{
+                    $match: {
+                        OwnerID: interaction.user.id,
+                    }
+                }, {
+                    $unwind: "$Inventory"
+                }, {
+                    $sort: {
+                        "Inventory.PokemonData.PokemonLevel": -1
+                    }
+                }])
+
+                pokemons = ownedpokemons;
+            }
+
+            if (sorting && sorting.toLowerCase() === "iv" || sorting && sorting.toLowerCase() === "ivs") {
+                const ownedpokemons = await userData.aggregate([{
+                    $match: {
+                        OwnerID: interaction.user.id,
+                    }
+                }, {
+                    $unwind: "$Inventory"
+                }, {
+                    $sort: {
+                        "Inventory.PokemonData.PokemonIVs.TotalIV": -1
+                    }
+                }])
+
+                pokemons = ownedpokemons;
+            }
+
+            if (!pokemons) {
+                const ownedpokemons = await userData.aggregate([{
+                    $match: {
+                        OwnerID: interaction.user.id,
+                    }
+                }, {
+                    $unwind: "$Inventory"
+                }])
+
+                pokemons = ownedpokemons;
+            }
 
             let currentPage = 0;
             const embeds = generatePokemonEmbed(pokemons, currentPage)
@@ -184,7 +260,7 @@
                     const current = ownedpokes.slice(i, k);
                     let j = i;
                     k += 20;
-                    const info = current.map(currentpokemon => `\`${currentpokemon.PokemonData.PokemonOrder}\` ${currentpokemon.PokemonFavorited ? "⭐" : ""}**${currentpokemon.PokemonName}**　•　Lvl. ${currentpokemon.PokemonData.PokemonLevel}　•　IV ${currentpokemon.PokemonData.PokemonIVs.TotalIV}%`).join('\n');
+                    const info = current.map(currentpokemon => `\`${currentpokemon.Inventory.PokemonData.PokemonOrder}\` ${currentpokemon.Inventory.PokemonFavorited ? "⭐" : ""}**${currentpokemon.Inventory.PokemonName}**　•　Lvl. ${currentpokemon.Inventory.PokemonData.PokemonLevel}　•　IV ${currentpokemon.Inventory.PokemonData.PokemonIVs.TotalIV}%`).join('\n');
                     const embed = new EmbedBuilder()
                         .setDescription(`${info}`)
                         .setTitle(`Your Pokémons`)

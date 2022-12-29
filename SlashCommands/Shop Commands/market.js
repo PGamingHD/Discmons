@@ -17,6 +17,7 @@
     const market = require('../../schemas/globalMarket');
     const user = require('../../schemas/userData');
     const globalData = require("../../schemas/globalData");
+const userData = require('../../schemas/userData');
 
     module.exports = {
         name: 'market',
@@ -308,20 +309,13 @@
                     })
                 }
 
-                const findininventory = await user.findOne({
-                    OwnerID: interaction.user.id,
-                    "Inventory.PokemonID": pokeinfo.PokemonID
-                }, {
-                    "Inventory.$": 1
-                });
-
                 await market.deleteOne({
                     PokemonID: pokeinfo.PokemonID
                 })
 
                 await user.findOneAndUpdate({
                     OwnerID: interaction.user.id,
-                    "Inventory.PokemonData.PokemonOrder": id
+                    "Inventory.PokemonID": pokeinfo.PokemonID
                 }, {
                     $set: {
                         'Inventory.$.PokemonOnMarket': false

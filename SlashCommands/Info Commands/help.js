@@ -46,7 +46,7 @@
             const embed1 = new EmbedBuilder()
             embed1.setColor(ee.color)
             embed1.setTitle(`Discmon Commands`)
-            embed1.setDescription(`Information can be found on the slash command simply by typing the slash command.\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
+            embed1.setDescription(`Information can be found on the slash command simply by typing the slash command.\n\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
             embed1.addFields([{
                 name: 'Configuration',
                 value: `Configure the client to your own needs.\n\`redirect\``
@@ -70,7 +70,7 @@
             const embed2 = new EmbedBuilder()
             embed2.setColor(ee.color)
             embed2.setTitle(`Discmon Commands`)
-            embed2.setDescription(`Information can be found on the slash command simply by typing the slash command.\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
+            embed2.setDescription(`Information can be found on the slash command simply by typing the slash command.\n\nDon't know how to use slash commands? All slash commands are triggered by the prefix \`/\`!`)
             embed2.addFields([{
                 name: 'Catching',
                 value: `Everything that has to do with your adventure/catching to do.\n\`catch\`, \`hint\``

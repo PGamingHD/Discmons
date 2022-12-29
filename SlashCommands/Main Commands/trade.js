@@ -527,6 +527,8 @@
                                                     PokemonLevel: pokemon.PokemonData.PokemonLevel,
                                                     PokemonXP: pokemon.PokemonData.PokemonXP,
                                                     PokemonOrder: incrementID,
+                                                    PokemonGender: pokemon.PokemonData.PokemonGender,
+                                                    PokemonNature: pokemon.PokemonData.PokemonNature,
                                                     PokemonIVs: {
                                                         HP: pokemon.PokemonData.PokemonIVs.HP,
                                                         Attack: pokemon.PokemonData.PokemonIVs.Attack,
@@ -662,6 +664,8 @@
                                                     PokemonLevel: pokemon.PokemonData.PokemonLevel,
                                                     PokemonXP: pokemon.PokemonData.PokemonXP,
                                                     PokemonOrder: incrementID,
+                                                    PokemonGender: pokemon.PokemonData.PokemonGender,
+                                                    PokemonNature: pokemon.PokemonData.PokemonNature,
                                                     PokemonIVs: {
                                                         HP: pokemon.PokemonData.PokemonIVs.HP,
                                                         Attack: pokemon.PokemonData.PokemonIVs.Attack,
@@ -965,6 +969,8 @@
                                             PokemonLevel: findpoke.Inventory[0].PokemonData.PokemonLevel,
                                             PokemonXP: findpoke.Inventory[0].PokemonData.PokemonXP,
                                             PokemonOrder: incrementID,
+                                            PokemonGender: findpoke.Inventory[0].PokemonData.PokemonGender,
+                                            PokemonNature: findpoke.Inventory[0].PokemonData.PokemonNature,
                                             PokemonIVs: {
                                                 HP: findpoke.Inventory[0].PokemonData.PokemonIVs.HP,
                                                 Attack: findpoke.Inventory[0].PokemonData.PokemonIVs.Attack,
@@ -1022,6 +1028,8 @@
                                             PokemonLevel: findpoke.Inventory[0].PokemonData.PokemonLevel,
                                             PokemonXP: findpoke.Inventory[0].PokemonData.PokemonXP,
                                             PokemonOrder: incrementID,
+                                            PokemonGender: findpoke.Inventory[0].PokemonData.PokemonGender,
+                                            PokemonNature: findpoke.Inventory[0].PokemonData.PokemonNature,
                                             PokemonIVs: {
                                                 HP: findpoke.Inventory[0].PokemonData.PokemonIVs.HP,
                                                 Attack: findpoke.Inventory[0].PokemonData.PokemonIVs.Attack,

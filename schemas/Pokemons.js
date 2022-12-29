@@ -16,6 +16,11 @@ const PokemonSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    PokemonShinyPicture: {
+        type: String,
+        unique: true,
+        required: true
+    },
     PokemonRarity: {
         type: String,
         required: true

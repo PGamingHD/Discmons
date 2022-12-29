@@ -110,6 +110,14 @@ const userDataSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             },
+            PokemonGender: {
+                type: String,
+                required: true
+            },
+            PokemonNature: {
+                type: String,
+                required: true
+            },
             PokemonIVs: {
                 HP: {
                     type: Number,
