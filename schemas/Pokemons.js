@@ -25,6 +25,10 @@ const PokemonSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    PokemonType: {
+        type: Array,
+        required: true
+    },
     PokemonEvolve: {
         currentStage: {
             type: Number,

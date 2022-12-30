@@ -12,6 +12,10 @@ const developerData = new mongoose.Schema({
         type: Boolean,
         required: true
     },
+    limitedServers: {
+        type: Boolean,
+        required: true
+    },
     LastTOSUpdate: {
         type: Long,
         required: true

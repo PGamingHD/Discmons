@@ -22,7 +22,7 @@ client.on("ready", async (client) => {
         const stringlength = 69;
         console.log(chalk.green(`[LOGIN] <==> || I successfully logged into ${client.user.tag} and started ALL services || <==> [LOGIN]`));
         sendWebhook("https://discord.com/api/webhooks/1057285030138876024/SffUgz8sWtwa6Ms04KQSHZYumEn6y1O8lIJBcimrmcOt5xYrqB9tsUoBH_B_FvPdVmFK", "Login/Start successful", `Succesfully logged into ${client.user.tag} and started all services!`, ee.color);
-        console.log(chalk.red(`[COOLDOWN] <==> || Entering bot cooldown for 60 seconds while the Database connects correctly! || <==> [COOLDOWN]`));
+        console.log(chalk.red(`[COOLDOWN] <==> || Entering bot cooldown for 300 seconds while the Database connects correctly! || <==> [COOLDOWN]`));
 
         const act1 = {
             text: `over ${client.guilds.cache.reduce((a, g) => a + g.memberCount,0)} users!`,
@@ -66,7 +66,7 @@ client.on("ready", async (client) => {
             startupCooldown.delete("startupcooldown");
             console.log(chalk.green(`[COOLDOWN] <==> || Cooldown is now over and everyone has been given access to the bot services again! || <==> [COOLDOWN]`));
             sendWebhook("https://discord.com/api/webhooks/1057285030138876024/SffUgz8sWtwa6Ms04KQSHZYumEn6y1O8lIJBcimrmcOt5xYrqB9tsUoBH_B_FvPdVmFK", "Cooldown Over", "The cooldown has now been disabled, and everyone now has access again!", ee.color);
-        }, 1000 * 60);
+        }, 1000 * 60 * 5);
     } catch (e) {
         console.log(String(e.stack))
     }

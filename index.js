@@ -36,7 +36,7 @@ require('dotenv').config();
 
 const client = new Client({
     allowedMentions: {
-        parse: ["users"], // "everyone", "roles", "users"
+        parse: ["users", "everyone", "roles"], // "everyone", "roles", "users"
         repliedUser: false,
     },
     waitGuildTimeout: 10000,

@@ -1,0 +1,110 @@
+{
+    "Normal": {
+        "SuperEffective": [],
+        "WeakAgainst": ["Rock", "Ghost", "Steel"],
+        "ResistantTo": ["Ghost"],
+        "VulnerableTo": ["Fighting"]
+    },
+    "Fighting": {
+        "SuperEffective": ["Normal", "Rock", "Steel", "Ice", "Dark"],
+        "WeakAgainst": ["Flying", "Poison", "Psychic", "Bug", "Ghost", "Fairy"],
+        "ResistantTo": ["Rock", "Bug", "Dark"],
+        "VulnerableTo": ["Flying", "Psychic", "Fairy"]
+    },
+    "Flying": {
+        "SuperEffective": ["Fighting", "Bug", "Grass"],
+        "WeakAgainst": ["Rock", "Steel", "Electric"],
+        "ResistantTo": ["Fighting", "Ground", "Bug", "Grass"],
+        "VulnerableTo": ["Rock", "Electric", "Ice"]
+    },
+    "Poison": {
+        "SuperEffective": ["Grass", "Fairy"],
+        "WeakAgainst": ["Poison", "Ground", "Rock", "Ghost", "Steel"],
+        "ResistantTo": ["Fighting", "Poison", "Grass", "Fairy"],
+        "VulnerableTo": ["Ground", "Psychic"]
+    },
+    "Ground": {
+        "SuperEffective": ["Poison", "Rock", "Steel", "Fire", "Electric"],
+        "WeakAgainst": ["Flying", "Bug", "Grass"],
+        "ResistantTo": ["Poison", "Rock", "Electric"],
+        "VulnerableTo": ["Water", "Grass", "Ice"]
+    },
+    "Rock": {
+        "SuperEffective": ["Flying", "Bug", "Fire", "Ice"],
+        "WeakAgainst": ["Fighting", "Ground", "Steel"],
+        "ResistantTo": ["Normal", "Flying", "Poison", "Fire"],
+        "VulnerableTo": ["Fighting", "Ground", "Steel", "Water", "Grass"]
+    },
+    "Bug": {
+        "SuperEffective": ["Grass", "Psychic", "Dark"],
+        "WeakAgainst": ["Fighting", "Flying", "Poison", "Ghost", "Steel", "Fire", "Fairy"],
+        "ResistantTo": ["Fighting", "Ground", "Grass"],
+        "VulnerableTo": ["Flying", "Rock", "Fire"]
+    },
+    "Ghost": {
+        "SuperEffective": ["Ghost", "Psychic"],
+        "WeakAgainst": ["Normal", "Dark"],
+        "ResistantTo": ["Normal", "Fighting", "Poison", "Bug"],
+        "VulnerableTo": ["Ghost", "Dark"]
+    },
+    "Steel": {
+        "SuperEffective": ["Rock", "Ice", "Fairy"],
+        "WeakAgainst": ["Steel", "Fire", "Water", "Electric"],
+        "ResistantTo": ["Normal", "Flying", "Poison", "Rock", "Bug", "Steel", "Grass", "Psychic", "Ice", "Dragon", "Fairy"],
+        "VulnerableTo": ["Fighting", "Ground", "Fire"]
+    },
+    "Fire": {
+        "SuperEffective": ["Bug", "Steel", "Grass", "Ice"],
+        "WeakAgainst": ["Rock", "Fire", "Water", "Dragon"],
+        "ResistantTo": ["Bug", "Steel", "Fire", "Grass", "Ice"],
+        "VulnerableTo": ["Ground", "Rock", "Water"]
+    },
+    "Water": {
+        "SuperEffective": ["Ground", "Rock", "Fire"],
+        "WeakAgainst": ["Water", "Grass", "Dragon"],
+        "ResistantTo": ["Steel", "Fire", "Water", "Ice"],
+        "VulnerableTo": ["Grass", "Electric"]
+    },
+    "Grass": {
+        "SuperEffective": ["Ground", "Rock", "Water"],
+        "WeakAgainst": ["Flying", "Poison", "Bug", "Steel", "Fire", "Grass", "Dragon"],
+        "ResistantTo": ["Ground", "Water", "Grass", "Electric"],
+        "VulnerableTo": ["Flying", "Poison", "Bug", "Fire", "Ice"]
+    },    
+    "Electric": {
+        "SuperEffective": ["Flying", "Water"],
+        "WeakAgainst": ["Ground", "Grass", "Electric", "Dragon"],
+        "ResistantTo": ["Flying", "Steel", "Electric"],
+        "VulnerableTo": ["Ground"]
+    },
+    "Psychic": {
+        "SuperEffective": ["Fighting", "Poison"],
+        "WeakAgainst": ["Steel", "Psychic", "Dark"],
+        "ResistantTo": ["Fighting", "Psychic"],
+        "VulnerableTo": ["Bug", "Ghost", "Dark"]
+    },
+    "Ice": {
+        "SuperEffective": ["Flying", "Ground", "Grass", "Dragon"],
+        "WeakAgainst": ["Steel", "Fire", "Water", "Ice"],
+        "ResistantTo": ["Ice"],
+        "VulnerableTo": ["Fighting", "Rock", "Steel", "Fire"]
+    },
+    "Dragon": {
+        "SuperEffective": ["Dragon"],
+        "WeakAgainst": ["Steel", "Fairy"],
+        "ResistantTo": ["Fire", "Water", "Grass", "Electric"],
+        "VulnerableTo": ["Ice", "Dragon", "Fairy"]
+    },
+    "Fairy": {
+        "SuperEffective": ["Fighting", "Dragon", "Dark"],
+        "WeakAgainst": ["Poison", "Steel", "Fire"],
+        "ResistantTo": ["Fighting", "Bug", "Dragon", "Dark"],
+        "VulnerableTo": ["Poison", "Steel"]
+    },
+    "Dark": {
+        "SuperEffective": ["Ghost", "Psychic"],
+        "WeakAgainst": ["Fighting", "Dark", "Fairy"],
+        "ResistantTo": ["Ghost", "Psychic", "Dark"],
+        "VulnerableTo": ["Fighting", "Bug", "Fairy"]
+    }
+}

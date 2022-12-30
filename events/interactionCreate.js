@@ -249,6 +249,109 @@ client.on("interactionCreate", async (interaction) => {
             guild
         } = interaction;
 
+        if (interaction.customId === "accept") {
+            const mainRow = new ActionRowBuilder()
+            mainRow.addComponents([
+                new ButtonBuilder()
+                .setEmoji('✅')
+                .setCustomId('accept')
+                .setStyle(ButtonStyle.Success)
+                .setDisabled(true)
+            ])
+            mainRow.addComponents([
+                new ButtonBuilder()
+                .setEmoji('❌')
+                .setCustomId('deny')
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(true)
+            ])
+
+            await interaction.deferUpdate();
+            
+            return await interaction.message.edit({
+                content: '',
+                embeds: [
+                    new EmbedBuilder()
+                    .setColor(ee.successcolor)
+                    .setTitle(`:white_check_mark: Server Accepted :white_check_mark:`)
+                    .addFields([{
+                        name: 'Guild ID',
+                        value: `${interaction.message.embeds[0].data.fields[0].value}`,
+                        inline: true
+                    }, {
+                        name: 'Guild Name',
+                        value: `${interaction.message.embeds[0].data.fields[1].value}`,
+                        inline: true
+                    }, {
+                        name: 'Guild Owner',
+                        value: `${interaction.message.embeds[0].data.fields[2].value}`,
+                        inline: true
+                    }, {
+                        name: 'Member Count',
+                        value: `${interaction.message.embeds[0].data.fields[3].value}`,
+                        inline: true
+                    }])
+                    .setFooter({text: `Decided by: ${interaction.user.username}#${interaction.user.discriminator}`})
+                    .setTimestamp()
+                ],
+                components: [mainRow]
+            });
+        }
+
+        if (interaction.customId === "deny") {
+            const mainRow = new ActionRowBuilder()
+            mainRow.addComponents([
+                new ButtonBuilder()
+                .setEmoji('✅')
+                .setCustomId('accept')
+                .setStyle(ButtonStyle.Success)
+                .setDisabled(true)
+            ])
+            mainRow.addComponents([
+                new ButtonBuilder()
+                .setEmoji('❌')
+                .setCustomId('deny')
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(true)
+            ])
+
+            await interaction.deferUpdate();
+
+            await interaction.message.edit({
+                content: '',
+                embeds: [
+                    new EmbedBuilder()
+                    .setColor(ee.wrongcolor)
+                    .setTitle(`:x: Server Denied :x:`)
+                    .addFields([{
+                        name: 'Guild ID',
+                        value: `${interaction.message.embeds[0].data.fields[0].value}`,
+                        inline: true
+                    }, {
+                        name: 'Guild Name',
+                        value: `${interaction.message.embeds[0].data.fields[1].value}`,
+                        inline: true
+                    }, {
+                        name: 'Guild Owner',
+                        value: `${interaction.message.embeds[0].data.fields[2].value}`,
+                        inline: true
+                    }, {
+                        name: 'Member Count',
+                        value: `${interaction.message.embeds[0].data.fields[3].value}`,
+                        inline: true
+                    }])
+                    .setFooter({text: `Decided by: ${interaction.user.username}#${interaction.user.discriminator}`})
+                    .setTimestamp()
+                ],
+                components: [mainRow]
+            });
+
+            let guildServer = interaction.message.embeds[0].data.fields[0].value.replace(/`/g, '');
+            const actualGuild = await client.guilds.fetch(guildServer);
+
+            return await actualGuild.leave();
+        }
+
         //TRY TO USE COLLECTORS INSTEAD OF THIS! (WILL SURVIVE FOREVER)
     }
 

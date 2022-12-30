@@ -22,7 +22,8 @@
     const {
         maintenancemode,
         forcespawn,
-        sendWebhook
+        sendWebhook,
+        getDeveloperData
     } = require("../../handler/functions");
     const {
         inspect
@@ -151,6 +152,17 @@
                 })
                 .setLabel('Developer Info')
                 .setCustomId('devinfo')
+                .setStyle(ButtonStyle.Primary)
+            ])
+
+            const devButtons3 = new ActionRowBuilder()
+            devButtons3.addComponents([
+                new ButtonBuilder()
+                .setEmoji({
+                    name: "⌛"
+                })
+                .setLabel('Limit Servers')
+                .setCustomId('limitservers')
                 .setStyle(ButtonStyle.Primary)
             ])
 
@@ -308,7 +320,7 @@
                             .setTitle(`**Developer Menu - Welcome back ${interaction.user.username}!**`)
                         ],
                         ephemeral: true,
-                        components: [devButtons, devButtons2]
+                        components: [devButtons, devButtons2, devButtons3]
                     })
                 }
 
@@ -1203,6 +1215,34 @@
                         time--;
                     }, 1000 * 1);
                 }
+
+                if (interactionCollector.customId === "limitservers") {
+                    await interactionCollector.deferUpdate();
+
+                    const devData = await getDeveloperData();
+                    
+                    if (devData.limitedServers) {
+                        await interactionCollector.editReply({
+                            content: ':x: Limitedmode Disabled',
+                            components: [],
+                            embeds: [],
+                        });
+
+                        return await developer.updateOne({
+                            limitedServers: false
+                        });
+                    } else {
+                        await interactionCollector.editReply({
+                            content: ':white_check_mark: Limitedmode Enabled',
+                            components: [],
+                            embeds: [],
+                        });
+
+                        return await developer.updateOne({
+                            limitedServers: true
+                        });
+                    }
+                }
             });
 
             collector.on('end', async (collected) => {
@@ -1244,6 +1284,9 @@
                             }
                             for (let i = 0; i < devButtons2.components.length; i++) {
                                 devButtons2.components[i].setDisabled(true);
+                            }
+                            for (let i = 0; i < devButtons3.components.length; i++) {
+                                devButtons3.components[i].setDisabled(true);
                             }
 
                             await interaction.editReply({
