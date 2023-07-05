@@ -30,7 +30,7 @@
 
             paypal.configure({
                 'mode': 'live', //sandbox or live
-                'client_id': 'AZedZ1Ra-A6dP0ASGyU87zL09rrQH6ygxwwQ7jff_PLFd06a6xAJEYWdZXtxIDLoiVcizt9u5IRa3LO_',
+                'client_id': '',
                 'client_secret': ''
             });
 
