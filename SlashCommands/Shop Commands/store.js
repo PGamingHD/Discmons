@@ -31,7 +31,7 @@
             paypal.configure({
                 'mode': 'live', //sandbox or live
                 'client_id': 'AZedZ1Ra-A6dP0ASGyU87zL09rrQH6ygxwwQ7jff_PLFd06a6xAJEYWdZXtxIDLoiVcizt9u5IRa3LO_',
-                'client_secret': 'EEtflHqSqgENvZZSBmB3kg3GoxjomY575mLpEW3tlnV7mEi2eboe-ZYGe3cCbSU7f5HAKvV0BebYiv4v'
+                'client_secret': ''
             });
 
             //BUTTON CONSTRUCTORS
